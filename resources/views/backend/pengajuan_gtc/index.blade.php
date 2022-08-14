@@ -37,18 +37,35 @@
 
                     <div class="row mb-2">
                         <div class="col-sm-5">
-                            <a href="{{url('backend/tambah-pengajuan-gtc')}}" class="btn btn-primary mb-2" ></i>Pengajuan GTC</a>
+                            @php
+                                date_default_timezone_set('Asia/Jakarta');
+                                $jam = date('H:i');
+                                $buka = date('10:30');
+                                $tutup = date('15:30');
+                            @endphp
+                            @if($jam>=$buka && $jam<=$tutup)
+                                <a href="{{url('backend/tambah-pengajuan-gtc')}}" class="btn btn-primary mb-2" ></i>Pengajuan GTC</a>
+                            @else
+
+                            @endif
                             <a href="" class="btn btn-success mb-2"><i class="mdi mdi-export"></i>Export Excel</a>
-                            <a href="{{url('backend/del-pengajuan-gtc')}}" class="btn btn-danger mb-2"><i class="mdi mdi-delete"></i></a>
+                            @php
+                                $user_id = Auth::user()->kantor;
+                            @endphp
+                            @if($user_id != '1')
+                            @else
+                                <a href="{{url('backend/del-pengajuan-gtc')}}" class="btn btn-danger mb-2"><i class="mdi mdi-delete"></i></a>
+                            @endif
                         </div>
                     </div>
 
                     <div class="tab-content">
                         <div class="tab-pane show active" id="scroll-horizontal-preview">
-                        <table id="scroll-horizontal-datatable" class="table table-striped w-100 nowrap">
+                        <table id="list-data" class="table table-striped w-100 nowrap">
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th hidden>created_at</th>
                                     <th>Tanggal Pengajuan</th>
                                     <th>Perwada</th>
                                     <th>Kode Pengajuan</th>
@@ -60,9 +77,12 @@
                                     <th>Nominal Permohonan</th>
                                     <th>Status Akhir</th>
                                     <th>Status Aproval</th>
-                                    <th>Apvl BM</th>
-                                    <th>Apvl Opr</th>
-                                    <th>Apvl Keu</th>
+                                    @if($user_id != '1')
+                                    @else
+                                        <th>Apvl BM</th>
+                                        <th>Apvl Opr</th>
+                                        <th>Apvl Keu</th>
+                                    @endif
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -71,8 +91,34 @@
                                 @foreach($data as $row)
                                 <tr>
                                     <td>{{$no++}}</td>
-                                    <td>{{$row->tanggal_pengajuan}}</td>
-                                    <td>{{$row->id_perwada}}</td>
+                                    <td hidden>{{$row->created_at}}</td>
+                                    @php
+                                        $tanggal = $row->tanggal_pengajuan;
+                                        $bulan = array (
+                                            1 =>   'Januari',
+                                            'Februari',
+                                            'Maret',
+                                            'April',
+                                            'Mei',
+                                            'Juni',
+                                            'Juli',
+                                            'Agustus',
+                                            'September',
+                                            'Oktober',
+                                            'November',
+                                            'Desember'
+                                        );
+                                        $pecahkandata = explode(' ', $tanggal);
+                                        $pecahkantgl = explode('-', $pecahkandata[0]);
+                                        $pecahkanjam = explode(':', $pecahkandata[1]);
+                                        $tglpengajuan = $pecahkantgl[2] . ' ' . $bulan[(int)$pecahkantgl[1]] . ' ' . $pecahkantgl[0] . ' ' . $pecahkanjam[0] . ':' . $pecahkanjam[1];
+                                        
+                                    @endphp
+                                    <td>{{$tglpengajuan}}</td>
+                                    @php
+                                        $perwada = DB::table('perwada')->where('id', $row->id_perwada)->first();
+                                    @endphp
+                                    <td>{{$perwada->nama}}</td>
                                     <td>{{$row->kode_pengajuan}}</td>
                                     <td>{{$row->nomor_ba}}</td>
                                     <td>{{$row->nama_lengkap}}</td>
@@ -172,19 +218,43 @@
                                             @endif
                                         @endif
                                     </td>
+                                    @if($user_id != '1')
+                                    @else
                                     <td>
+                                        @if($user_id != '1')
+                                        @else
                                         <a href="{{url('backend/aproval-bm-pengajuan-gtc/'.$row->id)}}" class="action-icon"> <i class="mdi mdi-book-arrow-right-outline"></i></a>
+                                        @endif
                                     </td>
+                                    @endif
+
+                                    @if($user_id != '1')
+                                    @else
                                     <td>
-                                        <a href="{{url('backend/aproval-opr-pengajuan-gtc/'.$row->id)}}" class="action-icon"> <i class="mdi mdi-book-check"></i></a>
+                                        @if($user_id != '1')
+                                        @else
+                                            <a href="{{url('backend/aproval-opr-pengajuan-gtc/'.$row->id)}}" class="action-icon"> <i class="mdi mdi-book-check"></i></a>
+                                        @endif
                                     </td>
+                                    @endif
+
+                                    @if($user_id != '1')
+                                    @else
                                     <td>
-                                        <a href="{{url('backend/aproval-keu-pengajuan-gtc/'.$row->id)}}" class="action-icon"> <i class="mdi mdi-book-check-outline"></i></a>
+                                        @if($user_id != '1')
+                                        @else
+                                            <a href="{{url('backend/aproval-keu-pengajuan-gtc/'.$row->id)}}" class="action-icon"> <i class="mdi mdi-book-check-outline"></i></a>
+                                        @endif
                                     </td>
+                                    @endif
                                     <td>
-                                        <a href="{{url('backend/view-pengajuan-gtc/'.$row->id)}}" class="action-icon"> <i class="mdi mdi-card-search"></i></a>
-                                        <a href="{{url('backend/edit-pengajuan-gtc/'.$row->id)}}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                        <a onclick="hapusdatapengajuangtc({{$row->id}})" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                        @if($user_id != '1')
+                                            <a href="{{url('backend/view-pengajuan-gtc/'.$row->id)}}" class="action-icon"> <i class="mdi mdi-card-search"></i></a>
+                                        @else
+                                            <a href="{{url('backend/view-pengajuan-gtc/'.$row->id)}}" class="action-icon"> <i class="mdi mdi-card-search"></i></a>
+                                            <a href="{{url('backend/edit-pengajuan-gtc/'.$row->id)}}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                            <a onclick="hapusdatapengajuangtc({{$row->id}})" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach
@@ -325,4 +395,21 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{asset('customjs/backend/pengajuan_gtc.js')}}"></script>
 <script src="{{asset('customjs/backend/loading.js')}}"></script>
+<script>
+   $('#list-data').DataTable({
+        scrollX:!0,
+        language:{
+        paginate:{
+            previous:"<i class='mdi mdi-chevron-left'>",
+            next:"<i class='mdi mdi-chevron-right'>",
+        }
+        },
+        // drawCallback:function(){
+        //     $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+        // }
+        order: [[1, "desc"]],
+        pageLength: 10,
+        lengthMenu: [[5, 10, 20], [5, 10, 20]]
+    });
+</script>
 @endpush

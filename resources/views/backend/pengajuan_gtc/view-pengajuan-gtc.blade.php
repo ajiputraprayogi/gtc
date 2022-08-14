@@ -69,7 +69,10 @@
                                     </tr>
                                     <tr>
                                         <td>Perwada</td>
-                                        <td>: {{$row->id_perwada}}</td>
+                                        @php
+                                            $perwada = DB::table('perwada')->where('id', $row->id_perwada)->first();
+                                        @endphp
+                                        <td>: {{$perwada->nama}}</td>
                                     </tr>
                                     <tr>
                                         <td>Kode Pengajuan</td>
@@ -140,7 +143,11 @@
                                     </tr>
                                     <tr>
                                         <td>Nominal Potongan Simp.Wa</td>
+                                        @if($row->nominal_potongan == '')
+                                        <td>: {{"Rp " . number_format(0,0,'.','.')}}</td>
+                                        @else
                                         <td>: {{"Rp " . number_format($row->nominal_potongan,0,'.','.')}}</td>
+                                        @endif
                                     </tr>
                                     <tr>
                                         <td>Jumlah Yang di Transfer</td>
@@ -194,7 +201,7 @@
                                                             @elseif($row->aproval_keu == 'Tidak Disetujui')
                                                                 Tidak Disetujui
                                                             @endif
-                                                        @elseif($row->aproval_opt == 'Tidak Disetujui')
+                                                        @elseif($row->aproval_opr == 'Tidak Disetujui')
                                                             @if($row->aproval_keu == 'Disetujui')
                                                                 Tidak Disetujui
                                                             @elseif($row->aproval_keu == 'Doc. Belum Lengkap')
@@ -220,7 +227,7 @@
                                                             @elseif($row->aproval_keu == 'Tidak Disetujui')
                                                                 Tidak Disetujui
                                                             @endif
-                                                        @elseif($row->aproval_opt == 'Tidak Disetujui')
+                                                        @elseif($row->aproval_opr == 'Tidak Disetujui')
                                                             @if($row->aproval_keu == 'Disetujui')
                                                                 Tidak Disetujui
                                                             @elseif($row->aproval_keu == 'Doc. Belum Lengkap')
@@ -246,7 +253,7 @@
                                                             @elseif($row->aproval_keu == 'Tidak Disetujui')
                                                                 Tidak Disetujui
                                                             @endif
-                                                        @elseif($row->aproval_opt == 'Tidak Disetujui')
+                                                        @elseif($row->aproval_opr == 'Tidak Disetujui')
                                                             @if($row->aproval_keu == 'Disetujui')
                                                                 Tidak Disetujui
                                                             @elseif($row->aproval_keu == 'Doc. Belum Lengkap')

@@ -38,7 +38,7 @@
 
                         <div class="tab-content">
                             <div class="tab-pane show active" id="scroll-horizontal-preview">
-                                <table id="scroll-horizontal-datatable" class="table table-striped w-100 nowrap">
+                                <table id="list-data" class="table table-striped w-100 nowrap">
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -50,6 +50,7 @@
                                             <th>Tanggal Jatuh Tempo</th>
                                             <th>Nomor SBTE</th>
                                             <th>Transaksi</th>
+                                            <th hidden>created_at</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -58,16 +59,61 @@
                                         @foreach($data as $row)
                                         <tr>
                                             <td>{{$no++}}</td>
-                                            <td>{{$row->tgl_aproval_keu}}</td>
-                                            <td>{{$row->id_perwada}}</td>
+                                            @php
+                                                $tanggal = $row->tgl_aproval_keu;
+                                                $bulan = array (
+                                                    1 =>   'Januari',
+                                                    'Februari',
+                                                    'Maret',
+                                                    'April',
+                                                    'Mei',
+                                                    'Juni',
+                                                    'Juli',
+                                                    'Agustus',
+                                                    'September',
+                                                    'Oktober',
+                                                    'November',
+                                                    'Desember'
+                                                );
+                                                $pecahkandata = explode(' ', $tanggal);
+                                                $pecahkantgl = explode('-', $pecahkandata[0]);
+                                                $pecahkanjam = explode(':', $pecahkandata[1]);
+                                                $tglpengajuan = $pecahkantgl[2] . ' ' . $bulan[(int)$pecahkantgl[1]] . ' ' . $pecahkantgl[0] . ' ' . $pecahkanjam[0] . ':' . $pecahkanjam[1];
+                                                
+                                                $tanggal2 = $row->tanggal_jatuh_tempot;
+                                                $bulan2 = array (
+                                                    1 =>   'Januari',
+                                                    'Februari',
+                                                    'Maret',
+                                                    'April',
+                                                    'Mei',
+                                                    'Juni',
+                                                    'Juli',
+                                                    'Agustus',
+                                                    'September',
+                                                    'Oktober',
+                                                    'November',
+                                                    'Desember'
+                                                );
+                                                $pecahkandata2 = explode(' ', $tanggal2);
+                                                $pecahkantgl2 = explode('-', $pecahkandata2[0]);
+                                                $pecahkanjam2 = explode(':', $pecahkandata2[1]);
+                                                $jatuhtempo = $pecahkantgl2[2] . ' ' . $bulan2[(int)$pecahkantgl2[1]] . ' ' . $pecahkantgl2[0];
+                                            @endphp
+                                            <td>{{$tglpengajuan}}</td>
+                                            @php
+                                                $perwada = DB::table('perwada')->where('id', $row->id_perwada)->first();
+                                            @endphp
+                                            <td>{{$perwada->nama}}</td>
                                             <td>{{$row->kode_pengajuan}}</td>
                                             <td>{{$row->nomor_ba}}</td>
                                             <td>{{$row->nama_lengkap}}</td>
-                                            <td>{{$row->tanggal_jatuh_tempo}}</td>
-                                            <td>{{$row->nomor_sbte}}</td>
+                                            <td>{{$jatuhtempo}}</td>
+                                            <td>{{$row->sbte}}</td>
                                             <td>
                                                 <a href="{{url('backend/transaksi-gtc/'.$row->idp)}}" class="action-icon"> <i class="mdi mdi-update"></i></a>
                                             </td>
+                                            <td hidden>{{$row->created_at}}</td>
                                             <td>
                                                 <a href="view-transaksi-gtc.html" class="action-icon"> <i class="mdi mdi-card-search"></i></a>
                                             </td>
@@ -225,3 +271,22 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 @endsection
+@push('script')
+<script>
+   $('#list-data').DataTable({
+        scrollX:!0,
+        language:{
+        paginate:{
+            previous:"<i class='mdi mdi-chevron-left'>",
+            next:"<i class='mdi mdi-chevron-right'>",
+        }
+        },
+        // drawCallback:function(){
+        //     $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+        // }
+        order: [[9, "desc"]],
+        pageLength: 10,
+        lengthMenu: [[5, 10, 20], [5, 10, 20]]
+    });
+</script>
+@endpush

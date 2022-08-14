@@ -15,8 +15,9 @@ Route::prefix('backend')->group(function () {
     Route::resource('/roles','backend\rolesController');
     Route::get('/data-roles','backend\rolesController@listdata');
     
+    Route::resource('/pengaturan-akun','backend\AdminController');
     Route::get('/data-admin','backend\AdminController@listdata');
-    Route::resource('/admin','backend\AdminController');
+    Route::get('/cari-pengaturan-akun/{id}/edit', 'backend\AdminController@caripengaturanakun');
     Route::get('/web-setting', 'backend\HomeController@websetting');
     Route::post('/web-setting', 'backend\HomeController@updatewebsetting');
 
@@ -57,6 +58,7 @@ Route::prefix('backend')->group(function () {
 
     Route::resource('/aktif-gtc', 'backend\AktifgtcController');
     Route::get('/transaksi-gtc/{id}', 'backend\AktifgtcController@transaksi');
+    Route::get('/transaksi2/{id}', 'backend\AktifgtcController@transaksi2');
     Route::get('/list-transaksi/{id}', 'backend\AktifgtcController@listtransaksi');
     Route::get('/list-tambah-transaksi/{id}', 'backend\AktifgtcController@listtambahtransaksi');
     Route::get('/list-edit-transaksi/{kode}/{kode2}', 'backend\AktifgtcController@listedittransaksi');
@@ -65,8 +67,17 @@ Route::prefix('backend')->group(function () {
     Route::get('/cari-data-emas-transaksi-gtc/{kode}', 'backend\AktifgtcController@listemasgtc');
     Route::get('/cari-edit-data-emas-transaksi-gtc/{kode}/{kode2}', 'backend\AktifgtcController@listeditemasgtc');
     Route::get('/cari-view-data-emas-transaksi-gtc/{kode}/{kode2}', 'backend\AktifgtcController@listviewemasgtc');
+    Route::get('/print-transaksi/{kode}/{kode2}', 'backend\AktifgtcController@printtransaksi');
+    Route::get('/jasadiakhir-transaksi/{kode}/{kode2}', 'backend\AktifgtcController@jasadiakhirtransaksi');
+    Route::get('/jasadiakhir-transaksi/{kode}/{kode2}', 'backend\AktifgtcController@jasadiakhirtransaksi');
+    Route::put('/simpan-jasadiakhir-transaksi/{id}', 'backend\AktifgtcController@simpanjasadiakhirtransaksi');
     Route::get('/cari-data-transaksi/{id}', 'backend\AktifgtcController@caridatatransaksi');
     Route::put('/upload-buktitrf/{id}', 'backend\AktifgtcController@uploadbuktitrf');
     Route::put('/aproval-opr/{id}', 'backend\AktifgtcController@aprovalopr');
     Route::put('/aproval-keu/{id}/{id_anggota}', 'backend\AktifgtcController@aprovalkeu');
+    Route::get('/cek-pelunasan-gtc/{id}', 'backend\AktifgtcController@cekpelunasangtc');
+    Route::get('/pelunasan-gtc/{id}', 'backend\AktifgtcController@pelunasangtc');
+
+    Route::resource('/lunas-gtc', 'backend\LunasgtcController');
+    Route::resource('/histori-transaksi-gtc', 'backend\HistoritransaksigtcController');
 });

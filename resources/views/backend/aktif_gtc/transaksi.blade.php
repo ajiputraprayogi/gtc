@@ -5,7 +5,9 @@
 <link rel="stylesheet" href="{{asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 @endsection
 @section('content')
-
+    @php
+        $perwada = Auth::user()->kantor;
+    @endphp
     <!-- start page title -->
     <div class="row">
         <div class="col-12">
@@ -36,7 +38,10 @@
                     <input type="hidden" name="id_anggota" id="id_anggota" value="{{$row->ida}}" class="form-control">
                     <div class="row mb-2">
                         <div class="col-4">
-                            <a class="btn btn-success mb-2"><i class="mdi mdi-calendar-check"></i>Pelunasan</a>
+                            @if($perwada !='1')
+                            @else
+                            <a onclick="pelunasan({{$row->idp}})" class="btn btn-success mb-2"><i class="mdi mdi-calendar-check"></i>Pelunasan</a>
+                            @endif
                         </div>
                         <div class="col-4">
                             <a href="aktif-gtc.html" class="btn btn-info mb-2"><i class="mdi mdi-arrow-left-bold-circle-outline"></i> Kembali</a>
@@ -47,10 +52,10 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-4">
-                            <p class="font-14"><strong>Nomor Buku Anggota :</strong> {{$row->nomor_ba}}</p>
+                            <p id="transaksi_nomor_ba" class="font-14"><strong>Nomor Buku Anggota :</strong> {{$row->nomor_ba}}</p>
                         </div>
                         <div class="col-sm-4">
-                            <p class="font-14"><strong>Nama Lengkap :</strong> {{$row->nama_lengkap}}</p>
+                            <p id="transaksi_nama_lengkap" class="font-14"><strong>Nama Lengkap :</strong> {{$row->nama_lengkap}}</p>
                         </div><hr>
                     </div>
 
@@ -71,23 +76,26 @@
                                     <tbody>
                                     <tr>
                                         <td>Tanggal Pengajuan</td>
-                                        <td>: {{$row->tanggal_pengajuan}}</td>
+                                        <td id="transaksi_tanggal_pengajuan">: {{$row->tanggal_pengajuan}}</td>
                                     </tr>
                                     <tr>
                                         <td>Perwada</td>
-                                        <td>: {{$row->id_perwada}}</td>
+                                        @php
+                                            $nama_perwada = DB::table('perwada')->where('id', $perwada)->first();
+                                        @endphp
+                                        <td id="transaksi_id_perwada">: {{$nama_perwada->nama}}</td>
                                     </tr>
                                     <tr>
                                         <td>Kode Pengajuan</td>
-                                        <td>: {{$row->kode_pengajuan}}</td>
+                                        <td id="transaksi_kode_pengajuan">: {{$row->kode_pengajuan}}</td>
                                     </tr>
                                     <tr>
                                         <td>Pinjaman Awal</td>
-                                        <td>: {{'Rp '. number_format($row->pengajuan,0,'.','.')}}</td>
+                                        <td id="transaksi_pinjaman_awal">: {{'Rp '. number_format($row->pengajuan,0,'.','.')}}</td>
                                     </tr>
                                     <tr>
                                         <td>Sisa Pinjaman</td>
-                                        <td>: Rp 800.000</td>
+                                        <td id="transaksi_sisa_pinjaman">: {{'Rp '. number_format($sisapinjaman,0,'.','.')}}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -106,23 +114,23 @@
                                     <tbody>
                                     <tr>
                                         <td>Jenis Transaksi</td>
-                                        <td>: {{$row->jenis_transaksi}}</td>
+                                        <td id="transaksi_jenis_transaksi">: {{$row->jenis_transaksi}}</td>
                                     </tr>
                                     <tr>
                                         <td>Pilihan Jasa</td>
-                                        <td>: {{$row->pilihan_jasa}}</td>
+                                        <td id="transaksi_pilihan_jasa">: {{$row->pilihan_jasa}}</td>
                                     </tr>
                                     <tr>
                                         <td>Perhitungan Jasa</td>
-                                        <td>: {{$row->perhitungan_jasa}}</td>
+                                        <td id="transaksi_perhitungan_jasa">: {{$row->perhitungan_jasa}}</td>
                                     </tr>
                                     <tr>
                                         <td>Jangka Waktu</td>
-                                        <td>: {{$row->jangka_waktu_permohonan . " Bulan"}}</td>
+                                        <td id="transaksi_jangka_waktu_permohonan">: {{$row->jangka_waktu_permohonan . " Bulan"}}</td>
                                     </tr>
                                     <tr>
                                         <td>Biaya Jasa</td>
-                                        <td>: {{"Rp " . number_format($row->jasa_gtc,0,'.','.')}}</td>
+                                        <td id="transaksi_biaya_jasa">: {{"Rp " . number_format($row->jasa_gtc,0,'.','.')}}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -172,13 +180,13 @@
                                                 @endphp
                                                 @foreach($emas as $row_emas)
                                                 <tr>
-                                                    <td>{{$row_emas ->item_emas}}</td>
+                                                    <td id="pengajuan_item_emas">{{$row_emas ->item_emas}}</td>
                                                     <td>
-                                                        <span class="badge badge-primary-lighten">{{$row_emas->jenis}}</span>
+                                                        <span class="badge badge-primary-lighten" id="pengajuan_jenis">{{$row_emas->jenis}}</span>
                                                     </td>
-                                                    <td>{{$row_emas->gramasi}}</td>
-                                                    <td>{{$row_emas->keping}}</td>
-                                                    <td>{{$row_emas->gramasi*$row_emas->keping . " Gram"}}</td>
+                                                    <td id="pengajuan_gramasi">{{$row_emas->gramasi}}</td>
+                                                    <td id="pengajuan_keping{{$row_emas->id}}">{{$row_emas->keping}}</td>
+                                                    <td id="pengajuan_sub_gramasi{{$row_emas->id}}">{{$row_emas->gramasi*$row_emas->keping . " Gram"}}</td>
                                                     <td>
                                                         <a href="javascript:void(0);" class="action-icon"> <i
                                                                 class="mdi mdi-delete"></i></a>
@@ -221,13 +229,13 @@
                                                     <th>Total</th>
                                                     <th></th>
                                                     <th></th>
-                                                    <th>
+                                                    <th id="pengajuan_total_keping">
                                                         @php
                                                             $total_keping = DB::table('gtc_emas')->where('kode_pengajuan', $row->kode_pengajuan)->sum('keping');
                                                         @endphp
                                                         {{$total_keping}}
                                                     </th>
-                                                    <th>
+                                                    <th id="pengajuan_total_gramasi">
                                                         @php
                                                             $total_gramasi = DB::table('gtc_emas')
                                                             ->where('kode_pengajuan', $row->kode_pengajuan)
@@ -264,16 +272,21 @@
                                             </thead>
                                                 @php 
                                                     $emas = DB::table('gtc_emas')->where('kode_pengajuan', $row->kode_pengajuan)->get();
+                                                    $keping = DB::table('gtc_histori_transaksi')->where('kode_pengajuan', $row->kode_pengajuan)->select(DB::raw('sum(keping) as total'))->groupby('id_emas')->get();
+                                                    $no = 0;
                                                 @endphp
                                                 @foreach($emas as $row_emas)
+                                                @php
+                                                    $no++;
+                                                @endphp
                                                 <tr>
-                                                    <td>{{$row_emas ->item_emas}}</td>
+                                                    <td id="pengambilan_item_emas">{{$row_emas ->item_emas}}</td>
                                                     <td>
-                                                        <span class="badge badge-primary-lighten">{{$row_emas->jenis}}</span>
+                                                        <span class="badge badge-primary-lighten" id="pengambilan_jenis">{{$row_emas->jenis}}</span>
                                                     </td>
-                                                    <td>{{$row_emas->gramasi}}</td>
-                                                    <td>{{$row_emas->keping}}</td>
-                                                    <td>{{$row_emas->gramasi*$row_emas->keping . " Gram"}}</td>
+                                                    <td id="pengambilan_gramasi">{{$row_emas->gramasi}}</td>
+                                                    <td id="pengambilan_keping{{$row_emas->id}}">{{$keping[$no-1]->total}}</td>
+                                                    <td id="pengambilan_sub_gramasi{{$row_emas->id}}">{{$row_emas->gramasi*$keping[$no-1]->total . " Gram"}}</td>
                                                     <td>
                                                         <a href="javascript:void(0);" class="action-icon"> <i
                                                                 class="mdi mdi-delete"></i></a>
@@ -316,23 +329,28 @@
                                                     <th>Total</th>
                                                     <th></th>
                                                     <th></th>
-                                                    <th>
+                                                    <th id="pengambilan_total_keping">
                                                         @php
-                                                            $total_keping = DB::table('gtc_emas')->where('kode_pengajuan', $row->kode_pengajuan)->sum('keping');
-                                                        @endphp
-                                                        {{$total_keping}}
-                                                    </th>
-                                                    <th>
-                                                        @php
-                                                            $total_gramasi = DB::table('gtc_emas')
-                                                            ->where('kode_pengajuan', $row->kode_pengajuan)
-                                                            ->select(DB::raw('sum(gramasi*keping)as total_gramasi'))
-                                                            ->get();
-                                                            foreach($total_gramasi as $gramasi){
-                                                                $total_gramasi = $gramasi->total_gramasi;
+                                                            $emas2 = DB::table('gtc_emas')->where('kode_pengajuan', $row->kode_pengajuan)->get();
+                                                            $keping2 = DB::table('gtc_histori_transaksi')->where('kode_pengajuan', $row->kode_pengajuan)->select(DB::raw('sum(keping) as total'))->groupby('id_emas')->get();
+                                                            $total_keping2 = 0;
+                                                            foreach($keping2 as $rowkeping2){
+                                                                $total_keping2 += $rowkeping2->total;
                                                             }
                                                         @endphp
-                                                        {{$total_gramasi. " Gram"}}
+                                                        {{$total_keping2}}
+                                                    </th>
+                                                    <th id="pengambilan_total_gramasi">
+                                                        @php
+                                                            $no2 = 0;
+                                                            $total_gramasi2 = 0;
+                                                            foreach($emas2 as $rowemas2){
+                                                                $no2++;
+                                                                $a = $keping2[$no2-1]->total;
+                                                                $total_gramasi2 += $a*$rowemas2->gramasi;
+                                                            }
+                                                        @endphp
+                                                        {{$total_gramasi2. " Gram"}}
                                                     </th>
                                                     <th style="width: 50px;"></th>
                                                 </tr>
@@ -357,18 +375,26 @@
                                                     <th style="width: 50px;"></th>
                                                 </tr>
                                             </thead>
-                                                @php 
-                                                    $emas = DB::table('gtc_emas')->where('kode_pengajuan', $row->kode_pengajuan)->get();
+                                            @php 
+                                                    $emas3 = DB::table('gtc_emas')->where('kode_pengajuan', $row->kode_pengajuan)->get();
+                                                    $keping3 = DB::table('gtc_histori_transaksi')->where('kode_pengajuan', $row->kode_pengajuan)->select(DB::raw('sum(keping) as total'))->groupby('id_emas')->get();
+                                                    $no3 = 0;
                                                 @endphp
                                                 @foreach($emas as $row_emas)
+                                                @php
+                                                    $no3++;
+                                                @endphp
                                                 <tr>
-                                                    <td>{{$row_emas ->item_emas}}</td>
+                                                    <td id="sisa_item_emas">{{$row_emas ->item_emas}}</td>
                                                     <td>
-                                                        <span class="badge badge-primary-lighten">{{$row_emas->jenis}}</span>
+                                                        <span class="badge badge-primary-lighten" id="sisa_jenis">{{$row_emas->jenis}}</span>
                                                     </td>
-                                                    <td>{{$row_emas->gramasi}}</td>
-                                                    <td>{{$row_emas->keping}}</td>
-                                                    <td>{{$row_emas->gramasi*$row_emas->keping . " Gram"}}</td>
+                                                    <td id="sisa_gramasi">{{$row_emas->gramasi}}</td>
+                                                    <td id="sisa_keping{{$row_emas->id}}">{{$row_emas->keping-$keping3[$no3-1]->total}}</td>
+                                                    @php
+                                                        $gramasi3 = $row_emas->keping-$keping3[$no3-1]->total;
+                                                    @endphp
+                                                    <td id="sisa_sub_gramasi{{$row_emas->id}}">{{$row_emas->gramasi*$gramasi3 . " Gram"}}</td>
                                                     <td>
                                                         <a href="javascript:void(0);" class="action-icon"> <i
                                                                 class="mdi mdi-delete"></i></a>
@@ -411,23 +437,32 @@
                                                     <th>Total</th>
                                                     <th></th>
                                                     <th></th>
-                                                    <th>
+                                                    <th id="sisa_total_keping">
                                                         @php
-                                                            $total_keping = DB::table('gtc_emas')->where('kode_pengajuan', $row->kode_pengajuan)->sum('keping');
-                                                        @endphp
-                                                        {{$total_keping}}
-                                                    </th>
-                                                    <th>
-                                                        @php
-                                                            $total_gramasi = DB::table('gtc_emas')
-                                                            ->where('kode_pengajuan', $row->kode_pengajuan)
-                                                            ->select(DB::raw('sum(gramasi*keping)as total_gramasi'))
-                                                            ->get();
-                                                            foreach($total_gramasi as $gramasi){
-                                                                $total_gramasi = $gramasi->total_gramasi;
+                                                            $emas4 = DB::table('gtc_emas')->where('kode_pengajuan', $row->kode_pengajuan)->get();
+                                                            $keping4 = DB::table('gtc_histori_transaksi')->where('kode_pengajuan', $row->kode_pengajuan)->select(DB::raw('sum(keping) as total'))->groupby('id_emas')->get();
+                                                            $no4 = 0;
+                                                            $total_keping4 = 0;
+                                                            foreach($keping4 as $rowkeping4){
+                                                                $no4++;
+                                                                $total_keping4 += $emas4[$no4-1]->keping-$rowkeping4->total;
                                                             }
                                                         @endphp
-                                                        {{$total_gramasi. " Gram"}}
+                                                        {{$total_keping4}}
+                                                    </th>
+                                                    <th id="sisa_total_gramasi">
+                                                        @php
+                                                            $emas5 = DB::table('gtc_emas')->where('kode_pengajuan', $row->kode_pengajuan)->get();
+                                                            $keping5 = DB::table('gtc_histori_transaksi')->where('kode_pengajuan', $row->kode_pengajuan)->select(DB::raw('sum(keping) as total'))->groupby('id_emas')->get();
+                                                            $no5 = 0;
+                                                            $total_gramasi5 = 0;
+                                                            foreach($emas5 as $rowemas5){
+                                                                $no5++;
+                                                                $a = $emas5[$no5-1]->keping-$keping5[$no5-1]->total;
+                                                                $total_gramasi5 += $a*$rowemas5->gramasi;
+                                                            }
+                                                        @endphp
+                                                        {{$total_gramasi5. " Gram"}}
                                                     </th>
                                                     <th style="width: 50px;"></th>
                                                 </tr>
@@ -451,47 +486,31 @@
                                                 <th>Jenis Transaksi</th>
                                                 <th>Pilihan Jasa</th>
                                                 <th>Perhitungan Jasa</th>
+                                                <th>Tgl Sebelumnya</th>
                                                 <th>Jangka Waktu</th>
+                                                <th>Tgl Jatuh Tempo</th>
                                                 <th>Biaya Jasa</th>
                                                 <th>Pembayaran Jasa</th>
                                                 <th>Nomor SBTE</th>
                                                 <th>Status</th>
                                                 <th>Action
-                                                <a onclick="tambahtransaksi('{{$row->kode_pengajuan}}')" class="action-icon" title="Tambah Transaksi"><i class="mdi mdi-plus-box"></i></a>
+                                                @php
+                                                    date_default_timezone_set('Asia/Jakarta');
+                                                    $jam = date('H:i');
+                                                    $buka = date('09:30');
+                                                    $tutup = date('10:30');
+                                                @endphp
+                                                @if(!($jam>=$buka && $jam<=$tutup))
+                                                    <a onclick="tambahtransaksi('{{$row->kode_pengajuan}}')" class="action-icon" title="Tambah Transaksi"><i class="mdi mdi-plus-box"></i></a>
+                                                @else
+
+                                                @endif
                                                 </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php $no=1; ?>
-                                            <!-- @foreach($data as $row)
-                                            <tr>
-                                                <td>{{$no++}}</td>
-                                                <td>{{$row->kode_transaksi}}</td>
-                                                <td>{{$row->jenis_transaksi}}</td>
-                                                <td>{{$row->pilihan_jasa}}</td>
-                                                <td>{{$row->perhitungan_jasa}}</td>
-                                                <td>{{$row->jangka_waktu_permohonan." Bulan"}}</td>
-                                                <td>{{"Rp ". number_format ($row->jasa_gtc,0,'.','.')}}</td>
-                                                <td>{{"Rp ". number_format ($row->pembayaran_jasa_manual,0,'.','.')}}</td>
-                                                <td>{{$row->sbte}}</td>
-                                                <td>Pengajuan / Aproved </td>
-                                                <td>
-                                                    <a href="javascript:void(0);" class="action-icon" data-bs-container="#tooltip-container2" data-bs-toggle="tooltip" title="View Transaksi"> <i
-                                                        class="mdi mdi-card-search"></i></a>
-                                                    <a href="" class="action-icon" data-bs-toggle="modal" data-bs-target="#modal-upload-buktitrf" 
-                                                        data-bs-container="#tooltip-container2" data-bs-toggle="tooltip" title="Upload trf"> <i
-                                                        class="mdi mdi-file-upload"></i></a>
-                                                    <a href="" class="action-icon" data-bs-toggle="modal" data-bs-target="#warning-aproval-opr"
-                                                        data-bs-container="#tooltip-container2" data-bs-toggle="tooltip" title="Aproval OPR"> <i
-                                                        class="mdi mdi-check-circle"></i></a>
-                                                    <a href="" class="action-icon" data-bs-toggle="modal" data-bs-target="#warning-aproval-keu"
-                                                        data-bs-container="#tooltip-container2" data-bs-toggle="tooltip" title="Aproval Kasir"> <i
-                                                        class="mdi mdi-check-circle"></i></a>
-                                                    <a href="javascript:void(0);" class="action-icon" data-bs-container="#tooltip-container2" data-bs-toggle="tooltip" title="Cetak SBTE"> <i
-                                                        class="mdi mdi-printer-outline"></i></a>
-                                                </td>
-                                            </tr>
-                                            @endforeach -->
+                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -694,7 +713,8 @@
                     <div class="row g-2">
                         <div class="col-md">
                             <label for="fullname" class="form-label">Perwada (sesuai dg Akun)</label>
-                            <input class="form-control" type="text" id="tambah_id_perwada" name="tambah_id_perwada" placeholder="KP Jakarta" readonly="">
+                            <input class="form-control" type="text" id="tambah_nama_perwada" name="tambah_nama_perwada" placeholder="KP Jakarta" readonly="">
+                            <input class="form-control" type="hidden" id="tambah_id_perwada" name="tambah_id_perwada" placeholder="KP Jakarta" readonly="">
                         </div>
                         <div class="col-md">
                             <label for="fullname" class="form-label">Kode Pengajuan</label>
@@ -919,6 +939,7 @@
                                     <label for="example-select" class="form-label">Jangka Waktu Permohonan</label>
                                     <select class="form-select" id="tambah_jangka_waktu_permohonan" name="tambah_jangka_waktu_permohonan" required>
                                         <option selected>Pilih</option>
+                                        <option value="0">0 Hari</option>
                                         <option value="0.5">15 Hari</option>
                                         <option value="1">1 Bulan</option>
                                         <option value="2">2 Bulan</option>
@@ -950,6 +971,17 @@
                                     <input class="form-control" type="text" data-toggle="input-mask" data-mask-format="000.000.000.000.000" data-reverse="true" id="tambah_pembayaran" name="tambah_pembayaran" placeholder="0">
                                     <input type="hidden" class="form-control" id="tambah_pembayaran_hidden" name="tambah_pembayaran_hidden">
                                 </div>
+                                <div class="col-md">
+                                    <label for="fullname" class="form-label">Sisa Pembayaran</label>
+                                    <input class="form-control" type="text" data-toggle="input-mask" data-mask-format="000.000.000.000.000" data-reverse="true" id="tambah_sisa_pembayaran" name="tambah_sisa_pembayaran" placeholder="0" readonly>
+                                    <input type="hidden" class="form-control" id="tambah_sisa_pembayaran_hidden" name="tambah_sisa_pembayaran_hidden">
+                                </div>
+                            </div><br>
+                            <div class="row g-2">
+                                <div class="col-md">
+                                    <label for="fullname" class="form-label">Catatan</label>
+                                    <input type="text" class="form-control" id="tambah_catatan" name="tambah_catatan">
+                                </div>
                             </div><br>
                         </div>
                         <div id="divbtnsimpan" style="display: none;">
@@ -974,7 +1006,7 @@
             <div class="modal-body">
                 <div class="row mb-2">
                     <div class="col-4">
-                        <a class="btn btn-success mb-2"><i class="mdi mdi-printer"></i>Cetak Transaksi</a>
+                        <a class="btn btn-success mb-2" value='Print' id="viewbtncetak"><i class="mdi mdi-printer"></i>Cetak Transaksi</a>
                     </div><hr> 
                 </div>
                 <input type="hidden" id="view_id_transaksi" class="form-control">
@@ -1219,6 +1251,10 @@
                         <td>Pembayaran</td>
                         <td id="view_pembayaran">: Rp. 20.000</td>
                     </tr>
+                    <tr>
+                        <td>Sisa Pembayaran</td>
+                        <td id="view_sisa_pembayaran">: Rp. 0</td>
+                    </tr>
                     </tbody>
                 </table><br>
                 <div class="col-4">
@@ -1229,11 +1265,8 @@
                 <div class="col-4">
                     <p class="font-14"><strong>Bukti Transfer (Pinjaman)</strong></p>
                 </div>
-                <img src="assets/images/small/small-2.jpg" alt="image" class="img-fluid rounded" width="600"/>
+                <img src="assets/images/small/small-2.jpg" id="view_buktitrf_upload" alt="image" class="img-fluid rounded" width="600"/>
                 <hr>
-                <div class="table-responsive">
-                    <br><h5>Status Aproval</h5>
-                </div>
                 <table class="table mb-0">
                     <thead>
                     <tr>
@@ -1243,16 +1276,8 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td>Status Aproval</td>
-                        <td>: Pengajuan / Aprove</td>
-                    </tr>
-                    <tr>
-                        <td>Aproval OPR</td>
-                        <td>: 20 Mei 2022 13:30 (Akun Aproval)</td>
-                    </tr>
-                    <tr>
-                        <td>Aproval Keu</td>
-                        <td>: 20 Mei 2022 13:30 (Akun Aproval)</td>
+                        <td>Catatan</td>
+                        <td id="view_catatan">: -</td>
                     </tr>
                     </tbody>
                 </table>
@@ -1307,11 +1332,12 @@
                     @csrf
                     <input type="hidden" name="_method" value="put">
                     <input type="hidden" id="edit_id_pengajuan" name="edit_id_pengajuan" class="form-control">
-                    <input type="" id="edit_id_transaksi" name="edit_id_transaksi" class="form-control">
+                    <input type="hidden" id="edit_id_transaksi" name="edit_id_transaksi" class="form-control">
                     <div class="row g-2">
                         <div class="col-md">
                             <label for="fullname" class="form-label">Perwada (sesuai dg Akun)</label>
-                            <input class="form-control" type="text" id="edit_id_perwada" name="edit_id_perwada" placeholder="KP Jakarta" readonly="">
+                            <input class="form-control" type="text" id="edit_nama_perwada" name="edit_nama_perwada" placeholder="KP Jakarta" readonly="">
+                            <input class="form-control" type="hidden" id="edit_id_perwada" name="edit_id_perwada" placeholder="KP Jakarta" readonly="">
                         </div>
                         <div class="col-md">
                             <label for="fullname" class="form-label">Kode Pengajuan</label>
@@ -1540,6 +1566,7 @@
                                     <label for="example-select" class="form-label">Jangka Waktu Permohonan</label>
                                     <select class="form-select" id="edit_jangka_waktu_permohonan" name="edit_jangka_waktu_permohonan" required>
                                         <option selected>Pilih</option>
+                                        <option value="0">0 Hari</option>
                                         <option value="0.5">15 Hari</option>
                                         <option value="1">1 Bulan</option>
                                         <option value="2">2 Bulan</option>
@@ -1572,6 +1599,17 @@
                                     <input class="form-control" type="text" data-toggle="input-mask" data-mask-format="000.000.000.000.000" data-reverse="true" id="edit_pembayaran" name="edit_pembayaran" placeholder="0">
                                     <input type="hidden" class="form-control" id="edit_pembayaran_hidden" name="edit_pembayaran_hidden">
                                 </div>
+                                <div class="col-md">
+                                    <label for="fullname" class="form-label">Sisa Pembayaran</label>
+                                    <input class="form-control" type="text" data-toggle="input-mask" data-mask-format="000.000.000.000.000" data-reverse="true" id="edit_sisa_pembayaran" name="edit_sisa_pembayaran" placeholder="0" readonly>
+                                    <input type="hidden" class="form-control" id="edit_sisa_pembayaran_hidden" name="edit_sisa_pembayaran_hidden">
+                                </div>
+                            </div><br>
+                            <div class="row g-2">
+                                <div class="col-md">
+                                    <label for="fullname" class="form-label">Catatan</label>
+                                    <input type="text" class="form-control" id="edit_catatan" name="edit_catatan">
+                                </div>
                             </div><br>
                         </div>
                         <div id="diveditbtnsimpan" style="display: none;">
@@ -1593,38 +1631,56 @@
                 <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-hidden="true"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="formjasadiakhirtransaksi">
+                    <input type="hidden" name="_method" value="put">
+                    <input type="hidden" class="form-control" id="jasadiakhir_id_transaksi" name="jasadiakhir_id_transaksi">
+                    <input type="hidden" class="form-control" id="jasadiakhir_id_pengajuan" name="jasadiakhir_id_pengajuan">
                     <div class="row g-2">
                         <div class="col-md">
                             <label for="fullname" class="form-label">Perwada (sesuai dg Akun)</label>
-                            <input class="form-control" type="text" id="fullname" placeholder="KP Jakarta" readonly="">
+                            <input class="form-control" type="text" id="jasadiakhir_nama_perwada" name="jasadiakhir_nama_perwada" placeholder="KP Jakarta" readonly="">
+                            <input class="form-control" type="hidden" id="jasadiakhir_id_perwada" name="jasadiakhir_id_perwada" placeholder="KP Jakarta" readonly="">
                         </div>
                         <div class="col-md">
                             <label for="fullname" class="form-label">Kode Pengajuan</label>
-                            <input class="form-control" type="text" id="fullname" placeholder="CSesuai Dengan Kode Pengajuan" readonly="">
+                            <input class="form-control" type="text" id="jasadiakhir_kode_pengajuan" name="jasadiakhir_kode_pengajuan" placeholder="CSesuai Dengan Kode Pengajuan" readonly="">
                         </div>
                         <div class="row g-2">
                             <div class="col-md">
                                 <label for="fullname" class="form-label">Kode Transaksi</label>
-                                <input class="form-control" type="text" id="fullname" placeholder="Sesuai Rumus" readonly="">
+                                <input class="form-control" type="text" id="jasadiakhir_kode_transaksi" name="jasadiakhir_kode_transaksi" placeholder="Sesuai Rumus" readonly="">
                             </div>
                         </div><br><br><hr>
                         <div class="row g-2">
+                            <input type="hidden" id="jasadiakhir_plafond_pinjaman" name="jasadiakhir_plafond_pinjaman" class="form-control">
+                                <input type="hidden" id="jasadiakhir_plafond_pinjaman_hidden" name="jasadiakhir_plafond_pinjaman_hidden" class="form-control">
                             <div class="col-md">
                                 <label for="fullname" class="form-label">Pilihan Jasa</label>
-                                <input class="form-control" type="text" id="fullname" placeholder="Jasa diawal" readonly="">
+                                <input class="form-control" type="text" id="jasadiakhir_pilihan_jasa" name="jasadiakhir_pilihan_jasa" placeholder="Jasa diawal" readonly="">
                             </div>
                             <div class="col-md">
                                 <label for="fullname" class="form-label">Perhitungan Jasa</label>
-                                <input class="form-control" type="text" id="fullname" placeholder="Perhitungan Baru" readonly="">
+                                <input class="form-control" type="text" id="jasadiakhir_perhitungan_jasa" name="jasadiakhir_perhitungan_jasa" placeholder="Perhitungan Baru" readonly="">
+                                <input type="hidden" class="form-control" id="jasadiakhir_jangka_waktu_1">
+                                <input type="hidden" class="form-control" id="jasadiakhir_pengali_kurangdari_satudelapan_1">
+                                <input type="hidden" class="form-control" id="jasadiakhir_pengali_diatas_dua_1">
+                                <input type="hidden" class="form-control" id="jasadiakhir_jangka_waktu_2">
+                                <input type="hidden" class="form-control" id="jasadiakhir_pengali_kurangdari_satudelapan_2">
+                                <input type="hidden" class="form-control" id="jasadiakhir_pengali_diatas_dua_2">
+                                <input type="hidden" class="form-control" id="jasadiakhir_jangka_waktu_3">
+                                <input type="hidden" class="form-control" id="jasadiakhir_pengali_kurangdari_satudelapan_3">
+                                <input type="hidden" class="form-control" id="jasadiakhir_pengali_diatas_dua_3">
+                                <input type="hidden" class="form-control" id="jasadiakhir_jangka_waktu_4">
+                                <input type="hidden" class="form-control" id="jasadiakhir_pengali_kurangdari_satudelapan_4">
+                                <input type="hidden" class="form-control" id="jasadiakhir_pengali_diatas_dua_4">
                             </div>
                             <div class="col-md">
                                 <label for="example-select" class="form-label">Jangka Waktu Permohonan</label>
-                                <select class="form-select" id="example-select" required>
+                                <select class="form-select" id="jasadiakhir_jangka_waktu_permohonan" name="jasadiakhir_jangka_waktu_permohonan" required>
                                     <option selected>Pilih</option>
-                                    <option>15 Hari</option>
-                                    <option>1 Bulan</option>
-                                    <option>2 Bulan</option>
+                                    <option value="0.5">15 Hari</option>
+                                    <option value="1">1 Bulan</option>
+                                    <option value="2">2 Bulan</option>
                                 </select>
                             </div>
                             
@@ -1633,27 +1689,29 @@
                         <div class="row g-2">
                             <div class="col-md">
                                 <label for="fullname" class="form-label">Jasa GTC(otomatis)</label>
-                                <input class="form-control" type="text" id="fullname" placeholder="Rp 20.000" readonly="">
+                                <input class="form-control" type="text" id="jasadiakhir_jasa_gtc" name="jasadiakhir_jasa_gtc" placeholder="Rp 20.000" readonly="">
                             </div>
                             <div class="col-md">
                                 <label for="example-select" class="form-label">Pembayaran Jasa</label>
-                                <select class="form-select" id="example-select" required>
+                                <select class="form-select" id="jasadiakhir_pembayaranjasa" name="jasadiakhir_pembayaranjasa" required>
                                     <option>Transfer</option>
                                 </select>
                             </div>
                             <div class="col-md">
-                                <label for="formFile" class="form-label">Upload Buti Transfer</label>
-                                <input class="form-control" type="file" id="formFile">
+                                <label for="formFile" class="form-label">Upload Bukti Transfer</label>
+                                <input class="form-control" type="file" id="jasadiakhir_upload_bukti_transfer" name="jasadiakhir_upload_bukti_transfer">
+                                <input class="form-control" type="hidden" id="old_jasadiakhir_upload_bukti_transfer" name="old_jasadiakhir_upload_bukti_transfer">
                             </div><hr>
                         </div><br>
                         <div class="row g-2">
                             <div class="col-md">
                                 <label for="fullname" class="form-label">Pembayaran</label>
-                                <input class="form-control" type="text" id="fullname" placeholder="Rp 20.000">
+                                <input class="form-control" type="text" data-toggle="input-mask" data-mask-format="000.000.000.000.000" data-reverse="true" id="jasadiakhir_pembayaran" name="jasadiakhir_pembayaran" placeholder="0">
+                                <input class="form-control" type="hidden" id="jasadiakhir_pembayaran_hidden" name="jasadiakhir_pembayaran_hidden" placeholder="0">
                             </div>
                         </div><br>
                         <div class="mb-3 text-center" >
-                            <button class="btn btn-primary" type="submit"> Simpan </button>
+                            <button class="btn btn-primary" id="btnsimpan_jasadiakhir" type="submit"> Simpan </button>
                         </div>
                     </div>
                 </form>
@@ -1711,6 +1769,9 @@
     $('.datepicker').datepicker({
         format: 'dd/mm/yyyy',
     });
+</script>
+<script type="text/javascript">  
+    var perwada=<?php echo $perwada; ?>;
 </script>
 <!-- <script>
     reload();

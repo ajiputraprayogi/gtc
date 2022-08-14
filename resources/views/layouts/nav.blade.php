@@ -1,5 +1,7 @@
 <div class="leftside-menu">
-    
+    @php
+        $perwada = Auth::user()->kantor;
+    @endphp
     <!-- LOGO -->
     <a href="{{url('backend/home')}}" class="logo text-center logo-light">
         <span class="logo-lg">
@@ -43,9 +45,11 @@
                     <span> Ganti Sandi </span>
                 </a>
             </li>
-
+            
+            @if($perwada !='1')
+            @else
             <li class="side-nav-item">
-                <a href="pengaturan-akun-admin.html" class="side-nav-link">
+                <a href="{{url('backend/pengaturan-akun')}}" class="side-nav-link">
                     <i class="uil-users-alt"></i>
                     <span class="badge bg-primary float-end">2</span>
                     <span> Pengaturan Akun </span>
@@ -68,7 +72,8 @@
                     <span> Jenis Jasa GTC </span>
                 </a>
             </li>
-
+            @endif
+            
             <li class="side-nav-title side-nav-item">Get The Cash</li>
             
             <li class="side-nav-item">
@@ -88,7 +93,15 @@
             </li>
 
             <li class="side-nav-item">
-                <a href="lunas-gtc.html" class="side-nav-link">
+                <a href="{{url('backend/histori-transaksi-gtc')}}" class="side-nav-link">
+                    <i class="uil-receipt-alt"></i>
+                    <span class="badge bg-primary float-end">1</span>
+                    <span> History Transaksi </span>
+                </a>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="{{url('backend/lunas-gtc')}}" class="side-nav-link">
                     <i class="uil-times-square"></i>
                     <span class="badge bg-primary float-end">1</span>
                     <span> Lunas GTC </span>

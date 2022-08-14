@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DB;
 use File;
+use Auth;
 
 class PengajuangtcController extends Controller
 {
@@ -15,15 +16,32 @@ class PengajuangtcController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
-        $data = DB::table('gtc_pengajuan')
-        ->leftjoin('anggota','anggota.id','=','gtc_pengajuan.id_anggota')
-        ->leftjoin('gtc_emas','gtc_emas.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')
-        ->select('gtc_pengajuan.*','anggota.nomor_ba','anggota.nama_lengkap',DB::raw('SUM(gtc_emas.gramasi*keping)as total_gramasi'),DB::raw('SUM(gtc_emas.harga_buyback*keping)as total_buyback'))
-        ->groupby('gtc_pengajuan.id')
-        ->get();
-        return view('backend.pengajuan_gtc.index', compact('data'));
+        $perwada = Auth::user()->kantor;
+        if($perwada !='1'){
+            $data = DB::table('gtc_pengajuan')
+            ->leftjoin('anggota','anggota.id','=','gtc_pengajuan.id_anggota')
+            ->leftjoin('gtc_emas','gtc_emas.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')
+            ->select('gtc_pengajuan.*','anggota.nomor_ba','anggota.nama_lengkap',DB::raw('SUM(gtc_emas.gramasi*keping)as total_gramasi'),DB::raw('SUM(gtc_emas.harga_buyback*keping)as total_buyback'))
+            ->where('gtc_pengajuan.id_perwada',$perwada)
+            ->groupby('gtc_pengajuan.id')
+            ->get();
+            return view('backend.pengajuan_gtc.index', compact('data'));
+        }else{
+            $data = DB::table('gtc_pengajuan')
+            ->leftjoin('anggota','anggota.id','=','gtc_pengajuan.id_anggota')
+            ->leftjoin('gtc_emas','gtc_emas.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')
+            ->select('gtc_pengajuan.*','anggota.nomor_ba','anggota.nama_lengkap',DB::raw('SUM(gtc_emas.gramasi*keping)as total_gramasi'),DB::raw('SUM(gtc_emas.harga_buyback*keping)as total_buyback'))
+            ->groupby('gtc_pengajuan.id')
+            ->get();
+            return view('backend.pengajuan_gtc.index', compact('data'));
+        }
     }
 
     /**
@@ -72,7 +90,7 @@ class PengajuangtcController extends Controller
         DB::table('gtc_pengajuan')->where('id', $id)->update([
             'aproval_bm' => $request->status,
             'catatan_bm' => $request->catatan,
-            "tgl_aproval_bm" => $tanggalaprovalbm
+            "tgl_aproval_bm" => \Carbon\Carbon::now(),
         ]);
     }
 
@@ -116,7 +134,7 @@ class PengajuangtcController extends Controller
         DB::table('gtc_pengajuan')->where('id', $id)->update([
             'aproval_opr' => $request->status,
             'catatan_opr' => $request->catatan,
-            "tgl_aproval_opr" => $tanggalaprovalopr
+            "tgl_aproval_opr" => \Carbon\Carbon::now(),
         ]);
     }
 
@@ -137,38 +155,35 @@ class PengajuangtcController extends Controller
     public function editaprovalkeupengajuangtc(Request $request, $id)
     {
         date_default_timezone_set('Asia/Jakarta');
-        $tgl = date('d');
-        $bulan = date('n');
-        $tahun = date('Y');
-        $jam = date('H:i');
-        $bulan_indonesia = array (1 =>   'Januari',
-                                'Februari',
-                                'Maret',
-                                'April',
-                                'Mei',
-                                'Juni',
-                                'Juli',
-                                'Agustus',
-                                'September',
-                                'Oktober',
-                                'November',
-                                'Desember'
-                            );
-        $angkabulan = $bulan;
-        $namabulan = $bulan_indonesia[$angkabulan];
-        $tanggalaprovalkeu = $tgl.' '.$namabulan.' '.$tahun.' '.$jam;
+        // tambah bulan ===========================
+        $now = date("Y-m-d H:i:s");
+        $date = $now;
+        $pengajuan = DB::table('gtc_pengajuan')->where('id', $id)->first();
+        $transaksi = DB::table('gtc_transaksi')->where('kode_pengajuan', $pengajuan->kode_pengajuan)->orderby('created_at','asc')->first();
+        $months = $transaksi->jangka_waktu_permohonan;
+        foreach(explode(",", $months) as $month) {
+            $hours = $month * 24 * 30;
+            date_default_timezone_set('Asia/Jakarta');
+            $jatuhtempo = date("Y-m-d H:i:s", strtotime("{$date} +{$hours} hours"));
+        }
+        // ========================================
         if($request->status == 'Disetujui'){
             DB::table('gtc_pengajuan')->where('id', $id)->update([
                 'aproval_keu' => $request->status,
                 'catatan_keu' => $request->catatan,
                 'status_akhir' => 'Aktif',
-                "tgl_aproval_keu" => $tanggalaprovalkeu
+                'tgl_aproval_keu' => \Carbon\Carbon::now(),
+                'tanggal_jatuh_tempo' => $jatuhtempo,
+            ]);
+            DB::table('gtc_transaksi')->where('kode_pengajuan', $pengajuan->kode_pengajuan)->update([
+                'tanggal_sebelumnya' => \Carbon\Carbon::now(),
+                'tanggal_jatuh_tempo' => $jatuhtempo,
             ]);
         }else{
             DB::table('gtc_pengajuan')->where('id', $id)->update([
                 'aproval_keu' => $request->status,
                 'catatan_keu' => $request->catatan,
-                "tgl_aproval_keu" => $tanggalaprovalkeu
+                "tgl_aproval_keu" => \Carbon\Carbon::now(),
             ]);
         }
     }
@@ -658,7 +673,7 @@ class PengajuangtcController extends Controller
         }
 
         DB::table('gtc_pengajuan')->insert([
-            'tanggal_pengajuan' => $tanggalpengajuan,
+            'tanggal_pengajuan' => \Carbon\Carbon::now(), # new \Datetime(),
             'id_anggota' => $request->id_anggota,
             'id_perwada' => $request->id_perwada,
             'kode_pengajuan' => $request->kode_pengajuan,
@@ -694,6 +709,7 @@ class PengajuangtcController extends Controller
             'surat_kuasa_penjualan_jaminan_marhum' => $finalname5,
             'catatan' => $request->catatan,
             'tanda_tangan' => $nama,
+            'status' => 'Aktif',
             "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
             "updated_at" => \Carbon\Carbon::now(),  # new \Datetime()
         ]);

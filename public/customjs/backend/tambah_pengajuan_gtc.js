@@ -112,21 +112,51 @@ $('#cari').click(function(e){
                     $('#detail_status_pernikahan').text(': '+item.status_nikah)
                     $('#detail_nomor_npwp').text(': '+item.no_npwp)
                     $('#detail_alamat_sesuai_ktp').text(': '+item.alamat_ktp)
-                    // var kelurahan_ktp = item.kelurahan_ktp.split(',');
-                    var kecamatan_ktp = item.kecamatan_ktp.split(',');
-                    $('#detail_kecamatan').text(': '+kecamatan_ktp[1])
-                    var kota_ktp = item.kota_ktp.split(',');
-                    $('#detail_kota_kabupaten').text(': '+kota_ktp[1])
-                    var provinsi_ktp = item.provinsi_ktp.split(',');
-                    $('#detail_provinsi').text(': '+provinsi_ktp[1])
+
+                    if(item.kecamatan_ktp !== null){
+                        var kecamatan_ktp = item.kecamatan_ktp.split(',');
+                        $('#detail_kecamatan').text(': '+kecamatan_ktp[1])
+                    }else{
+                        $('#detail_kecamatan').text(': '+'null')
+                    }
+
+                    if(item.kota_ktp !== null){
+                        var kota_ktp = item.kota_ktp.split(',');
+                        $('#detail_kota_kabupaten').text(': '+kota_ktp[1])
+                    }else{
+                        $('#detail_kota_kabupaten').text(': '+'null')
+                    }
+
+                    if(item.provinsi_ktp !== null){
+                        var provinsi_ktp = item.provinsi_ktp.split(',');
+                        $('#detail_provinsi').text(': '+provinsi_ktp[1])
+                    }else{
+                        $('#detail_provinsi').text(': '+'null')
+                    }
+
                     $('#detail_alamat_tinggal').text(': '+item.alamat_tinggal)
                     $('#detail_alamat_tinggal_domisili').text(': '+item.alamat_domisili)
-                    var kecamatan_domisili = item.kecamatan_domisili.split(',');
-                    $('#detail_kecamatan_domisili').text(': '+kecamatan_domisili[1])
-                    var kota_domisili = item.kota_domisili.split(',');
-                    $('#detail_kota_kabupaten_domisili').text(': '+kota_domisili[1])
-                    var provinsi_domisili = item.provinsi_domisili.split(',');
-                    $('#detail_provinsi_domisili').text(': '+provinsi_domisili[1])
+
+                    if(item.kecamatan_domisili !== null){
+                        var kecamatan_domisili = item.kecamatan_domisili.split(',');
+                        $('#detail_kecamatan_domisili').text(': '+kecamatan_domisili[1])
+                    }else{
+                        $('#detail_kecamatan_domisili').text(': '+'null')
+                    }
+
+                    if(item.kota_domisili !== null){
+                        var kota_domisili = item.kota_domisili.split(',');
+                        $('#detail_kota_kabupaten_domisili').text(': '+kota_domisili[1])
+                    }else{
+                        $('#detail_kota_kabupaten_domisili').text(': '+'null')
+                    }
+
+                    if(item.provinsi_domisili !== null){
+                        var provinsi_domisili = item.provinsi_domisili.split(',');
+                        $('#detail_provinsi_domisili').text(': '+provinsi_domisili[1])
+                    }else{
+                        $('#detail_provinsi_domisili').text(': '+'null')
+                    }
                     $('#detail_photo_ktp').attr('src', 'http://syirkah.eoaclubsystem.com/images/data_penting/ktp/'+item.foto_ktp);
                     // ===============================================================
                     $('#tambah_id_anggota').val(item.id)
@@ -147,14 +177,34 @@ $('#cari').click(function(e){
                     }else{
                         $('#divtidaksesuaiktp').hide();
                     }
-                    var provinsi_ktp = item.provinsi_ktp.split(',');
-                    $('#provinsi').prepend("<option selected value='"+item.provinsi_ktp+"'>"+provinsi_ktp[1]+"</option>").val(item.provinsi_ktp);
-                    var kota_ktp = item.kota_ktp.split(',');
-                    $('#kota').prepend("<option selected value='"+item.kota_ktp+"'>"+kota_ktp[1]+"</option>").val(item.kota_ktp);
-                    var kecamatan_ktp = item.kecamatan_ktp.split(',');
-                    $('#kecamatan').prepend("<option selected value='"+item.kecamatan_ktp+"'>"+kecamatan_ktp[1]+"</option>").val(item.kecamatan_ktp);
-                    var kelurahan_ktp = item.kelurahan_ktp.split(',');
-                    $('#kelurahan').prepend("<option selected value='"+item.kelurahan_ktp+"'>"+kelurahan_ktp[1]+"</option>").val(item.kelurahan_ktp);
+
+                    if(item.provinsi_ktp !== null){
+                        var provinsi_ktp = item.provinsi_ktp.split(',');
+                        $('#provinsi').prepend("<option selected value='"+item.provinsi_ktp+"'>"+provinsi_ktp[1]+"</option>").val(item.provinsi_ktp);
+                    }else{
+
+                    }
+                    
+                    if(item.kota_ktp !== null){
+                        var kota_ktp = item.kota_ktp.split(',');
+                        $('#kota').prepend("<option selected value='"+item.kota_ktp+"'>"+kota_ktp[1]+"</option>").val(item.kota_ktp);
+                    }else{
+
+                    }
+
+                    if(item.kecamatan_ktp !== null){
+                        var kecamatan_ktp = item.kecamatan_ktp.split(',');
+                        $('#kecamatan').prepend("<option selected value='"+item.kecamatan_ktp+"'>"+kecamatan_ktp[1]+"</option>").val(item.kecamatan_ktp);
+                    }else{
+
+                    }
+
+                    if(item.kecamatan_ktp !== null){
+                        var kelurahan_ktp = item.kelurahan_ktp.split(',');
+                        $('#kelurahan').prepend("<option selected value='"+item.kelurahan_ktp+"'>"+kelurahan_ktp[1]+"</option>").val(item.kelurahan_ktp);
+                    }else{
+
+                    }
                     $('#tambah_alamat_domisili').val(item.alamat_domisili)
                     $('#tambah_old_provinsi').val(item.provinsi_ktp)
                     $('#tambah_old_kota').val(item.kota_ktp)
@@ -271,7 +321,7 @@ $("#btnaddpengajuan").on('click', function(e){
                     });
                 }, complete: function () {
                     $('#panel').loading('stop');
-                    // window.location.replace("/backend/pengajuan-gtc");
+                    window.location.replace("/backend/pengajuan-gtc");
                 }
             });
         });

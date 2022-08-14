@@ -81,10 +81,10 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    D-Boiler Laravel 7
+                    GTC Project
                 </div> 
-                <p>Free Boiler For Everyone</p>
-                <span>By Deifa Satrio</span>
+                <p>Beta Version</p>
+                <span>By Kediri App</span>
             </div>  
         </div>
     </body> 

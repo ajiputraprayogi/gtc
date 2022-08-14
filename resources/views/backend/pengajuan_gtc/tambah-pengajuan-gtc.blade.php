@@ -80,8 +80,12 @@
                         <div class="row g-2">
                             <div class="col-md">
                                 <label for="fullname" class="form-label">Perwada (sesuai dg Akun)</label>
-                                <input class="form-control" type="text" id="perwada" value="KP Jakarta" placeholder="KP Jakarta" readonly="">
-                                <input type="hidden" value="1" id="id_perwada" name="id_perwada" class="form-control">
+                                @php
+                                    $user_id = Auth::user()->kantor;
+                                    $perwada = DB::table('perwada')->where('id', $user_id)->first();
+                                @endphp
+                                <input class="form-control" type="text" id="perwada" value="{{$perwada->nama}}" placeholder="KP Jakarta" readonly="">
+                                <input type="hidden" value="{{Auth::user()->id}}" id="id_perwada" name="id_perwada" class="form-control">
                             </div>
                             <div class="col-md">
                                 <label for="fullname" class="form-label">Kode Pengajuan</label>

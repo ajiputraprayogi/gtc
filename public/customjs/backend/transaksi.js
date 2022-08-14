@@ -32,6 +32,7 @@ $(function () {
             { data: 'jenis_transaksi', name: 'jenis_transaksi' },
             { data: 'pilihan_jasa', name: 'pilihan_jasa' },
             { data: 'perhitungan_jasa', name: 'perhitungan_jasa' },
+            { data: 'tgl_sebelumnya', name: 'tgl_sebelumnya' },
             {
                 data: 'jangka_waktu_permohonan', name: 'jangka_waktu_permohonan',
                 "render": function(data, type, row, meta){
@@ -41,13 +42,18 @@ $(function () {
                     return data;
                  }
             },
+            { data: 'jatuh_tempo', name: 'jatuh_tempo' },
             { data: 'jasa_gtc', render: $.fn.dataTable.render.number( '.', ',', 0, 'Rp ' ), name: 'jasa_gtc' },
             { data: 'pembayaran_jasa_manual', render: $.fn.dataTable.render.number( '.', ',', 0, 'Rp ' ), name: 'pembayaran_jasa_manual' },
             { data: 'sbte', name: 'sbte' },
             { data: 'pilihan_jasa', name: 'pilihan_jasa' },
             {
                 render: function (data, type, row) {
-                    return '<a onclick="viewtransaksi('+ row['id'] +')" class="action-icon" title="View Transaksi"> <i class="mdi mdi-card-search"></i></a> <a onclick="uploadbuktitrf('+ row['id'] +')" class="action-icon" title="Upload trf"> <i class="mdi mdi-file-upload"></i></a><a onclick="edittransaksi('+ row['id'] +')" class="action-icon" title="Edit Transaksi"> <i class="mdi mdi-file-edit"></i></a> <a href="" class="action-icon" data-bs-toggle="modal" data-bs-target="#modal-jasadiahir-transaksi" data-bs-container="#tooltip-container2" data-bs-toggle="tooltip" title="Transaksi Jasa Di akhir"> <i class="mdi mdi-receipt"></i></a><a onclick="aprovalopr('+ row['id'] +')" class="action-icon" title="Aproval OPR"> <i class="mdi mdi-check-circle"></i></a><a onclick="aprovalkeu('+ row['id'] +')" class="action-icon" title="Aproval Kasir"> <i class="mdi mdi-check-circle"></i></a> <a href="javascript:void(0);" class="action-icon" data-bs-container="#tooltip-container2" data-bs-toggle="tooltip" title="Cetak SBTE"> <i class="mdi mdi-printer-outline"></i></a>'
+                    if(perwada !== 1){
+                        return '<a onclick="viewtransaksi('+ row['id'] +')" class="action-icon" title="View Transaksi"> <i class="mdi mdi-card-search"></i></a> <a onclick="jasadiakhir('+ row['id'] +')" class="action-icon" title="Transaksi Jasa Di akhir"> <i class="mdi mdi-receipt"></i></a> <a href="javascript:void(0);" class="action-icon" data-bs-container="#tooltip-container2" data-bs-toggle="tooltip" title="Cetak SBTE"> <i class="mdi mdi-printer-outline"></i></a>'
+                    }else{
+                        return '<a onclick="viewtransaksi('+ row['id'] +')" class="action-icon" title="View Transaksi"> <i class="mdi mdi-card-search"></i></a> <a onclick="uploadbuktitrf('+ row['id'] +')" class="action-icon" title="Upload trf"> <i class="mdi mdi-file-upload"></i></a><a onclick="edittransaksi('+ row['id'] +')" class="action-icon" title="Edit Transaksi"> <i class="mdi mdi-file-edit"></i></a> <a onclick="jasadiakhir('+ row['id'] +')" class="action-icon" title="Transaksi Jasa Di akhir"> <i class="mdi mdi-receipt"></i></a><a onclick="aprovalopr('+ row['id'] +')" class="action-icon" title="Aproval OPR"> <i class="mdi mdi-check-circle"></i></a><a onclick="aprovalkeu('+ row['id'] +')" class="action-icon" title="Aproval Kasir"> <i class="mdi mdi-check-circle"></i></a> <a href="javascript:void(0);" class="action-icon" data-bs-container="#tooltip-container2" data-bs-toggle="tooltip" title="Cetak SBTE"> <i class="mdi mdi-printer-outline"></i></a>'
+                    }
                 },
                 "className": 'text-center',
                 "orderable": false,
@@ -58,6 +64,56 @@ $(function () {
         lengthMenu: [[5, 10, 20], [5, 10, 20]]
     });
 });
+// ====================================================================================
+function transaksi2(){
+    $('#panel').loading('toggle');
+    var kode2 = $('#id_pengajuan').val();
+    $.ajax({
+        type: 'GET',
+        url: '/backend/transaksi2/'+ kode2,
+        success: function (data) {
+            var no = 0;
+            $.each(data.data, function (key, value) {
+                $('#transaksi_nomor_ba').val(value.nomor_ba);
+                $('#transaksi_nama_lengkap').text(': '+value.nama_lengkap);
+                $('#transaksi_tanggal_pengajuan').text(': '+value.tanggal_pengajuan);
+                $('#transaksi_id_perwada').text(': '+value.id_perwada);
+                $('#transaksi_kode_pengajuan').text(': '+value.kode_pengajuan);
+                $('#transaksi_pinjaman_awal').text(': Rp '+parseInt(value.pengajuan).toLocaleString("id-ID"));
+                $('#transaksi_sisa_pinjaman').text(': Rp '+data.sisapinjaman.toLocaleString("id-ID"));
+                $('#transaksi_jenis_transaksi').text(': '+value.jenis_transaksi);
+                $('#transaksi_pilihan_jasa').text(': '+value.pilihan_jasa);
+                $('#transaksi_perhitungan_jasa').text(': '+value.perhitungan_jasa);
+                $('#transaksi_jangka_waktu_permohonan').text(': '+value.jangka_waktu_permohonan+' Bulan');
+                $('#transaksi_biaya_jasa').text(': Rp '+parseInt(value.jasa_gtc).toLocaleString("id-ID"));
+                $
+            }
+            );
+            $.each(data.emas, function (key, value) {
+                no += 1;
+                $('#pengajuan_keping'+value.id).text(value.keping);
+                $('#pengajuan_sub_gramasi'+value.id).text(value.keping+' Gram');
+                $('#pengajuan_total_keping').text(data.pengajuantotalkeping);
+                $('#pengajuan_total_gramasi').text(data.pengajuantotalgramasi+' Gram');
+                $('#pengambilan_keping'+value.id).text(data.keping[no-1].total);
+                var pengambilan_gramasi = value.gramasi*data.keping[no-1].total;
+                $('#pengambilan_sub_gramasi'+value.id).text(pengambilan_gramasi+' Gram');
+                $('#pengambilan_total_keping').text(data.pengambilantotalkeping);
+                $('#pengambilan_total_gramasi').text(data.pengambilantotalgramasi+' Gram');
+                var sisa_keping = value.keping-data.keping[no-1].total;
+                $('#sisa_keping'+value.id).text(sisa_keping);
+                var sgramasi = value.keping-data.keping[no-1].total;
+                var sisa_gramasi = value.gramasi*sgramasi;
+                $('#sisa_sub_gramasi'+value.id).text(sisa_gramasi+' Gram');
+                $('#sisa_total_keping').text(data.sisatotalkeping);
+                $('#sisa_total_gramasi').text(data.sisatotalgramasi+' Gram');
+            })
+        }, complete: function () {
+            $('#panel').loading('stop');
+        }
+    });
+}
+// ====================================================================================
 // $("#scroll-horizontal-datatable").DataTable({
 //     scrollX:!0,
 //     language:{
@@ -225,7 +281,7 @@ $(function(){
                                     $('#tambah_pembayaran_jasa').val('Transfer').trigger("change")
                                 }
                             }else{
-                                $('#tambah_jasa_gtc').val('').trigger("change")
+                                $('#tambah_jasa_gtc').val(0).trigger("change")
                                 $('#pembayaran_jasa_manual').val('').trigger("change");
                                 $('#div_nominal_potongan').hide()
                                 $('#nominal_potongan').val('').trigger("change");
@@ -237,6 +293,13 @@ $(function(){
                 }, complete: function () {
                     $('#panel').loading('stop');
                 }
+            });
+            $('#tambah_pembayaran').bind("change keyup", function(){
+                var pembayaran = parseInt($(this).val().replace(/[^,\d]/g, '').toString());
+                var jasagtc = parseInt($('#tambah_jasa_gtc').val().replace(/[^,\d]/g, '').toString());
+                var hitung = pembayaran-jasagtc;
+                $('#tambah_sisa_pembayaran').val(hitung.toLocaleString("id-ID"));
+                $('#tambah_sisa_pembayaran_hidden').val(hitung);
             });
         }else if($(this).val() === 'Pelunasan Sebagian'){
             var kode = $('#tambah_kode_pengajuan').val();
@@ -317,13 +380,14 @@ $(function(){
                         $("#tambah_plafond_pinjaman_hidden").val(newplafond_pinjaman).trigger('change');
                         // ======================================================================
                         $('#tambah_jangka_waktu_permohonan').change(function(){
+                            var totalbuyback = $('#total_buyback2_hidden').val();
                             if($(this).val() === '0.5'){
                                 if(parseFloat(data.fgramasi.toFixed(0))>=0.1 && parseFloat(data.fgramasi.toFixed(0))<=49.9){
                                     jangka_waktu = $('#tambah_jangka_waktu_1').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#tambah_pengali_kurangdari_satudelapan_1').val()
                                     numpengali = parseFloat(pengali)
-                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*data.totalbuyback).toFixed(0)
+                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*totalbuyback).toFixed(0)
                                     newhitungjasa = hitungjasa.substring (0, hitungjasa.length-2)
                                     bulathitungjasa = (Math.ceil(newhitungjasa/1000)*1000)
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
@@ -334,7 +398,7 @@ $(function(){
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#tambah_pengali_diatas_dua_1').val()
                                     numpengali = parseFloat(pengali)
-                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*data.totalbuyback).toFixed(0)
+                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*totalbuyback).toFixed(0)
                                     newhitungjasa = hitungjasa.substring (0, hitungjasa.length-2)
                                     bulathitungjasa = (Math.ceil(newhitungjasa/1000)*1000)
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
@@ -347,7 +411,7 @@ $(function(){
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#tambah_pengali_kurangdari_satudelapan_2').val()
                                     numpengali = parseFloat(pengali)
-                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*data.totalbuyback).toFixed(0)
+                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*totalbuyback).toFixed(0)
                                     newhitungjasa = hitungjasa.substring (0, hitungjasa.length-2)
                                     bulathitungjasa = (Math.ceil(newhitungjasa/1000)*1000)
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
@@ -358,7 +422,7 @@ $(function(){
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#tambah_pengali_diatas_dua_2').val()
                                     numpengali = parseFloat(pengali)
-                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*data.totalbuyback).toFixed(0)
+                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*totalbuyback).toFixed(0)
                                     newhitungjasa = hitungjasa.substring (0, hitungjasa.length-2)
                                     bulathitungjasa = (Math.ceil(newhitungjasa/1000)*1000)
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
@@ -371,7 +435,7 @@ $(function(){
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#tambah_pengali_kurangdari_satudelapan_3').val()
                                     numpengali = parseFloat(pengali)
-                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*data.totalbuyback).toFixed(0)
+                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*totalbuyback).toFixed(0)
                                     newhitungjasa = hitungjasa.substring (0, hitungjasa.length-2)
                                     bulathitungjasa = (Math.ceil(newhitungjasa/1000)*1000)
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
@@ -382,7 +446,7 @@ $(function(){
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#tambah_pengali_diatas_dua_3').val()
                                     numpengali = parseFloat(pengali)
-                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*data.totalbuyback).toFixed(0)
+                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*totalbuyback).toFixed(0)
                                     newhitungjasa = hitungjasa.substring (0, hitungjasa.length-2)
                                     bulathitungjasa = (Math.ceil(newhitungjasa/1000)*1000)
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
@@ -390,7 +454,7 @@ $(function(){
                                     $('#tambah_pembayaran_jasa').val('Transfer').trigger("change")
                                 }
                             }else{
-                                $('#tambah_jasa_gtc').val('').trigger("change")
+                                $('#tambah_jasa_gtc').val(0).trigger("change")
                                 $('#pembayaran_jasa_manual').val('').trigger("change");
                                 $('#div_nominal_potongan').hide()
                                 $('#nominal_potongan').val('').trigger("change");
@@ -402,6 +466,15 @@ $(function(){
                 }, complete: function () {
                     $('#panel').loading('stop');
                 }
+            });
+            $('#tambah_pembayaran').bind("change keyup", function(){
+                var pembayaran = parseInt($(this).val().replace(/[^,\d]/g, '').toString());
+                var pembayaranpinjaman = parseInt($('#tambah_pembayaran_pinjaman').val().replace(/[^,\d]/g, '').toString());
+                var jasagtc = parseInt($('#tambah_jasa_gtc').val().replace(/[^,\d]/g, '').toString());
+                var tambah = pembayaranpinjaman+jasagtc;
+                var hitung = pembayaran-tambah;
+                $('#tambah_sisa_pembayaran').val(hitung.toLocaleString("id-ID"));
+                $('#tambah_sisa_pembayaran_hidden').val(hitung);
             });
         }else if($(this).val() === 'Pelunasan'){
             var kode = $('#tambah_kode_pengajuan').val();
@@ -438,6 +511,13 @@ $(function(){
             $('#divtransaksi').hide();
             getdataemasgtc();
             getdataemasgtc2();
+            $('#tambah_pembayaran').bind("change keyup", function(){
+                var pembayaran = parseInt($(this).val().replace(/[^,\d]/g, '').toString());
+                var pembayaranpinjaman = parseInt($('#tambah_pembayaran_pinjaman').val().replace(/[^,\d]/g, '').toString());
+                var hitung = pembayaran-pembayaranpinjaman;
+                $('#tambah_sisa_pembayaran').val(hitung.toLocaleString("id-ID"));
+                $('#tambah_sisa_pembayaran_hidden').val(hitung);
+            });
         }else{
             var kode = $('#tambah_kode_pengajuan').val();
             $('#tambah_nominal_pinjaman').val('')
@@ -494,23 +574,33 @@ function tambahtransaksi(kode){
         type: 'GET',
         url: '/backend/list-tambah-transaksi/' + kode,
         success: function (data) {
-            $.each(data.data, function(key, value){
-                $('#tambah_id_pengajuan').val(value.kode_pengajuan);
-                $('#tambah_id_perwada').val(value.id_perwada);
-                $('#tambah_kode_pengajuan').val(value.kode_pengajuan);
-                $('#tambah_nominal_pinjaman').val(data.nominalpinjaman.toLocaleString("id-ID"));
-                $('#hidden_tambah_nominal_pinjaman').val(data.nominalpinjaman);
-                $('#tambah_sisa_pinjaman').val(data.nominalpinjaman.toLocaleString("id-ID"));
-                $('#hidden_tambah_sisa_pinjaman').val(data.nominalpinjaman);
-                $('#tambah_pilihan_jasa').val(value.pilihan_jasa);
-                $('#tambah_perhitungan_jasa').val(value.perhitungan_jasa);
-            }),
-            $('#tambah_kode_transaksi').val(data.finalkodetransaksi);
+            if(data.cekaproval.aproval_keu !=='Y'){
+                swalWithBootstrapButtons.fire({
+                    title: 'Maaf',
+                    text: 'Transaksi terakhir belum di aproval',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }else{
+                $.each(data.data, function(key, value){
+                    $('#tambah_id_pengajuan').val(value.kode_pengajuan);
+                    $('#tambah_id_perwada').val(value.id_perwada);
+                    $('#tambah_nama_perwada').val(data.namaperwada.nama);
+                    $('#tambah_kode_pengajuan').val(value.kode_pengajuan);
+                    $('#tambah_nominal_pinjaman').val(data.nominalpinjaman.toLocaleString("id-ID"));
+                    $('#hidden_tambah_nominal_pinjaman').val(data.nominalpinjaman);
+                    $('#tambah_sisa_pinjaman').val(data.nominalpinjaman.toLocaleString("id-ID"));
+                    $('#hidden_tambah_sisa_pinjaman').val(data.nominalpinjaman);
+                    $('#tambah_pilihan_jasa').val(value.pilihan_jasa);
+                    $('#tambah_perhitungan_jasa').val(value.perhitungan_jasa);
+                }),
+                $('#tambah_kode_transaksi').val(data.finalkodetransaksi);
+                $('#modal-tambah-transaksi').modal('show');
+                getdataemasgtc();
+                getdataemasgtc2();
+            }
         },
         complete: function(){
-            $('#modal-tambah-transaksi').modal('show');
-            getdataemasgtc();
-            getdataemasgtc2();
             $('#panel').loading('stop')
         }
     })
@@ -557,6 +647,7 @@ $('#btntambahtransaksi').on('click', function(e){
                         $('#panel').loading('stop');
                         $('#list-data').DataTable().ajax.reload();
                         $('#modal-tambah-transaksi').modal('hide');
+                        transaksi2();
                     }
                 });
             });
@@ -610,6 +701,7 @@ $('#btntambahtransaksi').on('click', function(e){
                             $('#panel').loading('stop');
                             $('#list-data').DataTable().ajax.reload();
                             $('#modal-tambah-transaksi').modal('hide');
+                            transaksi2();
                         }
                     });
                 });
@@ -663,6 +755,7 @@ $('#btntambahtransaksi').on('click', function(e){
                             $('#panel').loading('stop');
                             $('#list-data').DataTable().ajax.reload();
                             $('#modal-tambah-transaksi').modal('hide');
+                            transaksi2();
                         }
                     });
                 });
@@ -1174,6 +1267,13 @@ $(function(){
                     
                 }
             })
+            $('#edit_pembayaran').bind("change keyup", function(){
+                var pembayaran = parseInt($(this).val().replace(/[^,\d]/g, '').toString());
+                var jasagtc = parseInt($('#edit_jasa_gtc').val().replace(/[^,\d]/g, '').toString());
+                var hitung = pembayaran-jasagtc;
+                $('#edit_sisa_pembayaran').val(hitung.toLocaleString("id-ID"));
+                $('#edit_sisa_pembayaran_hidden').val(hitung);
+            });
         }else if($(this).val() === 'Pelunasan Sebagian'){
             var kode = $('#edit_id_transaksi').val();
             $('#edit_nominal_pinjaman').val('')
@@ -1255,13 +1355,14 @@ $(function(){
                         $("#edit_plafond_pinjaman_hidden").val(newplafond_pinjaman).trigger('change');
                         // ======================================================================
                         $('#edit_jangka_waktu_permohonan').change(function(){
+                            var totalbuyback = $('#edittotal_buyback2_hidden').val();
                             if($(this).val() === '0.5'){
                                 if(parseFloat(data.fgramasi.toFixed(0))>=0.1 && parseFloat(data.fgramasi.toFixed(0))<=49.9){
                                     jangka_waktu = $('#edit_jangka_waktu_1').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#edit_pengali_kurangdari_satudelapan_1').val()
                                     numpengali = parseFloat(pengali)
-                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*data.totalbuyback).toFixed(0)
+                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*totalbuyback).toFixed(0)
                                     newhitungjasa = hitungjasa.substring (0, hitungjasa.length-2)
                                     bulathitungjasa = (Math.ceil(newhitungjasa/1000)*1000)
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
@@ -1272,7 +1373,7 @@ $(function(){
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#edit_pengali_diatas_dua_1').val()
                                     numpengali = parseFloat(pengali)
-                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*data.totalbuyback).toFixed(0)
+                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*totalbuyback).toFixed(0)
                                     newhitungjasa = hitungjasa.substring (0, hitungjasa.length-2)
                                     bulathitungjasa = (Math.ceil(newhitungjasa/1000)*1000)
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
@@ -1285,7 +1386,7 @@ $(function(){
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#edit_pengali_kurangdari_satudelapan_2').val()
                                     numpengali = parseFloat(pengali)
-                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*data.totalbuyback).toFixed(0)
+                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*totalbuyback).toFixed(0)
                                     newhitungjasa = hitungjasa.substring (0, hitungjasa.length-2)
                                     bulathitungjasa = (Math.ceil(newhitungjasa/1000)*1000)
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
@@ -1296,7 +1397,7 @@ $(function(){
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#edit_pengali_diatas_dua_2').val()
                                     numpengali = parseFloat(pengali)
-                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*data.totalbuyback).toFixed(0)
+                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*totalbuyback).toFixed(0)
                                     newhitungjasa = hitungjasa.substring (0, hitungjasa.length-2)
                                     bulathitungjasa = (Math.ceil(newhitungjasa/1000)*1000)
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
@@ -1309,7 +1410,7 @@ $(function(){
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#edit_pengali_kurangdari_satudelapan_3').val()
                                     numpengali = parseFloat(pengali)
-                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*data.totalbuyback).toFixed(0)
+                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*totalbuyback).toFixed(0)
                                     newhitungjasa = hitungjasa.substring (0, hitungjasa.length-2)
                                     bulathitungjasa = (Math.ceil(newhitungjasa/1000)*1000)
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
@@ -1320,7 +1421,7 @@ $(function(){
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#edit_pengali_diatas_dua_3').val()
                                     numpengali = parseFloat(pengali)
-                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*data.totalbuyback).toFixed(0)
+                                    hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*totalbuyback).toFixed(0)
                                     newhitungjasa = hitungjasa.substring (0, hitungjasa.length-2)
                                     bulathitungjasa = (Math.ceil(newhitungjasa/1000)*1000)
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
@@ -1375,6 +1476,15 @@ $(function(){
                     
                 }
             })
+            $('#edit_pembayaran').bind("change keyup", function(){
+                var pembayaran = parseInt($(this).val().replace(/[^,\d]/g, '').toString());
+                var pembayaranpinjaman = parseInt($('#edit_pembayaran_pinjaman').val().replace(/[^,\d]/g, '').toString());
+                var jasagtc = parseInt($('#edit_jasa_gtc').val().replace(/[^,\d]/g, '').toString());
+                var tambah = pembayaranpinjaman+jasagtc;
+                var hitung = pembayaran-tambah;
+                $('#edit_sisa_pembayaran').val(hitung.toLocaleString("id-ID"));
+                $('#edit_sisa_pembayaran_hidden').val(hitung);
+            });
         }else if($(this).val() === 'Pelunasan'){
             var kode = $('#edit_id_transaksi').val();
             $('#edit_nominal_pinjaman').val('')
@@ -1446,6 +1556,13 @@ $(function(){
                     
                 }
             })
+            $('#edit_pembayaran').bind("change keyup", function(){
+                var pembayaran = parseInt($(this).val().replace(/[^,\d]/g, '').toString());
+                var pembayaranpinjaman = parseInt($('#edit_pembayaran_pinjaman').val().replace(/[^,\d]/g, '').toString());
+                var hitung = pembayaran-pembayaranpinjaman;
+                $('#edit_sisa_pembayaran').val(hitung.toLocaleString("id-ID"));
+                $('#edit_sisa_pembayaran_hidden').val(hitung);
+            });
         }else{
             var kode = $('#edit_id_transaksi').val();
             $('#edit_nominal_pinjaman').val('')
@@ -1548,6 +1665,7 @@ function edittransaksi(kode){
                 $('#edit_id_transaksi').val(value.idt);
                 $('#edit_id_pengajuan').val(value.kode_pengajuan);
                 $('#edit_id_perwada').val(value.id_perwada);
+                $('#edit_nama_perwada').val(data.namaperwada.nama);
                 $('#edit_kode_pengajuan').val(value.kode_pengajuan);
                 $('#edit_kode_transaksi').val(value.kode_transaksi);
                 if(value.jenis_transaksi === 'Pengajuan Baru'){
@@ -1721,6 +1839,13 @@ function edittransaksi(kode){
                                 $('#panel').loading('stop');
                             }
                         });
+                        $('#edit_pembayaran').bind("change keyup", function(){
+                            var pembayaran = parseInt($(this).val().replace(/[^,\d]/g, '').toString());
+                            var jasagtc = parseInt($('#edit_jasa_gtc').val().replace(/[^,\d]/g, '').toString());
+                            var hitung = pembayaran-jasagtc;
+                            $('#edit_sisa_pembayaran').val(hitung.toLocaleString("id-ID"));
+                            $('#edit_sisa_pembayaran_hidden').val(hitung);
+                        });
                     }else if(value.jenis_transaksi === 'Pelunasan Sebagian'){
                         var kode = $('#edit_id_transaksi').val();
                         // $('#edit_nominal_pinjaman').val('')
@@ -1887,6 +2012,15 @@ function edittransaksi(kode){
                                 $('#panel').loading('stop');
                             }
                         });
+                        $('#edit_pembayaran').bind("change keyup", function(){
+                            var pembayaran = parseInt($(this).val().replace(/[^,\d]/g, '').toString());
+                            var pembayaranpinjaman = parseInt($('#edit_pembayaran_pinjaman').val().replace(/[^,\d]/g, '').toString());
+                            var jasagtc = parseInt($('#edit_jasa_gtc').val().replace(/[^,\d]/g, '').toString());
+                            var tambah = pembayaranpinjaman+jasagtc;
+                            var hitung = pembayaran-tambah;
+                            $('#edit_sisa_pembayaran').val(hitung.toLocaleString("id-ID"));
+                            $('#edit_sisa_pembayaran_hidden').val(hitung);
+                        });
                     }else if(value.jenis_transaksi === 'Pelunasan'){
                         var kode = $('#edit_id_transaksi').val();
                         // $('#edit_nominal_pinjaman').val('')
@@ -1922,6 +2056,13 @@ function edittransaksi(kode){
                         $('#divedittransaksi').hide();
                         editgetdataemasgtc();
                         editgetdataemasgtc2();
+                        $('#edit_pembayaran').bind("change keyup", function(){
+                            var pembayaran = parseInt($(this).val().replace(/[^,\d]/g, '').toString());
+                            var pembayaranpinjaman = parseInt($('#edit_pembayaran_pinjaman').val().replace(/[^,\d]/g, '').toString());
+                            var hitung = pembayaran-pembayaranpinjaman;
+                            $('#edit_sisa_pembayaran').val(hitung.toLocaleString("id-ID"));
+                            $('#edit_sisa_pembayaran_hidden').val(hitung);
+                        });
                     }else{
                         var kode = $('#edit_id_transaksi').val();
                         // $('#edit_nominal_pinjaman').val('')
@@ -1975,6 +2116,9 @@ function edittransaksi(kode){
                 var pembayaran = parseInt(data.fpembayaran_pinjaman2)+parseInt(value.jumlah_transfer);
                 $('#edit_pembayaran').val(pembayaran.toLocaleString("id-ID"));
                 $('#edit_pembayaran_hidden').val(pembayaran);
+                $('#edit_sisa_pembayaran').val(parseInt(value.sisa_pembayaran).toLocaleString("id-ID"));
+                $('#edit_sisa_pembayaran_hidden').val(parseInt(value.sisa_pembayaran));
+                $('#edit_catatan').val(value.catatan2);
             })
         },
         complete: function(){
@@ -2028,6 +2172,7 @@ $('#btnedittransaksi').on('click', function(e){
                         $('#panel').loading('stop');
                         $('#list-data').DataTable().ajax.reload();
                         $('#modal-edit-transaksi').modal('hide');
+                        transaksi2();
                         $('#edit_id_transaksi').val('');
                         $('#edit_id_pengajuan').val('');
                         $('#edit_id_perwada').val('');
@@ -2101,6 +2246,7 @@ $('#btnedittransaksi').on('click', function(e){
                             $('#panel').loading('stop');
                             $('#list-data').DataTable().ajax.reload();
                             $('#modal-edit-transaksi').modal('hide');
+                            transaksi2();
                             $('#edit_id_transaksi').val('');
                             $('#edit_id_pengajuan').val('');
                             $('#edit_id_perwada').val('');
@@ -2174,6 +2320,7 @@ $('#btnedittransaksi').on('click', function(e){
                             $('#panel').loading('stop');
                             $('#list-data').DataTable().ajax.reload();
                             $('#modal-edit-transaksi').modal('hide');
+                            transaksi2();
                             $('#edit_id_transaksi').val('');
                             $('#edit_id_pengajuan').val('');
                             $('#edit_id_perwada').val('');
@@ -2503,7 +2650,12 @@ function editkeping(){
 // ====================================================================================
 // ====================================================================================
 // ====================================================================================
-
+$('#viewbtncetak').on('click', function(e){
+    var print = $('#view_id_transaksi').val();
+    var print2 = $('#id_pengajuan').val();
+    window.open("/backend/print-transaksi/"+ print + "/" + print2);
+})
+// ====================================================================================
 function viewtransaksi(kode){
     $('#panel').loading('toggle');
     var kode2 = $('#id_pengajuan').val();
@@ -2544,7 +2696,10 @@ function viewtransaksi(kode){
                 $('#view_pembayaran_jasa').text(': '+value.pembayaran_jasa);
                 var pembayaran = parseInt(data.fpembayaran_pinjaman2)+parseInt(value.jumlah_transfer);
                 $('#view_pembayaran').text(': Rp '+pembayaran.toLocaleString("id-ID"));
+                $('#view_sisa_pembayaran').text(': Rp '+parseInt(value.sisa_pembayaran).toLocaleString("id-ID"));
                 $('#view_bukti_transfer').attr('src', '/img/bukti_transfer/'+value.upload_bukti_transfer);
+                $('#view_buktitrf_upload').attr('src', '/img/buktitrf_upload/'+value.buktitrf_upload);
+                $('#view_catatan').text(': '+value.catatan2);
             }
             );
         }, complete: function () {
@@ -2930,6 +3085,222 @@ $('#btnbuktitrf').on('click', function(e){
     }
 })
 // ========================================================================
+$(function(){
+    $('#jasadiakhir_pembayaran').bind("change keyup", function(){
+        $('#jasadiakhir_pembayaran_hidden').val($(this).val().replace(/[^,\d]/g, '').toString()).trigger('change');
+    });
+})
+// ========================================================================
+function jasadiakhir(kode){
+    $('#panel').loading('toggle');
+    var kode2 = $('#id_pengajuan').val();
+    $.ajax({
+        type: 'GET',
+        url: '/backend/jasadiakhir-transaksi/' + kode + '/' + kode2,
+        success: function (data) {
+            $.each(data.jenisjasagtc, function(key, item){
+                $('#jasadiakhir_jangka_waktu_1').val(item.jangka_waktu_1)
+                $('#jasadiakhir_pengali_kurangdari_satudelapan_1').val(item.pengali_kurangdari_satudelapan_1)
+                $('#jasadiakhir_pengali_diatas_dua_1').val(item.pengali_diatas_dua_1)
+                $('#jasadiakhir_jangka_waktu_2').val(item.jangka_waktu_2)
+                $('#jasadiakhir_pengali_kurangdari_satudelapan_2').val(item.pengali_kurangdari_satudelapan_2)
+                $('#jasadiakhir_pengali_diatas_dua_2').val(item.pengali_diatas_dua_2)
+                $('#jasadiakhir_jangka_waktu_3').val(item.jangka_waktu_3)
+                $('#jasadiakhir_pengali_kurangdari_satudelapan_3').val(item.pengali_kurangdari_satudelapan_3)
+                $('#jasadiakhir_pengali_diatas_dua_3').val(item.pengali_diatas_dua_3)
+                $('#jasadiakhir_jangka_waktu_4').val(item.jangka_waktu_4)
+                $('#jasadiakhir_pengali_kurangdari_satudelapan_4').val(item.pengali_kurangdari_satudelapan_4)
+                $('#jasadiakhir_pengali_diatas_dua_4').val(item.pengali_diatas_dua_4)
+            })
+            $.each(data.data, function(key, value){
+                // $('#divjasadiakhiremassebelumnya').hide();
+                // $('#divjasadiakhiremasselanjutnya').hide();
+                // $('#divjasadiakhirpelunasan').hide();
+                // $('#divjasadiakhirtransaksi').hide();
+                // $('#divjasadiakhirpembayaran').hide();
+                // $('#divjasadiakhirbtnsimpan').hide();
+                $('#jasadiakhir_id_transaksi').val(value.idt);
+                $('#jasadiakhir_id_pengajuan').val(value.kode_pengajuan);
+                $('#jasadiakhir_id_perwada').val(value.id_perwada);
+                $('#jasadiakhir_nama_perwada').val(data.namaperwada.nama);
+                $('#jasadiakhir_kode_pengajuan').val(value.kode_pengajuan);
+                $('#jasadiakhir_kode_transaksi').val(value.kode_transaksi);
+                // ======================================================================
+                $('#jasadiakhir_jangka_waktu_permohonan').change(function(){
+                    if($(this).val() === '0.5'){
+                        if(parseFloat(value.total_gramasi)>=0.1 && parseFloat(value.total_gramasi)<=49.9){
+                            jangka_waktu = $('#jasadiakhir_jangka_waktu_1').val()
+                            numjangka_waktu = parseFloat(jangka_waktu)
+                            pengali = $('#jasadiakhir_pengali_kurangdari_satudelapan_1').val()
+                            numpengali = parseFloat(pengali)
+                            hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*data.totalbuyback).toFixed(0)
+                            newhitungjasa = hitungjasa.substring (0, hitungjasa.length-2)
+                            bulathitungjasa = (Math.ceil(newhitungjasa/1000)*1000)
+                            hasiljasa = bulathitungjasa.toLocaleString("id-ID")
+                            $('#jasadiakhir_jasa_gtc').val(hasiljasa).trigger("change")
+                            $('#jasadiakhir_pembayaran_jasa').val('Transfer').trigger("change")
+                        }else if(value.total_gramasi>=50){
+                            jangka_waktu = $('#jasadiakhir_jangka_waktu_1').val()
+                            numjangka_waktu = parseFloat(jangka_waktu)
+                            pengali = $('#jasadiakhir_pengali_diatas_dua_1').val()
+                            numpengali = parseFloat(pengali)
+                            hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*data.totalbuyback).toFixed(0)
+                            newhitungjasa = hitungjasa.substring (0, hitungjasa.length-2)
+                            bulathitungjasa = (Math.ceil(newhitungjasa/1000)*1000)
+                            hasiljasa = bulathitungjasa.toLocaleString("id-ID")
+                            $('#jasadiakhir_jasa_gtc').val(hasiljasa).trigger("change")
+                            $('#jasadiakhir_pembayaran_jasa').val('Transfer').trigger("change")
+                        }
+                    }else if($(this).val() === '1'){
+                        if(parseFloat(value.total_gramasi)>=0.1 && parseFloat(value.total_gramasi)<=49.9){
+                            jangka_waktu = $('#jasadiakhir_jangka_waktu_2').val()
+                            numjangka_waktu = parseFloat(jangka_waktu)
+                            pengali = $('#jasadiakhir_pengali_kurangdari_satudelapan_2').val()
+                            numpengali = parseFloat(pengali)
+                            hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*data.totalbuyback).toFixed(0)
+                            newhitungjasa = hitungjasa.substring (0, hitungjasa.length-2)
+                            bulathitungjasa = (Math.ceil(newhitungjasa/1000)*1000)
+                            hasiljasa = bulathitungjasa.toLocaleString("id-ID")
+                            $('#jasadiakhir_jasa_gtc').val(hasiljasa).trigger("change")
+                            $('#jasadiakhir_pembayaran_jasa').val('Transfer').trigger("change")
+                        }else if(value.total_gramasi>=50){
+                            jangka_waktu = $('#jasadiakhir_jangka_waktu_2').val()
+                            numjangka_waktu = parseFloat(jangka_waktu)
+                            pengali = $('#jasadiakhir_pengali_diatas_dua_2').val()
+                            numpengali = parseFloat(pengali)
+                            hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*data.totalbuyback).toFixed(0)
+                            newhitungjasa = hitungjasa.substring (0, hitungjasa.length-2)
+                            bulathitungjasa = (Math.ceil(newhitungjasa/1000)*1000)
+                            hasiljasa = bulathitungjasa.toLocaleString("id-ID")
+                            $('#jasadiakhir_jasa_gtc').val(hasiljasa).trigger("change")
+                            $('#jasadiakhir_pembayaran_jasa').val('Transfer').trigger("change")
+                        }
+                    }else if($(this).val() === '2'){
+                        if(parseFloat(value.total_gramasi)>=0.1 && parseFloat(value.total_gramasi)<=49.9){
+                            jangka_waktu = $('#jasadiakhir_jangka_waktu_3').val()
+                            numjangka_waktu = parseFloat(jangka_waktu)
+                            pengali = $('#jasadiakhir_pengali_kurangdari_satudelapan_3').val()
+                            numpengali = parseFloat(pengali)
+                            hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*data.totalbuyback).toFixed(0)
+                            newhitungjasa = hitungjasa.substring (0, hitungjasa.length-2)
+                            bulathitungjasa = (Math.ceil(newhitungjasa/1000)*1000)
+                            hasiljasa = bulathitungjasa.toLocaleString("id-ID")
+                            $('#jasadiakhir_jasa_gtc').val(hasiljasa).trigger("change")
+                            $('#jasadiakhir_pembayaran_jasa').val('Transfer').trigger("change")
+                        }else if(value.total_gramasi>=50){
+                            jangka_waktu = $('#jasadiakhir_jangka_waktu_3').val()
+                            numjangka_waktu = parseFloat(jangka_waktu)
+                            pengali = $('#jasadiakhir_pengali_diatas_dua_3').val()
+                            numpengali = parseFloat(pengali)
+                            hitungjasa = Number ((numpengali/100*100)*numjangka_waktu*data.totalbuyback).toFixed(0)
+                            newhitungjasa = hitungjasa.substring (0, hitungjasa.length-2)
+                            bulathitungjasa = (Math.ceil(newhitungjasa/1000)*1000)
+                            hasiljasa = bulathitungjasa.toLocaleString("id-ID")
+                            $('#jasadiakhir_jasa_gtc').val(hasiljasa).trigger("change")
+                            $('#jasadiakhir_pembayaran_jasa').val('Transfer').trigger("change")
+                        }
+                    }else{
+                        $('#jasadiakhir_jasa_gtc').val('').trigger("change")
+                        $('#pembayaran_jasa_manual').val('').trigger("change");
+                        $('#div_nominal_potongan').hide()
+                        $('#nominal_potongan').val('').trigger("change");
+                        $('#jumlah_yang_di_transfer').val('').trigger("change");
+                        $('#jasadiakhir_pembayaran_jasa').val('Transfer').trigger("change")
+                    }
+                });
+                // ==========================================================================
+                $('#jasadiakhir_jenis_transaksi').show();
+                $('#hidden_jasadiakhir_jenis_transaksi').hide();
+                // $('#jasadiakhir_nominal_pinjaman').val(data.nominalpinjaman.toLocaleString("id-ID"));
+                // $('#hidden_jasadiakhir_nominal_pinjaman').val(data.nominalpinjaman);
+                // $('#jasadiakhir_pembayaran_pinjaman').val(data.fpembayaran_pinjaman2.toLocaleString("id-ID"));
+                // $('#hidden_jasadiakhir_pembayaran_pinjaman').val(data.fpembayaran_pinjaman2);
+                // $('#jasadiakhir_sisa_pinjaman').val(data.sisapinjaman.toLocaleString("id-ID"));
+                // $('#hidden_jasadiakhir_sisa_pinjaman').val(data.sisapinjaman);
+                $('#jasadiakhir_plafond_pinjaman').val(parseInt(value.jasa_gtc).toLocaleString("id-ID"));
+                $('#jasadiakhir_plafond_pinjaman_hidden').val(value.plafond_pinjaman);
+                $('#jasadiakhir_pilihan_jasa').val(value.pilihan_jasa);
+                $('#jasadiakhir_perhitungan_jasa').val(value.perhitungan_jasa);
+                $('#jasadiakhir_jangka_waktu_permohonan').val(value.jangka_waktu_permohonan);
+                $('#jasadiakhir_jasa_gtc').val(parseInt(value.jasa_gtc).toLocaleString("id-ID"));
+                $('#old_jasadiakhir_upload_bukti_transfer').val(value.upload_bukti_transfer);
+                // var pembayaran = parseInt(data.fpembayaran_pinjaman2)+parseInt(value.jumlah_transfer);
+                // $('#jasadiakhir_pembayaran').val(pembayaran.toLocaleString("id-ID"));
+                // $('#jasadiakhir_pembayaran_hidden').val(pembayaran);
+            })
+        },
+        complete: function(){
+            $('#modal-jasadiahir-transaksi').modal('show');
+            $('#panel').loading('stop')
+        }
+    })
+}
+// ========================================================================
+$('#btnsimpan_jasadiakhir').on('click', function(e){
+    var jasagtc = $('#jasadiakhir_jasa_gtc').val().replace(/[^,\d]/g, '').toString();
+    var pembayaran = $('#jasadiakhir_pembayaran_hidden').val();
+    if(parseInt(pembayaran)<parseInt(jasagtc)){
+        swalWithBootstrapButtons.fire({
+            title: 'Oops',
+            text: 'Pembayaran kurang',
+            confirmButtonText: 'OK'
+        });
+        return false;
+    }else{
+        $('#panel').loading('toggle');
+        $('#formjasadiakhirtransaksi').on('submit', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('input[name=_token]').val()
+                }
+            });
+            var id_transaksi = $('#jasadiakhir_id_transaksi').val();
+            var formData = new FormData(this);
+            $.ajax({
+                url: '/backend/simpan-jasadiakhir-transaksi/' + id_transaksi,
+                type: 'post',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function () {
+                    swalWithBootstrapButtons.fire({
+                        title: 'Info',
+                        text: 'Data Berhasil disimpan',
+                        confirmButtonText: 'OK',
+                        reverseButtons: true
+                    });
+                }, complete: function () {
+                    $('#panel').loading('stop');
+                    $('#list-data').DataTable().ajax.reload();
+                    $('#modal-jasadiahir-transaksi').modal('hide');
+                    $('#jasadiakhir_id_transaksi').val('');
+                    $('#jasadiakhir_id_pengajuan').val('');
+                    $('#jasadiakhir_id_perwada').val('');
+                    $('#jasadiakhir_kode_pengajuan').val('');
+                    $('#jasadiakhir_kode_transaksi').val('');
+                    $('#jasadiakhir_nominal_pinjaman').val('');
+                    $('#hidden_jasadiakhir_nominal_pinjaman').val('');
+                    $('#jasadiakhir_pembayaran_pinjaman').val('');
+                    $('#hidden_jasadiakhir_pembayaran_pinjaman').val('');
+                    $('#jasadiakhir_sisa_pinjaman').val('');
+                    $('#hidden_jasadiakhir_sisa_pinjaman').val('');
+                    $('#jasadiakhir_pilihan_jasa').val('');
+                    $('#jasadiakhir_perhitungan_jasa').val('');
+                    $('#jasadiakhir_jangka_waktu_permohonan').val('');
+                    $('#jasadiakhir_jasa_gtc').val('');
+                    $('#jasadiakhir_hidden_upload_bukti_transfer').val('');
+                    // var pembayaran = parseInt(data.fpembayaran_pinjaman2)+parseInt(value.jumlah_transfer);
+                    $('#jasadiakhir_pembayaran').val('');
+                    $('#jasadiakhir_pembayaran_hidden').val('');
+                }
+            });
+        });
+    }
+})
+// ========================================================================
 function aprovalopr(kode){
     $('#panel').loading('toggle');
     $.ajax({
@@ -3048,3 +3419,49 @@ $('#btnaprovalkeu').on('click', function(e){
         })
     }
 })
+
+function pelunasan(kode){
+    $('#panel').loading('toggle');
+    $.ajax({
+        type: 'GET',
+        url: '/backend/cek-pelunasan-gtc/' + kode,
+        success: function (data) {
+            if(!data.pelunasan){
+                swalWithBootstrapButtons.fire({
+                    title: 'Peringatan',
+                    text: 'Belum Ada Transaksi "Pelunasan"',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }else{
+                swalWithBootstrapButtons.fire({
+                    title: 'Konfirmasi Pelunasan',
+                    text: "Klik Ya Untuk Lanjut!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Lunas!',
+                    cancelButtonText: 'Tidak',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            url: '/backend/pelunasan-gtc/' + kode,
+                            success: function () {
+                                swalWithBootstrapButtons.fire(
+                                    'Success!',
+                                    'Pelunasan Berhasil.',
+                                    'success'
+                                )
+                                $('#list-data').DataTable().ajax.reload();
+                            }
+                        });
+                    }
+                })
+            }
+        },
+        complete: function(){
+            $('#panel').loading('stop');
+            $('#list-data').DataTable().ajax.reload();
+        }
+    })
+}

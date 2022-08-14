@@ -77,7 +77,10 @@
                                         </tr>
                                         <tr>
                                             <td>Perwada</td>
-                                            <td>: {{$row->id_perwada}}</td>
+                                            @php
+                                                $perwada = DB::table('perwada')->where('id', $row->id_perwada)->first();
+                                            @endphp
+                                            <td>: {{$perwada->nama}}</td>
                                         </tr>
                                         <tr>
                                             <td>Kode Pengajuan</td>
@@ -148,7 +151,11 @@
                                         </tr>
                                         <tr>
                                             <td>Nominal Potongan Simp.Wa</td>
+                                            @if($row->nominal_potongan == '')
+                                            <td>: {{"Rp " . number_format(0,0,'.','.')}}</td>
+                                            @else
                                             <td>: {{"Rp " . number_format($row->nominal_potongan,0,'.','.')}}</td>
+                                            @endif
                                         </tr>
                                         <tr>
                                             <td>Jumlah Yang di Transfer</td>

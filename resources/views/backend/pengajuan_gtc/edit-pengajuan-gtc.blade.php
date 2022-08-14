@@ -82,7 +82,10 @@
                         <div class="row g-2">
                             <div class="col-md">
                                 <label for="fullname" class="form-label">Perwada (sesuai dg Akun)</label>
-                                <input class="form-control" type="text" id="perwada" value="KP Jakarta" placeholder="KP Jakarta" readonly="">
+                                @php
+                                    $perwada = DB::table('perwada')->where('id', $row->id_perwada)->first();
+                                @endphp
+                                <input class="form-control" type="text" id="perwada" value="{{$perwada->nama}}" placeholder="KP Jakarta" readonly="">
                                 <input type="hidden" value="{{$row->id_perwada}}" id="id_perwada" name="id_perwada" class="form-control">
                             </div>
                             <div class="col-md">
