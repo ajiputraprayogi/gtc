@@ -672,6 +672,18 @@ class PengajuangtcController extends Controller
             $finalname5 = $request->old_surat_kuasa_penjualan_jaminan_marhum;
         }
 
+        $date = \Carbon\Carbon::now();
+        if($request->jangka_waktu_permohonan == 'Pilih'){
+            $jatuhtempo = \Carbon\Carbon::now();
+        }else{
+            $months = $request->jangka_waktu_permohonan;
+            foreach(explode(",", $months) as $month) {
+                $hours = $month * 24 * 30;
+                date_default_timezone_set('Asia/Jakarta');
+                $jatuhtempo = date("Y-m-d H:i:s", strtotime("{$date} +{$hours} hours"));
+            }
+        }
+
         DB::table('gtc_pengajuan')->insert([
             'tanggal_pengajuan' => \Carbon\Carbon::now(), # new \Datetime(),
             'id_anggota' => $request->id_anggota,
@@ -710,6 +722,8 @@ class PengajuangtcController extends Controller
             'catatan' => $request->catatan,
             'tanda_tangan' => $nama,
             'status' => 'Aktif',
+            'tanggal_sebelumnya' => \Carbon\Carbon::now(), # new \Datetime()
+            'tanggal_jatuh_tempo' => $jatuhtempo,
             "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
             "updated_at" => \Carbon\Carbon::now(),  # new \Datetime()
         ]);

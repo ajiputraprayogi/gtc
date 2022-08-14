@@ -34,7 +34,7 @@ class HistoritransaksigtcController extends Controller
             ->leftjoin('gtc_pengajuan','gtc_pengajuan.kode_pengajuan','=','gtc_transaksi.kode_pengajuan')
             ->leftjoin('anggota','anggota.id','=','gtc_pengajuan.id_anggota')
             ->select([
-                'gtc_transaksi.*','gtc_transaksi.id as idt','gtc_transaksi.kode_transaksi as kode_transaksit','gtc_transaksi.created_at as created_att',
+                'gtc_transaksi.*','gtc_transaksi.id as idt','gtc_transaksi.kode_transaksi as kode_transaksit','gtc_transaksi.created_at as created_att','gtc_transaksi.tanggal_jatuh_tempo as tanggal_jatuh_tempot',
                 'gtc_pengajuan.*','gtc_pengajuan.id as idp',
                 'anggota.*','anggota.id as ida'
             ])

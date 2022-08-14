@@ -101,7 +101,7 @@
                                             <td>{{$tglsebelumnya}}</td>
                                             <td>{{$row->jangka_waktu_permohonan . ' Bulan'}}</td>
                                             @php
-                                                $tanggal3 = $row->tanggal_jatuh_tempo;
+                                                $tanggal3 = $row->tanggal_jatuh_tempot;
                                                 $bulan3 = array (
                                                     1 =>   'Januari',
                                                     'Februari',
