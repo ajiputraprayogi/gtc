@@ -85,7 +85,7 @@
                                     $perwada = DB::table('perwada')->where('id', $user_id)->first();
                                 @endphp
                                 <input class="form-control" type="text" id="perwada" value="{{$perwada->nama}}" placeholder="KP Jakarta" readonly="">
-                                <input type="hidden" value="{{Auth::user()->id}}" id="id_perwada" name="id_perwada" class="form-control">
+                                <input type="hidden" value="{{Auth::user()->kantor}}" id="id_perwada" name="id_perwada" class="form-control">
                             </div>
                             <div class="col-md">
                                 <label for="fullname" class="form-label">Kode Pengajuan</label>
