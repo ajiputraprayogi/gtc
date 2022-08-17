@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>DBL7</title>
+        <title>Demo CASy GTC | EOA Club</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -68,23 +68,24 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/home') }}">Home</a>
+                        <a href="{{url('backend/home')}}">Home</a>
                     @else
                         <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
                     @endauth
                 </div>
             @endif
 
             <div class="content">
+                <span class="logo-lg">
+                    <img src="{{asset('assets/template/images/logo.png')}}" alt="" height="170">
+                </span>
                 <div class="title m-b-md">
-                    GTC Project
+                    <strong>CASy GTC</strong>
+                    <hr>
                 </div> 
-                <p>Beta Version</p>
-                <span>By Kediri App</span>
+                <h5>EOA Club Administration System GET THE CASH</h5>
+                <h6> Versi 2.1.5 </h6>
+                {{-- <span>By Kediri App</span> --}}
             </div>  
         </div>
     </body> 

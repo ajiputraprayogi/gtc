@@ -408,6 +408,7 @@ class AktifgtcController extends Controller
                     'kode_transaksi' => $request->tambah_kode_transaksi,
                     'id_emas' => $request->id_emas[$index],
                     'keping' => "0",
+                    'harga_buyback' => "0",
                     'pembayaran_pinjaman' => "0",
                     "created_at" => \Carbon\Carbon::now(),  # new \Datetime()
                     "updated_at" => \Carbon\Carbon::now(),  # new \Datetime()
@@ -459,6 +460,7 @@ class AktifgtcController extends Controller
                     'kode_transaksi' => $request->tambah_kode_transaksi,
                     'id_emas' => $request->id_emas[$index],
                     'keping' => $request->pengurangan[$index],
+                    'harga_buyback' => $request->hargabuyback[$index],
                     'pembayaran_pinjaman' => str_replace(".","",$request->tambah_pembayaran_pinjaman),
                     "created_at" => \Carbon\Carbon::now(),  # new \Datetime()
                     "updated_at" => \Carbon\Carbon::now(),  # new \Datetime()
@@ -510,6 +512,7 @@ class AktifgtcController extends Controller
                     'kode_transaksi' => $request->tambah_kode_transaksi,
                     'id_emas' => $request->id_emas[$index],
                     'keping' => $request->pengurangan[$index],
+                    'harga_buyback' => $request->hargabuyback[$index],
                     'pembayaran_pinjaman' => str_replace(".","",$request->tambah_pembayaran_pinjaman),
                     "created_at" => \Carbon\Carbon::now(),  # new \Datetime()
                     "updated_at" => \Carbon\Carbon::now(),  # new \Datetime()
@@ -875,6 +878,7 @@ class AktifgtcController extends Controller
         ->where('kode_pengajuan', $kode)
         ->groupby('id_emas')
         ->get();
+        $historitransaksi = DB::table('gtc_histori_transaksi')->where('kode_transaksi', $kode2)->get();
         $jenisjasagtc = DB::table('gtc_jenis_jasa')->where('status', 'Active')->get();
         $totalkeping = DB::table('gtc_emas')->where('kode_pengajuan', $kode)->sum('keping');
         $tkeping = 0;
@@ -949,6 +953,7 @@ class AktifgtcController extends Controller
             'totalbuyback' => $totalbuyback,
             'hargaharian' => $hargaharian,
             'historikeping' => $historikeping,
+            'historitransaksi' => $historitransaksi,
         ];
         return response()->json($print);
     }
@@ -1003,7 +1008,9 @@ class AktifgtcController extends Controller
         $kode3++;
         $kode4 = str_pad($kode3, 5, '0', STR_PAD_LEFT);
         // ==============
-        $kodeperwada = "062";
+        $user = Auth::user()->kantor;
+        $perwada = DB::table('perwada')->where('id', $user)->first();
+        $kodeperwada = $perwada->kode;
         $kodedefault = "13";
         $carigender = DB::table("anggota")->where('id', '1')->first();
         $gender = $carigender->jenis_kelamin;

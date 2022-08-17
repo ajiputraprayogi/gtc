@@ -140,13 +140,13 @@
                         <h5>Detail Emas GTC</h5>
                         <ul class="nav nav-tabs nav-bordered mb-3">
                             <li class="nav-item">
-                                <a href="#pengajuan" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                                <a href="#pengajuan" data-bs-toggle="tab" aria-expanded="false" class="nav-link active">
                                     <i class="mdi mdi-home-variant d-md-none d-block"></i>
                                     <span class="d-none d-md-block">Pengajuan</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#pengambilan" data-bs-toggle="tab" aria-expanded="true" class="nav-link active">
+                                <a href="#pengambilan" data-bs-toggle="tab" aria-expanded="true" class="nav-link">
                                     <i class="mdi mdi-account-circle d-md-none d-block"></i>
                                     <span class="d-none d-md-block">Pengambilan Sebagian</span>
                                 </a>
@@ -160,7 +160,7 @@
                         </ul>
                         
                         <div class="tab-content">
-                            <div class="tab-pane" id="pengajuan">
+                            <div class="tab-pane show active" id="pengajuan">
                                 <div class="col-lg-12">
                                     <div class="table-responsive">
                                         <table class="table table-borderless table-nowrap table-centered mb-0">
@@ -172,7 +172,6 @@
                                                     <th>Gramasi</th> 
                                                     <th>Keping</th>
                                                     <th>Jumlah Gramasi</th>
-                                                    <th style="width: 50px;"></th>
                                                 </tr>
                                             </thead>
                                                 @php 
@@ -187,10 +186,7 @@
                                                     <td id="pengajuan_gramasi">{{$row_emas->gramasi}}</td>
                                                     <td id="pengajuan_keping{{$row_emas->id}}">{{$row_emas->keping}}</td>
                                                     <td id="pengajuan_sub_gramasi{{$row_emas->id}}">{{$row_emas->gramasi*$row_emas->keping . " Gram"}}</td>
-                                                    <td>
-                                                        <a href="javascript:void(0);" class="action-icon"> <i
-                                                                class="mdi mdi-delete"></i></a>
-                                                    </td>
+                                                    
                                                 </tr>
                                                 @endforeach
                                                 <!-- <tr>
@@ -247,7 +243,6 @@
                                                         @endphp
                                                         {{$total_gramasi. " Gram"}}
                                                     </th>
-                                                    <th style="width: 50px;"></th>
                                                 </tr>
                                                 </tfoot>
                                             <tbody>
@@ -255,11 +250,11 @@
                                     </div><hr><br>
                                 </div>
                             </div>
-                            <div class="tab-pane show active" id="pengambilan">
+                            <div class="tab-pane" id="pengambilan">
                                 <div class="col-lg-12">
                                     <div class="table-responsive">
                                         <table class="table table-borderless table-nowrap table-centered mb-0">
-                                            <h5>Detail Emas Pengajuan GTC</h5>
+                                            <h5>Detail Emas GTC Diambil</h5>
                                             <thead class="text-white bg-secondary ">
                                                 <tr>
                                                     <th>Item emas</th>
@@ -267,7 +262,6 @@
                                                     <th>Gramasi</th> 
                                                     <th>Keping</th>
                                                     <th>Jumlah Gramasi</th>
-                                                    <th style="width: 50px;"></th>
                                                 </tr>
                                             </thead>
                                                 @php 
@@ -287,10 +281,7 @@
                                                     <td id="pengambilan_gramasi">{{$row_emas->gramasi}}</td>
                                                     <td id="pengambilan_keping{{$row_emas->id}}">{{$keping[$no-1]->total}}</td>
                                                     <td id="pengambilan_sub_gramasi{{$row_emas->id}}">{{$row_emas->gramasi*$keping[$no-1]->total . " Gram"}}</td>
-                                                    <td>
-                                                        <a href="javascript:void(0);" class="action-icon"> <i
-                                                                class="mdi mdi-delete"></i></a>
-                                                    </td>
+                                                    
                                                 </tr>
                                                 @endforeach
                                                 <!-- <tr>
@@ -352,7 +343,7 @@
                                                         @endphp
                                                         {{$total_gramasi2. " Gram"}}
                                                     </th>
-                                                    <th style="width: 50px;"></th>
+                                                    
                                                 </tr>
                                                 </tfoot>
                                             <tbody>
@@ -364,7 +355,7 @@
                                 <div class="col-lg-12">
                                     <div class="table-responsive">
                                         <table class="table table-borderless table-nowrap table-centered mb-0">
-                                            <h5>Detail Emas Pengajuan GTC</h5>
+                                            <h5>Detail Emas Sisa GTC</h5>
                                             <thead class="text-white bg-secondary ">
                                                 <tr>
                                                     <th>Item emas</th>
@@ -372,7 +363,6 @@
                                                     <th>Gramasi</th> 
                                                     <th>Keping</th>
                                                     <th>Jumlah Gramasi</th>
-                                                    <th style="width: 50px;"></th>
                                                 </tr>
                                             </thead>
                                             @php 
@@ -395,10 +385,7 @@
                                                         $gramasi3 = $row_emas->keping-$keping3[$no3-1]->total;
                                                     @endphp
                                                     <td id="sisa_sub_gramasi{{$row_emas->id}}">{{$row_emas->gramasi*$gramasi3 . " Gram"}}</td>
-                                                    <td>
-                                                        <a href="javascript:void(0);" class="action-icon"> <i
-                                                                class="mdi mdi-delete"></i></a>
-                                                    </td>
+                                                    
                                                 </tr>
                                                 @endforeach
                                                 <!-- <tr>
@@ -464,7 +451,7 @@
                                                         @endphp
                                                         {{$total_gramasi5. " Gram"}}
                                                     </th>
-                                                    <th style="width: 50px;"></th>
+                                                    
                                                 </tr>
                                                 </tfoot>
                                             <tbody>

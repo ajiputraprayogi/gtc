@@ -912,34 +912,41 @@ function getdataemasgtc2() {
                     rows = rows + '<td>' + value.item_emas + '</td>';
                     rows = rows + '<td><span class="badge badge-primary-lighten">'+ value.jenis +'</span></td>';
                     rows = rows + '<td class="gramasi2">' + value.gramasi + '</td>';
-                    if(value.gramasi === '0.1'){
+                    if(parseFloat(value.gramasi) === 0.1){
                         var harga_buyback = parseFloat(data.hargaharian.nolsatu_gram);
                         rows = rows + '<td class="harga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
                         rows = rows + '<td hidden class="harga_buyback_hidden2">' + data.hargaharian.nolsatu_gram + '</td>';
-                    }else if(value.gramasi === '0.2'){
+                        rows = rows + '<td hidden><input type="hidden" value="'+ data.hargaharian.nolsatu_gram +'" form-control" name="hargabuyback[]" placeholder="Harga Buyback" readonly></td>';
+                    }else if(parseFloat(value.gramasi) === 0.2){
                         var harga_buyback = parseFloat(data.hargaharian.noldua_gram);
                         rows = rows + '<td class="harga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
                         rows = rows + '<td hidden class="harga_buyback_hidden2">' + data.hargaharian.noldua_gram + '</td>';
-                    }else if(value.gramasi === '0.5'){
+                        rows = rows + '<td hidden><input type="hidden" value="'+ data.hargaharian.noldua_gram +'" form-control" name="hargabuyback[]" placeholder="Harga Buyback" readonly></td>';
+                    }else if(parseFloat(value.gramasi) === 0.5){
                         var harga_buyback = parseFloat(data.hargaharian.nollima_gram);
                         rows = rows + '<td class="harga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
                         rows = rows + '<td hidden class="harga_buyback_hidden2">' + data.hargaharian.nollima_gram + '</td>';
-                    }else if(value.gramasi === '1'){
+                        rows = rows + '<td hidden><input type="hidden" value="'+ data.hargaharian.nollima_gram +'" form-control" name="hargabuyback[]" placeholder="Harga Buyback" readonly></td>';
+                    }else if(parseFloat(value.gramasi) === 1){
                         var harga_buyback = parseFloat(data.hargaharian.satu_gram);
                         rows = rows + '<td class="harga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
                         rows = rows + '<td hidden class="harga_buyback_hidden2">' + data.hargaharian.satu_gram + '</td>';
-                    }else if(value.gramasi === '2'){
+                        rows = rows + '<td hidden><input type="hidden" value="'+ data.hargaharian.satu_gram +'" form-control" name="hargabuyback[]" placeholder="Harga Buyback" readonly></td>';
+                    }else if(parseFloat(value.gramasi) === 2){
                         var harga_buyback = parseFloat(data.hargaharian.dua_gram);
                         rows = rows + '<td class="harga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
                         rows = rows + '<td hidden class="harga_buyback_hidden2">' + data.hargaharian.dua_gram + '</td>';
-                    }else if(value.gramasi === '5'){
+                        rows = rows + '<td hidden><input type="hidden" value="'+ data.hargaharian.dua_gram +'" form-control" name="hargabuyback[]" placeholder="Harga Buyback" readonly></td>';
+                    }else if(parseFloat(value.gramasi) === 5){
                         var harga_buyback = parseFloat(data.hargaharian.lima_gram);
                         rows = rows + '<td class="harga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
                         rows = rows + '<td hidden class="harga_buyback_hidden2">' + data.hargaharian.lima_gram + '</td>';
-                    }else if(value.gramasi === '10'){
+                        rows = rows + '<td hidden><input type="hidden" value="'+ data.hargaharian.lima_gram +'" form-control" name="hargabuyback[]" placeholder="Harga Buyback" readonly></td>';
+                    }else if(parseFloat(value.gramasi) === 10){
                         var harga_buyback = parseFloat(data.hargaharian.sepuluh_gram);
                         rows = rows + '<td class="harga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
                         rows = rows + '<td hidden class="harga_buyback_hidden2">' + data.hargaharian.sepuluh_gram + '</td>';
+                        rows = rows + '<td hidden><input type="hidden" value="'+ data.hargaharian.sepuluh_gram +'" form-control" name="hargabuyback[]" placeholder="Harga Buyback" readonly></td>';
                     }
                     // rows = rows + '<td class="harga_buyback">' + (harga_buyback.toLocaleString("id-ID")) + '</td>';
                     // rows = rows + '<td hidden class="harga_buyback_hidden">' + value.harga_buyback + '</td>';
@@ -953,39 +960,46 @@ function getdataemasgtc2() {
                     rows = rows + '</tr>';
                 }else{
                     rows = rows + '<tr id="hidden'+ value.id +'">';
-                rows = rows + '<td hidden><input type="hidden" class="form-control" value="'+ value.id +'" id="id_emas2" name="id_emas2[]"></td>';
-                rows = rows + '<td>' + value.item_emas + '</td>';
-                rows = rows + '<td><span class="badge badge-primary-lighten">'+ value.jenis +'</span></td>';
-                rows = rows + '<td class="gramasi2">' + value.gramasi + '</td>';
-                if(value.gramasi === '0.1'){
-                    var harga_buyback = parseFloat(data.hargaharian.nolsatu_gram);
-                    rows = rows + '<td class="harga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
-                    rows = rows + '<td hidden class="harga_buyback_hidden2">' + data.hargaharian.nolsatu_gram + '</td>';
-                }else if(value.gramasi === '0.2'){
-                    var harga_buyback = parseFloat(data.hargaharian.noldua_gram);
-                    rows = rows + '<td class="harga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
-                    rows = rows + '<td hidden class="harga_buyback_hidden2">' + data.hargaharian.noldua_gram + '</td>';
-                }else if(value.gramasi === '0.5'){
-                    var harga_buyback = parseFloat(data.hargaharian.nollima_gram);
-                    rows = rows + '<td class="harga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
-                    rows = rows + '<td hidden class="harga_buyback_hidden2">' + data.hargaharian.nollima_gram + '</td>';
-                }else if(value.gramasi === '1'){
-                    var harga_buyback = parseFloat(data.hargaharian.satu_gram);
-                    rows = rows + '<td class="harga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
-                    rows = rows + '<td hidden class="harga_buyback_hidden2">' + data.hargaharian.satu_gram + '</td>';
-                }else if(value.gramasi === '2'){
-                    var harga_buyback = parseFloat(data.hargaharian.dua_gram);
-                    rows = rows + '<td class="harga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
-                    rows = rows + '<td hidden class="harga_buyback_hidden2">' + data.hargaharian.dua_gram + '</td>';
-                }else if(value.gramasi === '5'){
-                    var harga_buyback = parseFloat(data.hargaharian.lima_gram);
-                    rows = rows + '<td class="harga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
-                    rows = rows + '<td hidden class="harga_buyback_hidden2">' + data.hargaharian.lima_gram + '</td>';
-                }else if(value.gramasi === '10'){
-                    var harga_buyback = parseFloat(data.hargaharian.sepuluh_gram);
-                    rows = rows + '<td class="harga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
-                    rows = rows + '<td hidden class="harga_buyback_hidden2">' + data.hargaharian.sepuluh_gram + '</td>';
-                }
+                    rows = rows + '<td hidden><input type="hidden" class="form-control" value="'+ value.id +'" id="id_emas2" name="id_emas2[]"></td>';
+                    rows = rows + '<td>' + value.item_emas + '</td>';
+                    rows = rows + '<td><span class="badge badge-primary-lighten">'+ value.jenis +'</span></td>';
+                    rows = rows + '<td class="gramasi2">' + value.gramasi + '</td>';
+                    if(parseFloat(value.gramasi) === 0.1){
+                        var harga_buyback = parseFloat(data.hargaharian.nolsatu_gram);
+                        rows = rows + '<td class="harga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
+                        rows = rows + '<td hidden class="harga_buyback_hidden2">' + data.hargaharian.nolsatu_gram + '</td>';
+                        rows = rows + '<td hidden><input type="hidden" value="'+ data.hargaharian.nolsatu_gram +'" form-control" name="hargabuyback[]" placeholder="Harga Buyback" readonly></td>';
+                    }else if(parseFloat(value.gramasi) === 0.2){
+                        var harga_buyback = parseFloat(data.hargaharian.noldua_gram);
+                        rows = rows + '<td class="harga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
+                        rows = rows + '<td hidden class="harga_buyback_hidden2">' + data.hargaharian.noldua_gram + '</td>';
+                        rows = rows + '<td hidden><input type="hidden" value="'+ data.hargaharian.noldua_gram +'" form-control" name="hargabuyback[]" placeholder="Harga Buyback" readonly></td>';
+                    }else if(parseFloat(value.gramasi) === 0.5){
+                        var harga_buyback = parseFloat(data.hargaharian.nollima_gram);
+                        rows = rows + '<td class="harga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
+                        rows = rows + '<td hidden class="harga_buyback_hidden2">' + data.hargaharian.nollima_gram + '</td>';
+                        rows = rows + '<td hidden><input type="hidden" value="'+ data.hargaharian.nollima_gram +'" form-control" name="hargabuyback[]" placeholder="Harga Buyback" readonly></td>';
+                    }else if(parseFloat(value.gramasi) === 1){
+                        var harga_buyback = parseFloat(data.hargaharian.satu_gram);
+                        rows = rows + '<td class="harga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
+                        rows = rows + '<td hidden class="harga_buyback_hidden2">' + data.hargaharian.satu_gram + '</td>';
+                        rows = rows + '<td hidden><input type="hidden" value="'+ data.hargaharian.satu_gram +'" form-control" name="hargabuyback[]" placeholder="Harga Buyback" readonly></td>';
+                    }else if(parseFloat(value.gramasi) === 2){
+                        var harga_buyback = parseFloat(data.hargaharian.dua_gram);
+                        rows = rows + '<td class="harga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
+                        rows = rows + '<td hidden class="harga_buyback_hidden2">' + data.hargaharian.dua_gram + '</td>';
+                        rows = rows + '<td hidden><input type="hidden" value="'+ data.hargaharian.dua_gram +'" form-control" name="hargabuyback[]" placeholder="Harga Buyback" readonly></td>';
+                    }else if(parseFloat(value.gramasi) === 5){
+                        var harga_buyback = parseFloat(data.hargaharian.lima_gram);
+                        rows = rows + '<td class="harga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
+                        rows = rows + '<td hidden class="harga_buyback_hidden2">' + data.hargaharian.lima_gram + '</td>';
+                        rows = rows + '<td hidden><input type="hidden" value="'+ data.hargaharian.lima_gram +'" form-control" name="hargabuyback[]" placeholder="Harga Buyback" readonly></td>';
+                    }else if(parseFloat(value.gramasi) === 10){
+                        var harga_buyback = parseFloat(data.hargaharian.sepuluh_gram);
+                        rows = rows + '<td class="harga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
+                        rows = rows + '<td hidden class="harga_buyback_hidden2">' + data.hargaharian.sepuluh_gram + '</td>';
+                        rows = rows + '<td hidden><input type="hidden" value="'+ data.hargaharian.sepuluh_gram +'" form-control" name="hargabuyback[]" placeholder="Harga Buyback" readonly></td>';
+                    }
                 // rows = rows + '<td class="harga_buyback">' + (harga_buyback.toLocaleString("id-ID")) + '</td>';
                 // rows = rows + '<td hidden class="harga_buyback_hidden">' + value.harga_buyback + '</td>';
                 var keping = value.keping;
@@ -2498,31 +2512,31 @@ function editgetdataemasgtc2() {
                     rows = rows + '<td>' + value.item_emas + '</td>';
                     rows = rows + '<td><span class="badge badge-primary-lighten">'+ value.jenis +'</span></td>';
                     rows = rows + '<td class="editgramasi2">' + value.gramasi + '</td>';
-                    if(value.gramasi === '0.1'){
+                    if(parseFloat(value.gramasi) === 0.1){
                         var harga_buyback = parseFloat(data.hargaharian.nolsatu_gram);
                         rows = rows + '<td class="editharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
                         rows = rows + '<td hidden class="editharga_buyback_hidden2">' + data.hargaharian.nolsatu_gram + '</td>';
-                    }else if(value.gramasi === '0.2'){
+                    }else if(parseFloat(value.gramasi) === 0.2){
                         var harga_buyback = parseFloat(data.hargaharian.noldua_gram);
                         rows = rows + '<td class="editharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
                         rows = rows + '<td hidden class="editharga_buyback_hidden2">' + data.hargaharian.noldua_gram + '</td>';
-                    }else if(value.gramasi === '0.5'){
+                    }else if(parseFloat(value.gramasi) === 0.5){
                         var harga_buyback = parseFloat(data.hargaharian.nollima_gram);
                         rows = rows + '<td class="editharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
                         rows = rows + '<td hidden class="editharga_buyback_hidden2">' + data.hargaharian.nollima_gram + '</td>';
-                    }else if(value.gramasi === '1'){
+                    }else if(parseFloat(value.gramasi) === 1){
                         var harga_buyback = parseFloat(data.hargaharian.satu_gram);
                         rows = rows + '<td class="editharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
                         rows = rows + '<td hidden class="editharga_buyback_hidden2">' + data.hargaharian.satu_gram + '</td>';
-                    }else if(value.gramasi === '2'){
+                    }else if(parseFloat(value.gramasi) === 2){
                         var harga_buyback = parseFloat(data.hargaharian.dua_gram);
                         rows = rows + '<td class="editharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
                         rows = rows + '<td hidden class="editharga_buyback_hidden2">' + data.hargaharian.dua_gram + '</td>';
-                    }else if(value.gramasi === '5'){
+                    }else if(parseFloat(value.gramasi) === 5){
                         var harga_buyback = parseFloat(data.hargaharian.lima_gram);
                         rows = rows + '<td class="editharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
                         rows = rows + '<td hidden class="editharga_buyback_hidden2">' + data.hargaharian.lima_gram + '</td>';
-                    }else if(value.gramasi === '10'){
+                    }else if(parseFloat(value.gramasi) === 10){
                         var harga_buyback = parseFloat(data.hargaharian.sepuluh_gram);
                         rows = rows + '<td class="editharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
                         rows = rows + '<td hidden class="editharga_buyback_hidden2">' + data.hargaharian.sepuluh_gram + '</td>';
@@ -2544,31 +2558,31 @@ function editgetdataemasgtc2() {
                     rows = rows + '<td>' + value.item_emas + '</td>';
                     rows = rows + '<td><span class="badge badge-primary-lighten">'+ value.jenis +'</span></td>';
                     rows = rows + '<td class="editgramasi2">' + value.gramasi + '</td>';
-                    if(value.gramasi === '0.1'){
+                    if(parseFloat(value.gramasi) === 0.1){
                         var harga_buyback = parseFloat(data.hargaharian.nolsatu_gram);
                         rows = rows + '<td class="editharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
                         rows = rows + '<td hidden class="editharga_buyback_hidden2">' + data.hargaharian.nolsatu_gram + '</td>';
-                    }else if(value.gramasi === '0.2'){
+                    }else if(parseFloat(value.gramasi) === 0.2){
                         var harga_buyback = parseFloat(data.hargaharian.noldua_gram);
                         rows = rows + '<td class="editharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
                         rows = rows + '<td hidden class="editharga_buyback_hidden2">' + data.hargaharian.noldua_gram + '</td>';
-                    }else if(value.gramasi === '0.5'){
+                    }else if(parseFloat(value.gramasi) === 0.5){
                         var harga_buyback = parseFloat(data.hargaharian.nollima_gram);
                         rows = rows + '<td class="editharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
                         rows = rows + '<td hidden class="editharga_buyback_hidden2">' + data.hargaharian.nollima_gram + '</td>';
-                    }else if(value.gramasi === '1'){
+                    }else if(parseFloat(value.gramasi) === 1){
                         var harga_buyback = parseFloat(data.hargaharian.satu_gram);
                         rows = rows + '<td class="editharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
                         rows = rows + '<td hidden class="editharga_buyback_hidden2">' + data.hargaharian.satu_gram + '</td>';
-                    }else if(value.gramasi === '2'){
+                    }else if(parseFloat(value.gramasi) === 2){
                         var harga_buyback = parseFloat(data.hargaharian.dua_gram);
                         rows = rows + '<td class="editharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
                         rows = rows + '<td hidden class="editharga_buyback_hidden2">' + data.hargaharian.dua_gram + '</td>';
-                    }else if(value.gramasi === '5'){
+                    }else if(parseFloat(value.gramasi) === 5){
                         var harga_buyback = parseFloat(data.hargaharian.lima_gram);
                         rows = rows + '<td class="editharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
                         rows = rows + '<td hidden class="editharga_buyback_hidden2">' + data.hargaharian.lima_gram + '</td>';
-                    }else if(value.gramasi === '10'){
+                    }else if(parseFloat(value.gramasi) === 10){
                         var harga_buyback = parseFloat(data.hargaharian.sepuluh_gram);
                         rows = rows + '<td class="editharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
                         rows = rows + '<td hidden class="editharga_buyback_hidden2">' + data.hargaharian.sepuluh_gram + '</td>';
@@ -2673,8 +2687,8 @@ function viewtransaksi(kode){
                 $('#view_jenis_transaksi').text(': '+value.jenis_transaksi);
                 // =====================================================
                 if(value.jenis_transaksi === 'Pengajuan Baru'){
-                    $('#divviewemassebelumnya').hide();
-                    $('#divviewemasselanjutnya').show();
+                    $('#divviewemasselanjutnya').hide();
+                    $('#divviewemassebelumnya').show();
                 }else if(value.jenis_transaksi === 'Perpanjangan'){
                     $('#divviewemassebelumnya').hide();
                     $('#divviewemasselanjutnya').show();
@@ -2860,34 +2874,34 @@ function viewgetdataemasgtc2() {
                     rows = rows + '<td>' + value.item_emas + '</td>';
                     rows = rows + '<td><span class="badge badge-primary-lighten">'+ value.jenis +'</span></td>';
                     rows = rows + '<td class="viewgramasi2">' + value.gramasi + '</td>';
-                    if(value.gramasi === '0.1'){
-                        var harga_buyback = parseFloat(data.hargaharian.nolsatu_gram);
+                    if(parseFloat(value.gramasi) === 0.1){
+                        var harga_buyback = parseFloat(data.historitransaksi[no-1].harga_buyback);
                         rows = rows + '<td class="viewharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
-                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.hargaharian.nolsatu_gram + '</td>';
-                    }else if(value.gramasi === '0.2'){
-                        var harga_buyback = parseFloat(data.hargaharian.noldua_gram);
+                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.historitransaksi.harga_buyback + '</td>';
+                    }else if(parseFloat(value.gramasi) === 0.2){
+                        var harga_buyback = parseFloat(data.historitransaksi[no-1].harga_buyback);
                         rows = rows + '<td class="viewharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
-                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.hargaharian.noldua_gram + '</td>';
-                    }else if(value.gramasi === '0.5'){
-                        var harga_buyback = parseFloat(data.hargaharian.nollima_gram);
+                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.historitransaksi.harga_buyback + '</td>';
+                    }else if(parseFloat(value.gramasi) === 0.5){
+                        var harga_buyback = parseFloat(data.historitransaksi[no-1].harga_buyback);
                         rows = rows + '<td class="viewharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
-                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.hargaharian.nollima_gram + '</td>';
-                    }else if(value.gramasi === '1'){
-                        var harga_buyback = parseFloat(data.hargaharian.satu_gram);
+                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.historitransaksi.harga_buyback + '</td>';
+                    }else if(parseFloat(value.gramasi) === 1){
+                        var harga_buyback = parseFloat(data.historitransaksi[no-1].harga_buyback);
                         rows = rows + '<td class="viewharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
-                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.hargaharian.satu_gram + '</td>';
-                    }else if(value.gramasi === '2'){
-                        var harga_buyback = parseFloat(data.hargaharian.dua_gram);
+                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.historitransaksi.harga_buyback + '</td>';
+                    }else if(parseFloat(value.gramasi) === 2){
+                        var harga_buyback = parseFloat(data.historitransaksi[no-1].harga_buyback);
                         rows = rows + '<td class="viewharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
-                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.hargaharian.dua_gram + '</td>';
-                    }else if(value.gramasi === '5'){
-                        var harga_buyback = parseFloat(data.hargaharian.lima_gram);
+                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.historitransaksi.harga_buyback + '</td>';
+                    }else if(parseFloat(value.gramasi) === 5){
+                        var harga_buyback = parseFloat(data.historitransaksi[no-1].harga_buyback);
                         rows = rows + '<td class="viewharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
-                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.hargaharian.lima_gram + '</td>';
-                    }else if(value.gramasi === '10'){
-                        var harga_buyback = parseFloat(data.hargaharian.sepuluh_gram);
+                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.historitransaksi.harga_buyback + '</td>';
+                    }else if(parseFloat(value.gramasi) === 10){
+                        var harga_buyback = parseFloat(data.historitransaksi[no-1].harga_buyback);
                         rows = rows + '<td class="viewharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
-                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.hargaharian.sepuluh_gram + '</td>';
+                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.historitransaksi.harga_buyback + '</td>';
                     }
                     // rows = rows + '<td class="harga_buyback">' + (harga_buyback.toLocaleString("id-ID")) + '</td>';
                     // rows = rows + '<td hidden class="harga_buyback_hidden">' + value.harga_buyback + '</td>';
@@ -2906,34 +2920,34 @@ function viewgetdataemasgtc2() {
                     rows = rows + '<td>' + value.item_emas + '</td>';
                     rows = rows + '<td><span class="badge badge-primary-lighten">'+ value.jenis +'</span></td>';
                     rows = rows + '<td class="viewgramasi2">' + value.gramasi + '</td>';
-                    if(value.gramasi === '0.1'){
-                        var harga_buyback = parseFloat(data.hargaharian.nolsatu_gram);
+                    if(parseFloat(value.gramasi) === 0.1){
+                        var harga_buyback = parseFloat(data.historitransaksi[no-1].harga_buyback);
                         rows = rows + '<td class="viewharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
-                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.hargaharian.nolsatu_gram + '</td>';
-                    }else if(value.gramasi === '0.2'){
-                        var harga_buyback = parseFloat(data.hargaharian.noldua_gram);
+                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.historitransaksi.harga_buyback + '</td>';
+                    }else if(parseFloat(value.gramasi) === 0.2){
+                        var harga_buyback = parseFloat(data.historitransaksi[no-1].harga_buyback);
                         rows = rows + '<td class="viewharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
-                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.hargaharian.noldua_gram + '</td>';
-                    }else if(value.gramasi === '0.5'){
-                        var harga_buyback = parseFloat(data.hargaharian.nollima_gram);
+                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.historitransaksi.harga_buyback + '</td>';
+                    }else if(parseFloat(value.gramasi) === 0.5){
+                        var harga_buyback = parseFloat(data.historitransaksi[no-1].harga_buyback);
                         rows = rows + '<td class="viewharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
-                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.hargaharian.nollima_gram + '</td>';
-                    }else if(value.gramasi === '1'){
-                        var harga_buyback = parseFloat(data.hargaharian.satu_gram);
+                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.historitransaksi.harga_buyback + '</td>';
+                    }else if(parseFloat(value.gramasi) === 1){
+                        var harga_buyback = parseFloat(data.historitransaksi[no-1].harga_buyback);
                         rows = rows + '<td class="viewharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
-                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.hargaharian.satu_gram + '</td>';
-                    }else if(value.gramasi === '2'){
-                        var harga_buyback = parseFloat(data.hargaharian.dua_gram);
+                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.historitransaksi.harga_buyback + '</td>';
+                    }else if(parseFloat(value.gramasi) === 2){
+                        var harga_buyback = parseFloat(data.historitransaksi[no-1].harga_buyback);
                         rows = rows + '<td class="viewharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
-                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.hargaharian.dua_gram + '</td>';
-                    }else if(value.gramasi === '5'){
-                        var harga_buyback = parseFloat(data.hargaharian.lima_gram);
+                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.historitransaksi.harga_buyback + '</td>';
+                    }else if(parseFloat(value.gramasi) === 5){
+                        var harga_buyback = parseFloat(data.historitransaksi[no-1].harga_buyback);
                         rows = rows + '<td class="viewharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
-                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.hargaharian.lima_gram + '</td>';
-                    }else if(value.gramasi === '10'){
-                        var harga_buyback = parseFloat(data.hargaharian.sepuluh_gram);
+                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.historitransaksi.harga_buyback + '</td>';
+                    }else if(parseFloat(value.gramasi) === 10){
+                        var harga_buyback = parseFloat(data.historitransaksi[no-1].harga_buyback);
                         rows = rows + '<td class="viewharga_buyback2">' + ("Rp "+harga_buyback.toLocaleString("id-ID")) + '</td>';
-                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.hargaharian.sepuluh_gram + '</td>';
+                        rows = rows + '<td hidden class="viewharga_buyback_hidden2">' + data.historitransaksi.harga_buyback + '</td>';
                     }
                     // rows = rows + '<td class="harga_buyback">' + (harga_buyback.toLocaleString("id-ID")) + '</td>';
                     // rows = rows + '<td hidden class="harga_buyback_hidden">' + value.harga_buyback + '</td>';

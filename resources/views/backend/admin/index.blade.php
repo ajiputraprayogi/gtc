@@ -16,7 +16,7 @@
             <div class="page-title-box">
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">D'Syirkah</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Get The Cash</a></li>
                         <li class="breadcrumb-item active">Pengaturan Akun</li>
                     </ol>
                 </div>
@@ -31,18 +31,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <!-- Hanya Sementara -->
-                    <div class="card-body col-lg-7">
-                        <h6>Keterangan</h6>
-                        <p>User Terdiri dari</p>
-                        <p>1.Administrator = All Akses</p>
-                        <p>2.Teller OPR = Full Akses ke Aktif, Reakad Nonaktif, pengaturan akun anggota, (pengajuan no edit)</p>
-                        <p>3.Admin = View+export pengajuan, Aktif, Reakad, Nonaktif, pengaturan akun anggota, edit pengajuan</p>
-                        <p>4.Admin IT = full Akses master, Daftar Usaha & Users Anggota</p>
-                        <p>5.Manager = View+export pengajuan, Aktif, Reakad Nonaktif, Daftar Usaha</p>
-                        <p>6.Admin Perwada = View pengajuan, Aktif,</p>
-                    </div>
-
+                    
                     <div class="row mb-2">
                         <div class="col-sm-5">
                             <a href="javascript:void(0);" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#tambahakun"><i class="mdi mdi-plus-circle me-2"></i> Akun</a>
@@ -66,60 +55,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- <tr>
-                                        <td>1</td>
-                                        <td class="table-user">
-                                            <img src="assets/images/users/avatar-4.jpg" alt="table-user" class="me-2 rounded-circle">
-                                            <a href="javascript:void(0);" class="text-body fw-semibold">Paul J. Friend</a>
-                                        </td>
-                                        <td>nasor</td>
-                                        <td>aldie.acng@gmail.com</td>
-                                        <td>Karyawan</td>
-                                        <td>Pusat</td>
-                                        <td>Teller OPR</td>
-                                        <td>
-                                            <span class="badge badge-success-lighten">Active</span>
-                                        </td>
-                                        <td>
-                                            <a href="javascript:void(0);" class="action-icon" data-bs-toggle="modal" data-bs-target="#modal-editakun-admin"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td class="table-user">
-                                            <img src="assets/images/users/avatar-4.jpg" alt="table-user" class="me-2 rounded-circle">
-                                            <a href="javascript:void(0);" class="text-body fw-semibold">Arief</a>
-                                        </td>
-                                        <td>nasor</td>
-                                        <td>nasorudin@gmail.com</td>
-                                        <td>Karyawan</td>
-                                        <td>Pusat</td>
-                                        <td>Administrator</td>
-                                        <td>
-                                            <span class="badge badge-danger-lighten">NonActive</span>
-                                        </td>
-                                        <td>
-                                            <a href="javascript:void(0);" class="action-icon" data-bs-toggle="modal" data-bs-target="#modal-editakun-admin"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td class="table-user">
-                                            <img src="assets/images/users/avatar-4.jpg" alt="table-user" class="me-2 rounded-circle">
-                                            <a href="javascript:void(0);" class="text-body fw-semibold">Aldie</a>
-                                        </td>
-                                        <td>nasor</td>
-                                        <td>aldie.acng@gmail.com</td>
-                                        <td>Karyawan</td>
-                                        <td>Pusat</td>
-                                        <td>Admin</td>
-                                        <td>
-                                            <span class="badge badge-success-lighten">Active</span>
-                                        </td>
-                                        <td>
-                                            <a href="javascript:void(0);" class="action-icon" data-bs-toggle="modal" data-bs-target="#modal-editakun-admin"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                        </td>
-                                    </tr> -->
+                                    
                                 </tbody>
                             </table>                                          
                         </div> <!-- end preview-->
@@ -311,13 +247,13 @@
                                     <input type="hidden" id="edit_id" name="edit_id" class="form-control">
                                     <div class="mb-3">
                                         <label for="fullname" class="form-label">Nama Karyawan</label>
-                                        <input class="form-control" type="text" id="edit_namakaryawan" name="edit_namakaryawan" placeholder="Enter your name" required>
+                                        <input class="form-control" type="text" id="edit_namakaryawan" name="edit_namakaryawan" placeholder="Enter your name" required readonly>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="fullname" class="form-label">User ID</label>
                                         <input class="form-control" type="text" id="edit_userid" name="edit_userid" placeholder="Enter your name" required>
-                                        <input class="form-control" type="hidden" id="old_edit_userid" name="old_edit_userid" placeholder="Enter your name" required>
+                                        <input class="form-control" type="hidden" id="old_edit_userid" name="old_edit_userid" placeholder="Enter your name" required readonly>
                                     </div>
 
                                     <div class="mb-3">

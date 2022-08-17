@@ -25,26 +25,16 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <!-- Hanya Sementara -->
-                    <div class="card-body col-lg-7">
-                        <h6>Keterangan</h6>
-                        <p>Yang muncul di tabel hanya hari ini selain itu bisa di searcing</p>
-                        <p>tambahkan pencarian tanggal periode</p>
-                        <p>Kode pengajuan A.7digitNomorBA.Pengajuan ke berapa</p>
-                        <p>Status Akhir Mengikuti menu</p>
-                        <p>Status Aproval sesuai Aproval</p>
-                    </div>
-
                     <div class="row mb-2">
                         <div class="col-sm-5">
                             @php
                                 date_default_timezone_set('Asia/Jakarta');
                                 $jam = date('H:i');
                                 $buka = date('10:30');
-                                $tutup = date('15:30');
+                                $tutup = date('22:30');
                             @endphp
                             @if($jam>=$buka && $jam<=$tutup)
-                                <a href="{{url('backend/tambah-pengajuan-gtc')}}" class="btn btn-primary mb-2" ></i>Pengajuan GTC</a>
+                                <a href="{{url('backend/tambah-pengajuan-gtc')}}" class="btn btn-primary mb-2" ><i class="mdi mdi-plus-circle-outline"></i>Pengajuan GTC</a>
                             @else
 
                             @endif

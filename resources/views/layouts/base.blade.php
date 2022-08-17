@@ -57,7 +57,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-6">
-                                <script>document.write(new Date().getFullYear())</script> © KSPPS Simpul Berkah Sinergi - eoaclub.id
+                                <script>document.write(new Date().getFullYear())</script> © KSPPS Simpul Berkah Sinergi - eoaclub.id | Versi 2.1.5
                             </div>
                         </div>
                     </div>

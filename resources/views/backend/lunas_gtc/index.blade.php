@@ -25,17 +25,9 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <!-- Hanya Sementara -->
-                        <div class="card-body col-lg-7">
-                            <h6>Keterangan</h6>
-                            <p>PEncarian Tanggal Tanggal periode</p>
-                            
-                        </div>
-
                         <div class="row mb-2">
                             <div class="col-sm-5">
                                 <a href="" class="btn btn-success mb-2"><i class="mdi mdi-export"></i>Export Excel</a>
-                                <a href="del-pengajuan-gtc.html" class="btn btn-danger mb-2"><i class="mdi mdi-delete"></i></a>
                             </div>
                         </div>
 

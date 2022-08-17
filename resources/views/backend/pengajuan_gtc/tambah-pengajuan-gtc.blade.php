@@ -40,16 +40,11 @@
                         <div class="row g-2">
                             <div class="col-md">
                                 <label class="form-label">Nomor BA</label>
-                                <p>0.123.1234567</p>
                                 <div class="input-group">
                                     <input type="text" id="no_ba" name="nomor_ba" class="form-control" placeholder="Cari Nomor BA" aria-label="Recipient's username">
                                     <button class="btn btn-primary" id="cari" type="button">Cari</button>
                                     <input type="hidden" name="id_anggota" id="id_anggota" class="form-control">
                                 </div>
-                                <!-- <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="x.xxx.xxxxx23" aria-label="Recipient's username" readonly>
-                                    <button class="btn btn-primary" type="button">Cari</button>
-                                </div> -->
                                 </div>
                             <div class="col-md">
                                 <label for="fullname" class="form-label">Nama Lengkap</label>
@@ -79,12 +74,13 @@
                         </div><hr>
                         <div class="row g-2">
                             <div class="col-md">
-                                <label for="fullname" class="form-label">Perwada (sesuai dg Akun)</label>
+                                <label for="fullname" class="form-label">Perwada</label>
                                 @php
                                     $user_id = Auth::user()->kantor;
                                     $perwada = DB::table('perwada')->where('id', $user_id)->first();
                                 @endphp
                                 <input class="form-control" type="text" id="perwada" value="{{$perwada->nama}}" placeholder="KP Jakarta" readonly="">
+                                <!--<input type="hidden" value="{{Auth::user()->id}}" id="id_perwada" name="id_perwada" class="form-control">-->
                                 <input type="hidden" value="{{Auth::user()->kantor}}" id="id_perwada" name="id_perwada" class="form-control">
                             </div>
                             <div class="col-md">
@@ -92,7 +88,7 @@
                                 <input class="form-control" type="text" id="kode_pengajuan" name="kode_pengajuan" placeholder="Create by System" readonly="">
                             </div>
                             <div class="col-md">
-                                <label for="example-select" class="form-label">Tujuan</label>
+                                <label for="example-select" class="form-label">Tujuan GTC</label>
                                 <select class="form-select" id="tujuan" name="tujuan" required>
                                     <option selected>Pilih</option>
                                     <option value="Untuk Modal Usaha">Untuk Modal Usaha</option>
@@ -316,28 +312,28 @@
                             </div><br>
                             <div class="row g-2">
                                 <div class="col-md">
-                                    <label for="fullname" class="form-label">Jasa GTC(otomatis)</label>
+                                    <label for="fullname" class="form-label">Jasa GTC</label>
                                     <input class="form-control" type="text" id="jasa_gtc" name="jasa_gtc" placeholder="Rp 0" readonly>
                                 </div>
                                 <div class="col-md">
                                     <label for="example-select" class="form-label">Pembayaran Jasa</label>
                                     <select class="form-select" id="pembayaran_jasa" name="pembayaran_jasa" required>
                                         <option selected>Pilih</option>
-                                        <option value="Transfer">Transfer</option>
+                                        <option value="Transfer">Transfer / dari SB</option>
                                         <option value="Dipotong dari GTC">Dipotong dari GTC</option>
                                     </select>
                                 </div>
                                 <div class="col-md" id="div_upload_bukti_transfer" style="display: none">
-                                    <label for="formFile" class="form-label">Upload Bukti Transfer(Jika transfer)</label>
+                                    <label for="formFile" class="form-label">Upload Bukti Transfer</label>
                                     <input class="form-control" type="file" id="upload_bukti_transfer" name="upload_bukti_transfer">
                                 </div>
                                 <div class="col-md" id="div_jumlah_transfer" style="display: none">
                                     <label for="fullname" class="form-label">Jumlah Transfer</label>
-                                    <input class="form-control" type="text" id="jumlah_transfer" name="jumlah_transfer" placeholder="000.000" data-toggle="input-mask" data-mask-format="000.000.000.000.000" data-reverse="true" required>
+                                    <input class="form-control" type="text" id="jumlah_transfer" name="jumlah_transfer" placeholder="" data-toggle="input-mask" data-mask-format="000.000.000.000.000" data-reverse="true" required>
                                 </div>
                                 <div class="col-md" id="div_pembayaran_jasa_manual">
-                                    <label for="fullname" class="form-label">Pembayaran jasa(=Jasa GTC)Manual</label>
-                                    <input class="form-control" type="text" id="pembayaran_jasa_manual" name="pembayaran_jasa_manual" placeholder="000.000" data-toggle="input-mask" data-mask-format="000.000.000.000.000" data-reverse="true" required>
+                                    <label for="fullname" class="form-label">Pembayaran Jasa</label>
+                                    <input class="form-control" type="text" id="pembayaran_jasa_manual" name="pembayaran_jasa_manual" placeholder="" data-toggle="input-mask" data-mask-format="000.000.000.000.000" data-reverse="true" required>
                                 </div>
                             </div><br>
                             <div class="row g-2">
@@ -350,12 +346,12 @@
                                     </select>
                                 </div>
                                 <div class="col-md" id="div_nominal_potongan" style="display: none">
-                                    <label for="formFile" class="form-label">Nominal Potongan(Jika dr GTC)</label>
-                                    <input class="form-control" type="text" id="nominal_potongan" name="nominal_potongan" placeholder="000.000" data-toggle="input-mask" data-mask-format="000.000.000.000.000" data-reverse="true" required>
+                                    <label for="formFile" class="form-label">Nominal Untuk Simp.Wa</label>
+                                    <input class="form-control" type="text" id="nominal_potongan" name="nominal_potongan" placeholder="" data-toggle="input-mask" data-mask-format="000.000.000.000.000" data-reverse="true" required>
                                 </div>
                                 <div class="col-md">
                                     <label for="fullname" class="form-label">Jumlah Yang di Transfer</label>
-                                    <input class="form-control" type="text" id="jumlah_yang_di_transfer" name="jumlah_yang_di_transfer" placeholder="Jumlah Yang di Transfer" data-toggle="input-mask" data-mask-format="000.000.000.000.000" data-reverse="true" required>
+                                    <input class="form-control" type="text" id="jumlah_yang_di_transfer" name="jumlah_yang_di_transfer" placeholder="" data-toggle="input-mask" data-mask-format="000.000.000.000.000" data-reverse="true" required readonly>
                                 </div>
                             </div><br>
                             <div class="py-0">
@@ -391,19 +387,20 @@
 
                             <div class="card border-primary border">
                                 <div class="card-body">
-                                    <h5 class="card-title">Persetujuan : (jika Reguler)</h5>
+                                    <h5 class="card-title">Syarat & Ketentuan (Wajib dibaca Anggota)</h5>
                                     <p class="card-text">
                                         <ul class="ul-number">
                                             <li>
-                                                 Simpanan berjangka dengan akad Mudharabah Muthlaqah
+                                                Biaya admin Rp 20.000,-
                                             </li>
                                             <li>
-                                                Simpanan berjangka ini tidak dapat dicairkan sebelum tanggal jatuh tempo</li>
-                                            <li>
-                                                Simpanan Berjangka Dsyirkah minimal 100 Gram dengan jangka waktu 12 Bulan Mendapatkan Hadiah 1 Gram Gold / 100 Gram dengan jangka waktu 24 Bulan Mendapatkan Hadiah 2 Gram Gold
+                                                Biaya Get The Cash dibayarkan pada saat pengajuan, dan dimungkinkan untuk diperpanjang sesuai dengan ketentuan yang ada.
                                             </li>
                                             <li>
-                                                Saya siap mengembalikan hadiah jika tidak sesuai dengan akad.
+                                                Jika sampai jatuh tempo tudak ada pelunasan atau perpanjangan maka dalam waktu 14hari setelah tanggal jatuh tempo Get The Cash, emas akan dijual untuk melunasi pinjaman.
+                                            </li>
+                                            <li>
+                                                Form Asli & KTP Asli dapat digunakan sebagai bukti pengambilan yang valid & sah.
                                             </li>
                                         </ul>
                                 </div> <!-- end card-body-->
@@ -929,7 +926,7 @@
   
     <!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>  -->
     <!-- <link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/south-street/jquery-ui.css" rel="stylesheet">  -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   
     <script type="text/javascript" src="{{asset('assets/signature/js/jquery.signature.min.js')}}"></script>
     <link rel="stylesheet" type="text/css" href="{{asset('assets/signature/css/jquery.signature.css')}}">

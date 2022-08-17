@@ -376,7 +376,7 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="table-responsive">
-                                        <h5>Tabel Transaksi</h5>
+                                        <h5>Tandatangan & Aproval </h5>
                                         <table class="table mb-0">
                                             <thead class="table-light">
                                             <tr>

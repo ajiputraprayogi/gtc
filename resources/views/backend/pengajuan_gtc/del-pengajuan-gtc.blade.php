@@ -28,7 +28,7 @@
                     
                     <div class="row mb-2">
                         <div class="col-sm-5">
-                            <a href="{{url('backend/tambah-pengajuan-gtc')}}" class="btn btn-primary mb-2" ></i>Pengajuan GTC</a>
+                            <a href="{{url('backend/pengajuan-gtc')}}" class="btn btn-info mb-2" ><i class="mdi mdi-arrow-left-bold-circle-outline"></i>Kembali</a>
                             <a href="javascript:void(0);" class="btn btn-danger mb-2"><i class="mdi mdi-delete"></i></a>
                         </div>
                     </div>
