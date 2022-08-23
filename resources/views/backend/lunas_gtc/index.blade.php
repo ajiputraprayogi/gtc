@@ -89,7 +89,7 @@
                                                     'November',
                                                     'Desember'
                                                 );
-                                                $pecahkandata2 = explode(' ', $tanggal);
+                                                $pecahkandata2 = explode(' ', $tanggal2);
                                                 $pecahkantgl2 = explode('-', $pecahkandata2[0]);
                                                 $pecahkanjam2 = explode(':', $pecahkandata2[1]);
                                                 $jatuhtempo = $pecahkantgl2[2] . ' ' . $bulan2[(int)$pecahkantgl2[1]] . ' ' . $pecahkantgl2[0];

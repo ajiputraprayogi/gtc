@@ -1252,9 +1252,120 @@ class AktifgtcController extends Controller
         ]);
     }
 
-    public function cetaksbte($id)
+    public function cetaksbte($kode, $kode2)
     {
-        return view('backend.aktif_gtc.sbte');
+        $data = DB::table('gtc_transaksi')
+        ->leftjoin('gtc_pengajuan', 'gtc_pengajuan.kode_pengajuan', 'gtc_transaksi.kode_pengajuan')
+        ->leftjoin('anggota','anggota.id','=','gtc_pengajuan.id_anggota')
+        ->select('gtc_pengajuan.*','gtc_pengajuan.id as idp','anggota.*','anggota.id as ida','gtc_transaksi.*','gtc_transaksi.id as idt')
+        ->where('gtc_transaksi.id', $kode)
+        ->orderby('gtc_transaksi.kode_pengajuan', 'desc')
+        ->get();
+        $data2 = DB::table('gtc_transaksi')->where('id', $kode)->first();
+        $tanggal = DB::table('gtc_histori_transaksi')->where('kode_transaksi', $data2->kode_transaksi)->first();
+        $finaltanggal = date('Y-m-d H:i:s', strtotime('-1 seconds', strtotime( $tanggal->created_at )));
+        $pembayaran_pinjaman = DB::table('gtc_histori_transaksi')
+        ->whereBetween('created_at', array('0000-00-00 00:00:00', $finaltanggal))
+        ->where('kode_pengajuan', $kode2)
+        ->groupby('kode_transaksi')->get();
+
+        $pengajuan = 0;
+        foreach($data as $row){
+            $pengajuan = $row->pengajuan;
+        }
+        $fpembayaran_pinjaman = 0;
+        foreach($pembayaran_pinjaman as $row){
+            $fpembayaran_pinjaman += $row->pembayaran_pinjaman;
+        }
+        $nominalpinjaman = $pengajuan-$fpembayaran_pinjaman;
+
+        $pembayaran_pinjaman2 = DB::table('gtc_histori_transaksi')
+        ->where('kode_transaksi', $data2->kode_transaksi)
+        ->groupby('kode_transaksi')->get();
+        $fpembayaran_pinjaman2 = 0;
+        foreach($pembayaran_pinjaman2 as $row){
+            $fpembayaran_pinjaman2 += $row->pembayaran_pinjaman;
+        }
+        $sisapinjaman = $nominalpinjaman-$fpembayaran_pinjaman2;
+
+        $emas = DB::table('gtc_emas')->where('kode_pengajuan', $kode2)->get();
+        // =============
+        $kd = DB::table('gtc_transaksi')->where('id', $kode)->first();
+        // =============
+        $tanggal = DB::table('gtc_histori_transaksi')->where('kode_transaksi', $kd->kode_transaksi)->first();
+        $finaltanggal = date('Y-m-d H:i:s', strtotime('-1 seconds', strtotime( $tanggal->created_at )));
+        $transaksi = DB::table('gtc_histori_transaksi')
+        ->select(DB::raw('sum(keping) as total'))
+        ->whereBetween('created_at', array('0000-00-00 00:00:00', $finaltanggal))
+        ->where('kode_pengajuan', $kode2)
+        ->groupby('id_emas')
+        ->get();
+        $jenisjasagtc = DB::table('gtc_jenis_jasa')->where('status', 'Active')->get();
+        $totalkeping = DB::table('gtc_emas')->where('kode_pengajuan', $kode2)->sum('keping');
+        $tkeping = 0;
+        foreach($transaksi as $row){
+            $tkeping += $row->total;
+        }
+        $fkeping = $totalkeping-$tkeping;
+        $gramasi = DB::table('gtc_emas')->where('kode_pengajuan', $kode2)->get();
+        $i = 0;
+        $fgramasi = 0;
+        foreach($gramasi as $row){
+            $i += 1;
+            $a = $transaksi[$i-1]->total;
+            $b = $gramasi[$i-1]->keping;
+            $ab = $b-$a;
+            $fgramasi += $ab*$row->gramasi;
+        }
+        // dd($fgramasi);
+        $hargaharian = DB::table('gtc_harga_harian')->where('status', 'Active')->first();
+        $totalbuyback = 0;
+        if(count($emas)>0){
+            $i = 0;
+            foreach($emas as $row){
+                $i += 1;
+                if($row->gramasi == '0.1'){
+                    $a = $transaksi[$i-1]->total;
+                    $b = $row->keping;
+                    $ab = $b-$a;
+                    $totalbuyback += $hargaharian->nolsatu_gram*$ab;
+                }else if($row->gramasi == '0.2'){
+                    $a = $transaksi[$i-1]->total;
+                    $b = $row->keping;
+                    $ab = $b-$a;
+                    $totalbuyback += $hargaharian->noldua_gram*$ab;
+                }else if($row->gramasi == '0.5'){
+                    $a = $transaksi[$i-1]->total;
+                    $b = $row->keping;
+                    $ab = $b-$a;
+                    $totalbuyback += $hargaharian->nollima_gram*$ab;
+                }else if($row->gramasi == '1'){
+                    $a = $transaksi[$i-1]->total;
+                    $b = $row->keping;
+                    $ab = $b-$a;
+                    $totalbuyback += $hargaharian->satu_gram*$ab;
+                }else if($row->gramasi == '2'){
+                    $a = $transaksi[$i-1]->total;
+                    $b = $row->keping;
+                    $ab = $b-$a;
+                    $totalbuyback += $hargaharian->dua_gram*$ab;
+                }else if($row->gramasi == '5'){
+                    $a = $transaksi[$i-1]->total;
+                    $b = $row->keping;
+                    $ab = $b-$a;
+                    $totalbuyback += $hargaharian->lima_gram*$ab;
+                }else if($row->gramasi == '10'){
+                    $a = $transaksi[$i-1]->total;
+                    $b = $row->keping;
+                    $ab = $b-$a;
+                    $totalbuyback += $hargaharian->sepuluh_gram*$ab;
+                }
+            }
+        }
+
+        $historikeping = DB::table('gtc_histori_transaksi')->where('kode_transaksi', $kd->kode_transaksi)->get();
+
+        return view('backend.aktif_gtc.sbte', compact('data','nominalpinjaman','fpembayaran_pinjaman','fpembayaran_pinjaman2','sisapinjaman','emas','transaksi','historikeping','fkeping','fgramasi','hargaharian'));
     }
 
     /**
