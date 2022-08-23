@@ -30,23 +30,27 @@ class AktifgtcController extends Controller
             $data = DB::table('gtc_pengajuan')
             ->leftjoin('anggota','anggota.id','=','gtc_pengajuan.id_anggota')
             ->leftjoin('gtc_transaksi','gtc_transaksi.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')
-            ->select('gtc_pengajuan.*','gtc_pengajuan.id as idp','anggota.*','anggota.id as ida','gtc_transaksi.*','gtc_transaksi.id as idt','gtc_transaksi.tanggal_jatuh_tempo as tanggal_jatuh_tempot')
+            ->select('gtc_pengajuan.*','gtc_pengajuan.id as idp','gtc_pengajuan.created_at as created_atp',
+            'anggota.*','anggota.id as ida',
+            'gtc_transaksi.*','gtc_transaksi.id as idt','gtc_transaksi.tanggal_jatuh_tempo as tanggal_jatuh_tempot')
             ->groupby('gtc_transaksi.kode_pengajuan')
             ->where('gtc_pengajuan.status_akhir','Aktif')
             ->where('gtc_transaksi.status','Aktif')
             ->where('gtc_pengajuan.id_perwada', $perwada)
-            ->orderby('gtc_transaksi.created_at', 'desc')
+            ->orderby('gtc_pengajuan.created_at', 'asc')
             ->get();
             return view('backend.aktif_gtc.index', compact('data'));
         }else{
             $data = DB::table('gtc_pengajuan')
             ->leftjoin('anggota','anggota.id','=','gtc_pengajuan.id_anggota')
             ->leftjoin('gtc_transaksi','gtc_transaksi.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')
-            ->select('gtc_pengajuan.*','gtc_pengajuan.id as idp','anggota.*','anggota.id as ida','gtc_transaksi.*','gtc_transaksi.id as idt','gtc_transaksi.tanggal_jatuh_tempo as tanggal_jatuh_tempot')
-            ->groupby('gtc_transaksi.kode_pengajuan')
+            ->select('gtc_pengajuan.*','gtc_pengajuan.id as idp','gtc_pengajuan.created_at as created_atp',
+            'anggota.*','anggota.id as ida',
+            'gtc_transaksi.*','gtc_transaksi.id as idt','gtc_transaksi.tanggal_jatuh_tempo as tanggal_jatuh_tempot')
             ->where('gtc_pengajuan.status_akhir','Aktif')
             ->where('gtc_transaksi.status','Aktif')
-            ->orderby('gtc_transaksi.created_at', 'desc')
+            ->groupby('gtc_transaksi.kode_pengajuan')
+            ->orderby('gtc_pengajuan.created_at', 'asc')
             ->get();
             return view('backend.aktif_gtc.index', compact('data'));
         }
@@ -72,9 +76,7 @@ class AktifgtcController extends Controller
         ->where('gtc_transaksi.status', 'Aktif')
         ->first();
         $tanggal = DB::table('gtc_histori_transaksi')->where('kode_transaksi', $data2->kode_transaksi)->first();
-        $retanggal = explode(":", $tanggal->created_at);
-        $newtanggal = $retanggal[2]-1;
-        $finaltanggal = $retanggal[0].":".$retanggal[1].":".$newtanggal;
+        $finaltanggal = date('Y-m-d H:i:s', strtotime('-1 seconds', strtotime( $tanggal->created_at )));
         $pembayaran_pinjaman = DB::table('gtc_histori_transaksi')
         ->whereBetween('created_at', array('0000-00-00 00:00:00', $finaltanggal))
         ->where('kode_pengajuan', $kodepengajuan->kode_pengajuan)
@@ -148,9 +150,7 @@ class AktifgtcController extends Controller
         ->first();
 
         $tanggal = DB::table('gtc_histori_transaksi')->where('kode_transaksi', $data2->kode_transaksi)->first();
-        $retanggal = explode(":", $tanggal->created_at);
-        $newtanggal = $retanggal[2]-1;
-        $finaltanggal = $retanggal[0].":".$retanggal[1].":".$newtanggal;
+        $finaltanggal = date('Y-m-d H:i:s', strtotime('-1 seconds', strtotime( $tanggal->created_at )));
         $pembayaran_pinjaman = DB::table('gtc_histori_transaksi')
         ->whereBetween('created_at', array('0000-00-00 00:00:00', $finaltanggal))
         ->where('kode_pengajuan', $id)
@@ -222,7 +222,7 @@ class AktifgtcController extends Controller
         ->leftjoin('anggota','anggota.id','=','gtc_pengajuan.id_anggota')
         ->select('gtc_pengajuan.*','gtc_pengajuan.id as idp','anggota.*','anggota.id as ida','gtc_transaksi.*','gtc_transaksi.id as idt','gtc_transaksi.tanggal_jatuh_tempo as jatuh_tempo')
         ->where('gtc_transaksi.kode_pengajuan', $id)
-        ->orderby('gtc_transaksi.kode_pengajuan', 'desc')
+        ->orderby('gtc_transaksi.kode_transaksi', 'desc')
         ->get();
         return Datatables::of($transaksi)->editColumn('jatuh_tempo', function($transaksi)
         {
@@ -652,9 +652,7 @@ class AktifgtcController extends Controller
         ->get();
         $data2 = DB::table('gtc_transaksi')->where('id', $id)->first();
         $tanggal = DB::table('gtc_histori_transaksi')->where('kode_transaksi', $data2->kode_transaksi)->first();
-        $retanggal = explode(":", $tanggal->created_at);
-        $newtanggal = $retanggal[2]-1;
-        $finaltanggal = $retanggal[0].":".$retanggal[1].":".$newtanggal;
+        $finaltanggal = date('Y-m-d H:i:s', strtotime('-1 seconds', strtotime( $tanggal->created_at )));
         $pembayaran_pinjaman = DB::table('gtc_histori_transaksi')
         ->whereBetween('created_at', array('0000-00-00 00:00:00', $finaltanggal))
         ->where('kode_pengajuan', $kode2)
@@ -662,7 +660,7 @@ class AktifgtcController extends Controller
 
         $pengajuan = 0;
         foreach($data as $row){
-            $pengajuan = $row->pengajuan;
+            $pengajuan = (int) $row->pengajuan;
         }
         $fpembayaran_pinjaman = 0;
         foreach($pembayaran_pinjaman as $row){
@@ -778,9 +776,7 @@ class AktifgtcController extends Controller
     {
         $data = DB::table('gtc_emas')->where('kode_pengajuan', $kode)->get();
         $tanggal = DB::table('gtc_histori_transaksi')->where('kode_transaksi', $kode2)->first();
-        $retanggal = explode(":", $tanggal->created_at);
-        $newtanggal = $retanggal[2]-1;
-        $finaltanggal = $retanggal[0].":".$retanggal[1].":".$newtanggal;
+        $finaltanggal = date('Y-m-d H:i:s', strtotime('-1 seconds', strtotime( $tanggal->created_at )));
         $transaksi = DB::table('gtc_histori_transaksi')
         ->select(DB::raw('sum(keping) as total'))
         ->whereBetween('created_at', array('0000-00-00 00:00:00', $finaltanggal))
@@ -869,9 +865,7 @@ class AktifgtcController extends Controller
     {
         $data = DB::table('gtc_emas')->where('kode_pengajuan', $kode)->get();
         $tanggal = DB::table('gtc_histori_transaksi')->where('kode_transaksi', $kode2)->first();
-        $retanggal = explode(":", $tanggal->created_at);
-        $newtanggal = $retanggal[2]-1;
-        $finaltanggal = $retanggal[0].":".$retanggal[1].":".$newtanggal;
+        $finaltanggal = date('Y-m-d H:i:s', strtotime('-1 seconds', strtotime( $tanggal->created_at )));
         $transaksi = DB::table('gtc_histori_transaksi')
         ->select(DB::raw('sum(keping) as total'))
         ->whereBetween('created_at', array('0000-00-00 00:00:00', $finaltanggal))
@@ -961,7 +955,24 @@ class AktifgtcController extends Controller
     public function caridatatransaksi($id)
     {
         $data = DB::table('gtc_transaksi')->where('id', $id)->get();
-        return response()->json($data);
+        $data2 = DB::table('gtc_transaksi')->where('id', $id)->first();
+        $kodepengajuan = $data2->kode_pengajuan;
+        $tanggal = $data2->created_at;
+        $finaltanggal = date('Y-m-d H:i:s', strtotime('-1 seconds', strtotime( $tanggal )));
+        $cekaproval = DB::table('gtc_transaksi')
+        ->leftjoin('gtc_pengajuan', 'gtc_pengajuan.kode_pengajuan', 'gtc_transaksi.kode_pengajuan')
+        ->leftjoin('anggota','anggota.id','=','gtc_pengajuan.id_anggota')
+        ->select('gtc_pengajuan.*','gtc_pengajuan.id as idp','anggota.*','anggota.id as ida','gtc_transaksi.*','gtc_transaksi.id as idt')
+        ->where('gtc_transaksi.kode_pengajuan', $kodepengajuan)
+        ->whereBetween('gtc_transaksi.created_at', array('0000-00-00 00:00:00', $finaltanggal))
+        ->orderby('gtc_transaksi.created_at', 'desc')
+        ->first();
+
+        $print = [
+            'data' => $data,
+            'cekaproval' => $cekaproval,
+        ];
+        return response()->json($print);
     }
 
     public function uploadbuktitrf(Request $request, $id)
@@ -994,7 +1005,7 @@ class AktifgtcController extends Controller
 
     public function aprovalkeu($id, $id_anggota)
     {
-        $ceklastTransaksi = DB::table('gtc_transaksi')->where('sbte', '!=', '')->orderby('created_at', 'desc')->first();
+        $ceklastTransaksi = DB::table('gtc_transaksi')->where('sbte', '!=', '')->orderby('aproval_keu_tgl', 'desc')->first();
         if(empty($ceklastTransaksi->sbte)){
             $lastTransaksi = '062.13.11000000-04';
         }else{
@@ -1008,8 +1019,9 @@ class AktifgtcController extends Controller
         $kode3++;
         $kode4 = str_pad($kode3, 5, '0', STR_PAD_LEFT);
         // ==============
-        $user = Auth::user()->kantor;
-        $perwada = DB::table('perwada')->where('id', $user)->first();
+        $transaksi = DB::table('gtc_transaksi')->where('id', $id)->first();
+        $pengajuan = DB::table('gtc_pengajuan')->where('kode_pengajuan', $transaksi->kode_pengajuan)->first();
+        $perwada = DB::table('perwada')->where('id', $pengajuan->id_perwada)->first();
         $kodeperwada = $perwada->kode;
         $kodedefault = "13";
         $carigender = DB::table("anggota")->where('id', '1')->first();
@@ -1039,9 +1051,7 @@ class AktifgtcController extends Controller
         ->get();
         $data2 = DB::table('gtc_transaksi')->where('id', $kode)->first();
         $tanggal = DB::table('gtc_histori_transaksi')->where('kode_transaksi', $data2->kode_transaksi)->first();
-        $retanggal = explode(":", $tanggal->created_at);
-        $newtanggal = $retanggal[2]-1;
-        $finaltanggal = $retanggal[0].":".$retanggal[1].":".$newtanggal;
+        $finaltanggal = date('Y-m-d H:i:s', strtotime('-1 seconds', strtotime( $tanggal->created_at )));
         $pembayaran_pinjaman = DB::table('gtc_histori_transaksi')
         ->whereBetween('created_at', array('0000-00-00 00:00:00', $finaltanggal))
         ->where('kode_pengajuan', $kode2)
@@ -1071,9 +1081,7 @@ class AktifgtcController extends Controller
         $kd = DB::table('gtc_transaksi')->where('id', $kode)->first();
         // =============
         $tanggal = DB::table('gtc_histori_transaksi')->where('kode_transaksi', $kd->kode_transaksi)->first();
-        $retanggal = explode(":", $tanggal->created_at);
-        $newtanggal = $retanggal[2]-1;
-        $finaltanggal = $retanggal[0].":".$retanggal[1].":".$newtanggal;
+        $finaltanggal = date('Y-m-d H:i:s', strtotime('-1 seconds', strtotime( $tanggal->created_at )));
         $transaksi = DB::table('gtc_histori_transaksi')
         ->select(DB::raw('sum(keping) as total'))
         ->whereBetween('created_at', array('0000-00-00 00:00:00', $finaltanggal))
@@ -1242,6 +1250,11 @@ class AktifgtcController extends Controller
         DB::table('gtc_pengajuan')->where('id', $id)->update([
             'status_akhir' => 'Lunas'
         ]);
+    }
+
+    public function cetaksbte($id)
+    {
+        return view('backend.aktif_gtc.sbte');
     }
 
     /**

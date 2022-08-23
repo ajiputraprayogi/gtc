@@ -45,8 +45,8 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
+                                    <?php $no = 1; ?>
                                     <tbody>
-                                        <?php $no = 1; ?>
                                         @foreach($data as $row)
                                         <tr>
                                             <td>{{$no++}}</td>
@@ -104,7 +104,7 @@
                                             <td>
                                                 <a href="{{url('backend/transaksi-gtc/'.$row->idp)}}" class="action-icon"> <i class="mdi mdi-update"></i></a>
                                             </td>
-                                            <td hidden>{{$row->created_at}}</td>
+                                            <td hidden>{{$row->created_atp}}</td>
                                             <td>
                                                 <a href="view-transaksi-gtc.html" class="action-icon"> <i class="mdi mdi-card-search"></i></a>
                                             </td>

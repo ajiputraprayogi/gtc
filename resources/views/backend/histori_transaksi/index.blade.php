@@ -28,7 +28,7 @@
                         
                         <div class="tab-content">
                             <div class="tab-pane show active" id="scroll-horizontal-preview">
-                                <table id="scroll-horizontal-datatable" class="table table-striped w-100 nowrap">
+                                <table id="list-data" class="table table-striped w-100 nowrap">
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -39,15 +39,14 @@
                                             <th>Nomor BA</th>
                                             <th>Tanggal Sebelumnya</th>
                                             <th>Jangka Waktu</th>
+                                            <th hidden>created_at</th>
                                             <th>Tanggal Jatuh Tempo</th>
                                             <th>Nomor SBTE</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
+                                    <?php $no = 1; ?>
                                     <tbody>
-                                        @php
-                                            $no = 1;
-                                        @endphp
                                         @foreach($data as $row)
                                         <tr>
                                             <td>{{$no++}}</td>
@@ -121,6 +120,7 @@
                                                 $pecahkanjam3 = explode(':', $pecahkandata3[1]);
                                                 $tgljatuhtempo = $pecahkantgl3[2] . ' ' . $bulan3[(int)$pecahkantgl3[1]] . ' ' . $pecahkantgl3[0];
                                             @endphp
+                                            <td hidden>{{$row->created_att}}</td>
                                             <td>{{$tgljatuhtempo}}</td>
                                             <td>{{$row->sbte}}</td>
                                             <td><a href="{{url('backend/transaksi-gtc/'.$row->idp)}}">Detail</a></td>

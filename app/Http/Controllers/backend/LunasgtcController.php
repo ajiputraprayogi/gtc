@@ -31,7 +31,7 @@ class LunasgtcController extends Controller
             ->where('gtc_pengajuan.status_akhir','Lunas')
             ->where('gtc_transaksi.jenis_transaksi','Pelunasan')
             ->where('gtc_pengajuan.id_perwada', $perwada)
-            ->orderby('gtc_transaksi.created_at', 'desc')
+            ->orderby('gtc_pengajuan.created_at', 'asc')
             ->get();
             return view('backend.lunas_gtc.index', compact('data'));
         }else{
@@ -42,7 +42,7 @@ class LunasgtcController extends Controller
             ->groupby('gtc_transaksi.kode_pengajuan')
             ->where('gtc_pengajuan.status_akhir','Lunas')
             ->where('gtc_transaksi.jenis_transaksi','Pelunasan')
-            ->orderby('gtc_transaksi.created_at', 'desc')
+            ->orderby('gtc_pengajuan.created_at', 'asc')
             ->get();
             return view('backend.lunas_gtc.index', compact('data'));
         }

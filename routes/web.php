@@ -77,6 +77,7 @@ Route::prefix('backend')->group(function () {
     Route::put('/aproval-keu/{id}/{id_anggota}', 'backend\AktifgtcController@aprovalkeu');
     Route::get('/cek-pelunasan-gtc/{id}', 'backend\AktifgtcController@cekpelunasangtc');
     Route::get('/pelunasan-gtc/{id}', 'backend\AktifgtcController@pelunasangtc');
+    Route::get('/cetak-sbte/{id}', 'backend\AktifgtcController@cetaksbte');
 
     Route::resource('/lunas-gtc', 'backend\LunasgtcController');
     Route::resource('/histori-transaksi-gtc', 'backend\HistoritransaksigtcController');

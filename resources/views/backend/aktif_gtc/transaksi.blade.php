@@ -81,7 +81,7 @@
                                     <tr>
                                         <td>Perwada</td>
                                         @php
-                                            $nama_perwada = DB::table('perwada')->where('id', $perwada)->first();
+                                            $nama_perwada = DB::table('perwada')->where('id', $row->id_perwada)->first();
                                         @endphp
                                         <td id="transaksi_id_perwada">: {{$nama_perwada->nama}}</td>
                                     </tr>
