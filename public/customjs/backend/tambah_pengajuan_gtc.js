@@ -66,6 +66,7 @@ $('#cari').click(function(e){
     $('#tambah_old_kecamatan_domisili').val('')
     $('#tambah_old_kelurahan_domisili').val('')
     // ===================================================
+    $('#id_jenis_jasa').val('')
     $('#pilihan_jasa').val('')
     $('#perhitungan_jasa').val('')
     $('#jangka_waktu_1').val('')
@@ -216,6 +217,7 @@ $('#cari').click(function(e){
                     $('#tambah_old_kelurahan_domisili').val(item.kelurahan_domisili)
                 }),
                 $.each(data.jenisjasagtc, function(key, item){
+                    $('#id_jenis_jasa').val(item.id)
                     $('#pilihan_jasa').val(item.pilihan_jasa)
                     $('#perhitungan_jasa').val(item.perhitungan_jasa)
                     $('#jangka_waktu_1').val(item.jangka_waktu_1)
@@ -281,6 +283,7 @@ $("#btnaddpengajuan").on('click', function(e){
     || $('#nama_pemilik_rekening').val() == ''
     || $('#kode_transaksi').val() == ''
     || $('#jenis_transaksi').val() == ''
+    || $('#id_jenis_jasa').val() == ''
     || $('#pilihan_jasa').val() == ''
     || $('#perhitungan_jasa').val() == ''
     || $('#jangka_waktu_permohonan').val() == ''

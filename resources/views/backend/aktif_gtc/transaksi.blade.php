@@ -904,6 +904,7 @@
                                 <input type="hidden" id="tambah_plafond_pinjaman_hidden" name="tambah_plafond_pinjaman_hidden" class="form-control">
                                 <div class="col-md">
                                     <label for="fullname" class="form-label">Pilihan Jasa</label>
+                                    <input type="hidden" id="tambah_id_jenis_jasa" name="tambah_id_jenis_jasa" class="form-control">
                                     <input class="form-control" type="text" id="tambah_pilihan_jasa" name="tambah_pilihan_jasa" placeholder="Jasa diawal" readonly="">
                                 </div>
                                 <div class="col-md">
@@ -1531,6 +1532,7 @@
                                 <input type="hidden" id="edit_plafond_pinjaman_hidden" name="edit_plafond_pinjaman_hidden" class="form-control">
                                 <div class="col-md">
                                     <label for="fullname" class="form-label">Pilihan Jasa</label>
+                                    <input type="hidden" id="edit_id_jenis_jasa" name="edit_id_jenis_jasa" class="form-control">
                                     <input class="form-control" type="text" id="edit_pilihan_jasa" name="edit_pilihan_jasa" placeholder="Jasa diawal" readonly="">
                                 </div>
                                 <div class="col-md">

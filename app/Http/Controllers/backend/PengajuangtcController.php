@@ -216,10 +216,16 @@ class PengajuangtcController extends Controller
             // ============================== kode pengajuan
             $a = "A.";
             $kode = $a.substr($ba,-7);
-            $carikode = DB::table('gtc_pengajuan')
+            $pengajuan = DB::table('gtc_pengajuan')
             ->where('kode_pengajuan','like','%'.$kode.'%')
-            ->max('kode_pengajuan');
-            if(!$carikode){
+            ->orderby('created_at', 'desc')
+            ->first();
+            if(!$pengajuan){
+                $carikode = '0';
+            }else{
+                $carikode = $pengajuan->kode_pengajuan;
+            }
+            if($carikode == '0'){
                 $finalkode = $kode.'.1';
             }else{
                 $getnumber = explode('.', $carikode);
@@ -705,6 +711,7 @@ class PengajuangtcController extends Controller
             'kode_pengajuan' => $request->kode_pengajuan,
             'kode_transaksi' => $request->kode_transaksi,
             'jenis_transaksi' => $request->jenis_transaksi,
+            'id_jenis_jasa' => $request->id_jenis_jasa,
             'pilihan_jasa' => $request->pilihan_jasa,
             'perhitungan_jasa' => $request->perhitungan_jasa,
             'jangka_waktu_permohonan' => $request->jangka_waktu_permohonan,

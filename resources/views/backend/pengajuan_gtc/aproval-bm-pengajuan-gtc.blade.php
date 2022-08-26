@@ -4,6 +4,12 @@
 <link href="{{asset('assets/plugins/select2/css/select2.min.css')}}" rel="stylesheet" />
 <link rel="stylesheet" href="{{asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('customjs/backend/loading.css')}}">
+<style>
+#signature{
+ width: auto; height: 204px;
+ border: 1px solid black;
+}
+</style>
 @endsection
 @section('content') 
         <!-- start page title -->
@@ -530,6 +536,17 @@
                                 <label for="fullname" class="form-label">Catatan</label>
                                 <input class="form-control" type="text" placeholder="" id="fullname" name="catatan" required>
                             </div>
+                            <div class="mb-3">
+                                <label for="fullname" class="form-label">Tandatangan</label>
+                                <div id="signature">
+                                    <canvas id="signature-pad" class="signature-pad" style="width:100%; height:100%;"></canvas>
+                                </div><br/>
+                                <!-- <input type='button' id='click' value='preview'> -->
+                                <input type='button' id="clear" value='Hapus Tanda Tangan' class="btn btn-secondary"><br/>
+                                <textarea id='output' name="signed" style='display: none;'></textarea>
+                                <!-- Preview image -->
+                                <img src='' id='sign_prev' style='display: none;' />
+                            </div>
                             <button type="submit" id="btneditaprovalbm" class="btn btn-warning my-2">Simpan</button>
                         </form>
                         @endforeach
@@ -601,4 +618,52 @@
 <script src="{{asset('assets/plugins/select2/js/select2.min.js')}}"></script>
 <script src="{{asset('customjs/backend/aproval-bm-pengajuan-gtc.js')}}"></script>
 <script src="{{asset('customjs/backend/loading.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+<script>
+$(document).ready(function() {
+    var canvas = document.querySelector("canvas");
+    // var parentWidth = $(canvas).parent().outerWidth();
+    // var parentHeight = $(canvas).parent().outerHeight();
+    // canvas.setAttribute("width", parentWidth);
+    // canvas.setAttribute("height", parentHeight);
+
+    this.signaturePad = new SignaturePad(canvas);
+
+    var signaturePad = new SignaturePad(document.getElementById('signature-pad'));
+    $('#signature-pad').click(function(){
+        var data = signaturePad.toDataURL('image/png');
+        $('#output').val(data);
+
+        $("#sign_prev").hide();
+        $("#sign_prev").attr("src",data);
+        // Open image in the browser
+        //window.open(data);
+    });
+    $('#aproval-bm-modal').on('shown.bs.modal',function(e){
+        let canvas = $("#signature-pad");
+        let parentWidth = $(canvas).parent().outerWidth();
+        let parentHeight = $(canvas).parent().outerHeight();
+        canvas.attr("width", parentWidth+'px')
+              .attr("height", parentHeight+'px');
+        signaturePad = new SignaturePad(canvas[0], {
+            backgroundColor: 'rgb(255, 255, 255)'
+        });
+    })
+    $('#aproval-bm-modal').on('hidden.bs.modal', function (e) {
+        signaturePad.clear();
+        $("#output").val('');
+    });
+    $(document).on('click','#aproval-bm-modal .clear',function(){
+        signaturePad.clear();
+        $("#output").val('');
+    });
+
+    var cancelButton = document.getElementById('clear');
+    cancelButton.addEventListener('click', function (event) {
+        signaturePad.clear();
+        $("#output").val('');
+    });
+})
+    
+ </script>
 @endpush

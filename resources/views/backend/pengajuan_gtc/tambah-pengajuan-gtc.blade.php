@@ -4,6 +4,12 @@
 <link href="{{asset('assets/plugins/select2/css/select2.min.css')}}" rel="stylesheet" />
 <link rel="stylesheet" href="{{asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('customjs/backend/loading.css')}}">
+<style>
+#signature{
+ width: auto; height: 204px;
+ border: 1px solid black;
+}
+</style>
 @endsection
 @section('content')
     <!-- start page title -->
@@ -281,6 +287,7 @@
                             <div class="row g-2">
                                 <div class="col-md">
                                     <label for="fullname" class="form-label">Pilihan Jasa</label>
+                                    <input type="hidden" id="id_jenis_jasa" name="id_jenis_jasa" class="form-control">
                                     <input class="form-control" type="text" id="pilihan_jasa"  name="pilihan_jasa" placeholder="Jasa diawal" readonly="">
                                 </div>
                                 <div class="col-md">
@@ -413,7 +420,7 @@
                                 <div class="card border-secondary border">
                                     <div class="card-body">
                                         <h5 class="card-title">Catatan :</h5>
-                                        <textarea name="catatan" id="catatan" cols="50" rows="10" style="height: 258px;"></textarea>
+                                        <textarea name="catatan" id="catatan" style="height: 258px; width: 100%;"></textarea>
                                     </div> <!-- end card-body-->
                                 </div> <!-- end card-->
                             </div>
@@ -421,11 +428,19 @@
                                 <div class="card border-secondary border">
                                     <div class="card-body">
                                         <h5 class="card-title">Tandatangan :</h5>
-                                            <br/>
+                                            <!-- <br/>
                                             <div id="sig" ></div>
                                             <br/>
                                             <button class="btn btn-danger" id="clear">Hapus Tanda Tangan</button>
-                                            <textarea id="signature64" name="signed" style="display: none"></textarea>
+                                            <textarea id="signature64" name="signed" style="display: none"></textarea> -->
+                                            <div id="signature">
+                                                <canvas id="signature-pad" class="signature-pad" style="width:100%; height:100%;"></canvas>
+                                            </div><br/>
+                                            <!-- <input type='button' id='click' value='preview'> -->
+                                            <input type='button' id="clear" value='Hapus Tanda Tangan' class="btn btn-danger"><br/>
+                                            <textarea id='output' name="signed" style='display: none;'></textarea>
+                                            <!-- Preview image -->
+                                            <img src='' id='sign_prev' style='display: none;' />
                                     </div> <!-- end card-body-->
                                 </div> <!-- end card-->
                             </div>
@@ -922,6 +937,7 @@
 <script src="{{asset('assets/plugins/select2/js/select2.min.js')}}"></script>
 <script src="{{asset('customjs/backend/tambah_pengajuan_gtc.js')}}"></script>
 <script src="{{asset('customjs/backend/loading.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
 <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css"> -->
   
     <!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>  -->
@@ -931,21 +947,50 @@
     <script type="text/javascript" src="{{asset('assets/signature/js/jquery.signature.min.js')}}"></script>
     <link rel="stylesheet" type="text/css" href="{{asset('assets/signature/css/jquery.signature.css')}}">
   
-    <style>
-        .kbw-signature { width: 400px; height: 200px;}
+    <!-- <style>
+        .kbw-signature { width: 100%; height: 200px;}
         #sig canvas{
             width: 100% !important;
             height: auto;
         }
-    </style>
-    <script type="text/javascript">
-    var sig = $('#sig').signature({syncField: '#signature64', syncFormat: 'PNG'});
-    $('#clear').click(function(e) {
-        e.preventDefault();
-        sig.signature('clear');
-        $("#signature64").val('');
+    </style> -->
+    <!-- <script type="text/javascript">
+        var sig = $('#sig').signature({syncField: '#signature64', syncFormat: 'PNG'});
+        $('#clear').click(function(e) {
+            e.preventDefault();
+            sig.signature('clear');
+            $("#signature64").val('');
+        });
+    </script> -->
+<script>
+$(document).ready(function() {
+    var canvas = document.querySelector("canvas");
+    var parentWidth = $(canvas).parent().outerWidth();
+    var parentHeight = $(canvas).parent().outerHeight();
+
+    canvas.setAttribute("width", parentWidth);
+    canvas.setAttribute("height", parentHeight);
+
+    this.signaturePad = new SignaturePad(canvas);
+
+    var signaturePad = new SignaturePad(document.getElementById('signature-pad'));
+    $('#signature-pad').click(function(){
+        var data = signaturePad.toDataURL('image/png');
+        $('#output').val(data);
+
+        $("#sign_prev").hide();
+        $("#sign_prev").attr("src",data);
+        // Open image in the browser
+        //window.open(data);
     });
-</script>
+    var cancelButton = document.getElementById('clear');
+    cancelButton.addEventListener('click', function (event) {
+        signaturePad.clear();
+        $("#output").val('');
+    });
+})
+    
+ </script>
 <!-- <script>
     getdataemasgtc();
     function getdataemasgtc(){

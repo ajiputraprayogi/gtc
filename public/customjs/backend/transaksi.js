@@ -591,6 +591,7 @@ function tambahtransaksi(kode){
                     $('#hidden_tambah_nominal_pinjaman').val(data.nominalpinjaman);
                     $('#tambah_sisa_pinjaman').val(data.nominalpinjaman.toLocaleString("id-ID"));
                     $('#hidden_tambah_sisa_pinjaman').val(data.nominalpinjaman);
+                    $('#tambah_id_jenis_jasa').val(value.id_jenis_jasa);
                     $('#tambah_pilihan_jasa').val(value.pilihan_jasa);
                     $('#tambah_perhitungan_jasa').val(value.perhitungan_jasa);
                 }),
@@ -2122,6 +2123,7 @@ function edittransaksi(kode){
                 $('#hidden_edit_pembayaran_pinjaman').val(data.fpembayaran_pinjaman2);
                 $('#edit_sisa_pinjaman').val(data.sisapinjaman.toLocaleString("id-ID"));
                 $('#hidden_edit_sisa_pinjaman').val(data.sisapinjaman);
+                $('#edit_id_jenis_jasa').val(value.id_jenis_jasa);
                 $('#edit_pilihan_jasa').val(value.pilihan_jasa);
                 $('#edit_perhitungan_jasa').val(value.perhitungan_jasa);
                 $('#edit_jangka_waktu_permohonan').val(value.jangka_waktu_permohonan);
@@ -2198,6 +2200,7 @@ $('#btnedittransaksi').on('click', function(e){
                         $('#hidden_edit_pembayaran_pinjaman').val('');
                         $('#edit_sisa_pinjaman').val('');
                         $('#hidden_edit_sisa_pinjaman').val('');
+                        $('#edit_id_jenis_jasa').val('');
                         $('#edit_pilihan_jasa').val('');
                         $('#edit_perhitungan_jasa').val('');
                         $('#edit_jangka_waktu_permohonan').val('');
@@ -2272,6 +2275,7 @@ $('#btnedittransaksi').on('click', function(e){
                             $('#hidden_edit_pembayaran_pinjaman').val('');
                             $('#edit_sisa_pinjaman').val('');
                             $('#hidden_edit_sisa_pinjaman').val('');
+                            $('#edit_id_jenis_jasa').val('');
                             $('#edit_pilihan_jasa').val('');
                             $('#edit_perhitungan_jasa').val('');
                             $('#edit_jangka_waktu_permohonan').val('');
@@ -2346,6 +2350,7 @@ $('#btnedittransaksi').on('click', function(e){
                             $('#hidden_edit_pembayaran_pinjaman').val('');
                             $('#edit_sisa_pinjaman').val('');
                             $('#hidden_edit_sisa_pinjaman').val('');
+                            $('#edit_id_jenis_jasa').val('');
                             $('#edit_pilihan_jasa').val('');
                             $('#edit_perhitungan_jasa').val('');
                             $('#edit_jangka_waktu_permohonan').val('');

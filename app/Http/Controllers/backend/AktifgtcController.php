@@ -371,6 +371,7 @@ class AktifgtcController extends Controller
                 'kode_pengajuan' => $request->tambah_kode_pengajuan,
                 'kode_transaksi' => $request->tambah_kode_transaksi,
                 'jenis_transaksi' =>$request->tambah_jenis_transaksi,
+                'id_jenis_jasa' => $request->tambah_id_jenis_jasa,
                 'pilihan_jasa' => $request->tambah_pilihan_jasa,
                 'perhitungan_jasa' => $request->tambah_perhitungan_jasa,
                 'jangka_waktu_permohonan' => $request->tambah_jangka_waktu_permohonan,
@@ -423,6 +424,7 @@ class AktifgtcController extends Controller
                 'kode_pengajuan' => $request->tambah_kode_pengajuan,
                 'kode_transaksi' => $request->tambah_kode_transaksi,
                 'jenis_transaksi' =>$request->tambah_jenis_transaksi,
+                'id_jenis_jasa' => $request->tambah_id_jenis_jasa,
                 'pilihan_jasa' => $request->tambah_pilihan_jasa,
                 'perhitungan_jasa' => $request->tambah_perhitungan_jasa,
                 'jangka_waktu_permohonan' => $request->tambah_jangka_waktu_permohonan,
@@ -475,6 +477,7 @@ class AktifgtcController extends Controller
                 'kode_pengajuan' => $request->tambah_kode_pengajuan,
                 'kode_transaksi' => $request->tambah_kode_transaksi,
                 'jenis_transaksi' =>$request->tambah_jenis_transaksi,
+                'id_jenis_jasa' => $request->tambah_id_jenis_jasa,
                 'pilihan_jasa' => $request->tambah_pilihan_jasa,
                 'perhitungan_jasa' => $request->tambah_perhitungan_jasa,
                 'jangka_waktu_permohonan' => '0',
@@ -548,6 +551,7 @@ class AktifgtcController extends Controller
         if($request->edit_jenis_transaksi == 'Perpanjangan'){
             DB::table('gtc_transaksi')->where('id', $id)->update([
                 'jenis_transaksi' =>$request->edit_jenis_transaksi,
+                'id_jenis_jasa' => $request->edit_id_jenis_jasa,
                 'pilihan_jasa' => $request->edit_pilihan_jasa,
                 'perhitungan_jasa' => $request->edit_perhitungan_jasa,
                 'jangka_waktu_permohonan' => $request->edit_jangka_waktu_permohonan,
@@ -581,6 +585,7 @@ class AktifgtcController extends Controller
             $jumlahtransfer = $pembayaran-$pembayaranpinjaman;
             DB::table('gtc_transaksi')->where('id', $id)->update([
                 'jenis_transaksi' =>$request->edit_jenis_transaksi,
+                'id_jenis_jasa' => $request->edit_id_jenis_jasa,
                 'pilihan_jasa' => $request->edit_pilihan_jasa,
                 'perhitungan_jasa' => $request->edit_perhitungan_jasa,
                 'jangka_waktu_permohonan' => $request->edit_jangka_waktu_permohonan,
@@ -613,6 +618,7 @@ class AktifgtcController extends Controller
             $jumlahtransfer = $pembayaran-$pembayaranpinjaman;
             DB::table('gtc_transaksi')->where('id', $id)->update([
                 'jenis_transaksi' =>$request->edit_jenis_transaksi,
+                'id_jenis_jasa' => $request->edit_id_jenis_jasa,
                 'pilihan_jasa' => $request->edit_pilihan_jasa,
                 'perhitungan_jasa' => $request->edit_perhitungan_jasa,
                 'jangka_waktu_permohonan' => '0',
@@ -698,7 +704,8 @@ class AktifgtcController extends Controller
     {
         $data = DB::table('gtc_emas')->where('kode_pengajuan', $kode)->get();
         $transaksi = DB::table('gtc_histori_transaksi')->select(DB::raw('sum(keping) as total'))->where('kode_pengajuan', $kode)->groupby('id_emas')->get();
-        $jenisjasagtc = DB::table('gtc_jenis_jasa')->where('status', 'Active')->get();
+        $idjenisjasa = DB::table('gtc_pengajuan')->leftjoin('gtc_transaksi','gtc_transaksi.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')->where('gtc_transaksi.kode_pengajuan', $kode)->first();
+        $jenisjasagtc = DB::table('gtc_jenis_jasa')->where('id', $idjenisjasa->id_jenis_jasa)->get();
         $totalkeping = DB::table('gtc_emas')->where('kode_pengajuan', $kode)->sum('keping');
         $tkeping = 0;
         foreach($transaksi as $row){
@@ -783,7 +790,8 @@ class AktifgtcController extends Controller
         ->where('kode_pengajuan', $kode)
         ->groupby('id_emas')
         ->get();
-        $jenisjasagtc = DB::table('gtc_jenis_jasa')->where('status', 'Active')->get();
+        $idjenisjasa = DB::table('gtc_pengajuan')->leftjoin('gtc_transaksi','gtc_transaksi.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')->where('gtc_transaksi.kode_pengajuan', $kode)->first();
+        $jenisjasagtc = DB::table('gtc_jenis_jasa')->where('id', $idjenisjasa->id_jenis_jasa)->get();
         $totalkeping = DB::table('gtc_emas')->where('kode_pengajuan', $kode)->sum('keping');
         $tkeping = 0;
         foreach($transaksi as $row){
@@ -873,7 +881,8 @@ class AktifgtcController extends Controller
         ->groupby('id_emas')
         ->get();
         $historitransaksi = DB::table('gtc_histori_transaksi')->where('kode_transaksi', $kode2)->get();
-        $jenisjasagtc = DB::table('gtc_jenis_jasa')->where('status', 'Active')->get();
+        $idjenisjasa = DB::table('gtc_pengajuan')->leftjoin('gtc_transaksi','gtc_transaksi.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')->where('gtc_transaksi.kode_pengajuan', $kode)->first();
+        $jenisjasagtc = DB::table('gtc_jenis_jasa')->where('id', $idjenisjasa->id_jenis_jasa)->get();
         $totalkeping = DB::table('gtc_emas')->where('kode_pengajuan', $kode)->sum('keping');
         $tkeping = 0;
         foreach($transaksi as $row){
@@ -1088,7 +1097,8 @@ class AktifgtcController extends Controller
         ->where('kode_pengajuan', $kode2)
         ->groupby('id_emas')
         ->get();
-        $jenisjasagtc = DB::table('gtc_jenis_jasa')->where('status', 'Active')->get();
+        $idjenisjasa = DB::table('gtc_pengajuan')->leftjoin('gtc_transaksi','gtc_transaksi.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')->where('gtc_transaksi.kode_pengajuan', $kode)->first();
+        $jenisjasagtc = DB::table('gtc_jenis_jasa')->where('id', $idjenisjasa->id_jenis_jasa)->get();
         $totalkeping = DB::table('gtc_emas')->where('kode_pengajuan', $kode2)->sum('keping');
         $tkeping = 0;
         foreach($transaksi as $row){
@@ -1167,7 +1177,8 @@ class AktifgtcController extends Controller
         ->orderby('gtc_transaksi.kode_pengajuan', 'desc')
         ->get();
         // dd($data);
-        $jenisjasagtc = DB::table('gtc_jenis_jasa')->where('status', 'Active')->get();
+        $idjenisjasa = DB::table('gtc_pengajuan')->leftjoin('gtc_transaksi','gtc_transaksi.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')->where('gtc_transaksi.kode_pengajuan', $kode)->first();
+        $jenisjasagtc = DB::table('gtc_jenis_jasa')->where('id', $idjenisjasa->id_jenis_jasa)->get();
         $emas = DB::table('gtc_emas')->where('kode_pengajuan', $kode2)->get();
         $hargaharian = DB::table('gtc_harga_harian')->where('status', 'Active')->first();
         $totalbuyback = 0;
@@ -1300,7 +1311,8 @@ class AktifgtcController extends Controller
         ->where('kode_pengajuan', $kode2)
         ->groupby('id_emas')
         ->get();
-        $jenisjasagtc = DB::table('gtc_jenis_jasa')->where('status', 'Active')->get();
+        $idjenisjasa = DB::table('gtc_pengajuan')->leftjoin('gtc_transaksi','gtc_transaksi.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')->where('gtc_transaksi.kode_pengajuan', $kode)->first();
+        $jenisjasagtc = DB::table('gtc_jenis_jasa')->where('id', $idjenisjasa->id_jenis_jasa)->get();
         $totalkeping = DB::table('gtc_emas')->where('kode_pengajuan', $kode2)->sum('keping');
         $tkeping = 0;
         foreach($transaksi as $row){
