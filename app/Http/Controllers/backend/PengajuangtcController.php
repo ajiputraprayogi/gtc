@@ -31,6 +31,7 @@ class PengajuangtcController extends Controller
             ->select('gtc_pengajuan.*','anggota.nomor_ba','anggota.nama_lengkap',DB::raw('SUM(gtc_emas.gramasi*keping)as total_gramasi'),DB::raw('SUM(gtc_emas.harga_buyback*keping)as total_buyback'))
             ->where('gtc_pengajuan.id_perwada',$perwada)
             ->groupby('gtc_pengajuan.id')
+            ->orderby('gtc_pengajuan.created_at', 'asc')
             ->get();
             return view('backend.pengajuan_gtc.index', compact('data'));
         }else{
@@ -39,6 +40,7 @@ class PengajuangtcController extends Controller
             ->leftjoin('gtc_emas','gtc_emas.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')
             ->select('gtc_pengajuan.*','anggota.nomor_ba','anggota.nama_lengkap',DB::raw('SUM(gtc_emas.gramasi*keping)as total_gramasi'),DB::raw('SUM(gtc_emas.harga_buyback*keping)as total_buyback'))
             ->groupby('gtc_pengajuan.id')
+            ->orderby('gtc_pengajuan.created_at', 'asc')
             ->get();
             return view('backend.pengajuan_gtc.index', compact('data'));
         }

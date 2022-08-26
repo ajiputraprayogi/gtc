@@ -52,7 +52,7 @@ $(function () {
                     if(perwada !== 1){
                         return '<a onclick="viewtransaksi('+ row['id'] +')" class="action-icon" title="View Transaksi"> <i class="mdi mdi-card-search"></i></a> <a onclick="jasadiakhir('+ row['id'] +')" class="action-icon" title="Transaksi Jasa Di akhir"> <i class="mdi mdi-receipt"></i></a> <a href="javascript:void(0);" class="action-icon" data-bs-container="#tooltip-container2" data-bs-toggle="tooltip" title="Cetak SBTE"> <i class="mdi mdi-printer-outline"></i></a>'
                     }else{
-                        return '<a onclick="viewtransaksi('+ row['id'] +')" class="action-icon" title="View Transaksi"> <i class="mdi mdi-card-search"></i></a> <a onclick="uploadbuktitrf('+ row['id'] +')" class="action-icon" title="Upload trf"> <i class="mdi mdi-file-upload"></i></a><a onclick="edittransaksi('+ row['id'] +')" class="action-icon" title="Edit Transaksi"> <i class="mdi mdi-file-edit"></i></a> <a onclick="jasadiakhir('+ row['id'] +')" class="action-icon" title="Transaksi Jasa Di akhir"> <i class="mdi mdi-receipt"></i></a><a onclick="aprovalopr('+ row['id'] +')" class="action-icon" title="Aproval OPR"> <i class="mdi mdi-check-circle"></i></a><a onclick="aprovalkeu('+ row['id'] +')" class="action-icon" title="Aproval Kasir"> <i class="mdi mdi-check-circle"></i></a> <a href="javascript:void(0);" class="action-icon" data-bs-container="#tooltip-container2" data-bs-toggle="tooltip" title="Cetak SBTE"> <i class="mdi mdi-printer-outline"></i></a>'
+                        return '<a onclick="viewtransaksi('+ row['id'] +')" class="action-icon" title="View Transaksi"> <i class="mdi mdi-card-search"></i></a> <a onclick="uploadbuktitrf('+ row['id'] +')" class="action-icon" title="Upload trf"> <i class="mdi mdi-file-upload"></i></a><a onclick="edittransaksi('+ row['id'] +')" class="action-icon" title="Edit Transaksi"> <i class="mdi mdi-file-edit"></i></a> <a onclick="jasadiakhir('+ row['id'] +')" class="action-icon" title="Transaksi Jasa Di akhir"> <i class="mdi mdi-receipt"></i></a><a onclick="aprovalopr('+ row['id'] +')" class="action-icon" title="Aproval OPR"> <i class="mdi mdi-check-circle"></i></a><a onclick="aprovalkeu('+ row['id'] +')" class="action-icon" title="Aproval Kasir"> <i class="mdi mdi-check-circle"></i></a> <a href="/backend/cetak-sbte/'+ row['id'] +'/'+ row['kode_pengajuan'] +'" class="action-icon" title="Cetak SBTE"> <i class="mdi mdi-printer-outline"></i></a>'
                     }
                 },
                 "className": 'text-center',
@@ -1016,7 +1016,7 @@ function getdataemasgtc2() {
             $('#bodyemasselanjutnya').html(rows);
             $("#footemasselanjutnya").html('<tr><th>Total</th><th></th><th></th><th></th><th id="total_keping2">'+ data.fkeping +' Keping</th><th id="total_gramasi2">'+ data.fgramasi.toFixed(1) +' Gram</th><th id="total_buyback2">Rp '+ (data.totalbuyback).toLocaleString("id-ID") +'</th></tr>');
             $('#total_buyback2_hidden').val(data.totalbuyback).trigger('change')
-            getTotal();
+            getTotal2();
             keping();
         }, complete: function () {
             $('#panel').loading('stop');
@@ -3033,7 +3033,7 @@ function uploadbuktitrf(kode){
         type: 'GET',
         url: '/backend/cari-data-transaksi/' + kode,
         success: function (data) {
-            $.each(data, function(key, value){
+            $.each(data.data, function(key, value){
                 $('#buktitrf_id_transaksi').val(value.id)
                 var now = new Date();
                 var day = ("0" + now.getDate()).slice(-2);
@@ -3321,7 +3321,7 @@ function aprovalopr(kode){
         type: 'GET',
         url: '/backend/cari-data-transaksi/' + kode,
         success: function (data) {
-            $.each(data, function(key, value){
+            $.each(data.data, function(key, value){
                 $('#aprovalopr_id_transaksi').val(value.id)
             })
         },
@@ -3380,12 +3380,26 @@ function aprovalkeu(kode){
         type: 'GET',
         url: '/backend/cari-data-transaksi/' + kode,
         success: function (data) {
-            $.each(data, function(key, value){
-                $('#aprovalkeu_id_transaksi').val(value.id)
-            })
+            if(!data.cekaproval){
+                $.each(data.data, function(key, value){
+                    $('#aprovalkeu_id_transaksi').val(value.id)
+                })
+                $('#warning-aproval-keu').modal('show')
+            }else if(data.cekaproval.aproval_keu !=='Y'){
+                swalWithBootstrapButtons.fire({
+                    title: 'Maaf',
+                    text: 'Transaksi sebelumnya belum di aproval',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }else{
+                $.each(data.data, function(key, value){
+                    $('#aprovalkeu_id_transaksi').val(value.id)
+                })
+                $('#warning-aproval-keu').modal('show')
+            }
         },
         complete: function(){
-            $('#warning-aproval-keu').modal('show')
             $('#panel').loading('stop')
         }
     })
