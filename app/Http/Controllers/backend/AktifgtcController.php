@@ -1097,7 +1097,7 @@ class AktifgtcController extends Controller
         ->where('kode_pengajuan', $kode2)
         ->groupby('id_emas')
         ->get();
-        $idjenisjasa = DB::table('gtc_pengajuan')->leftjoin('gtc_transaksi','gtc_transaksi.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')->where('gtc_transaksi.kode_pengajuan', $kode)->first();
+        $idjenisjasa = DB::table('gtc_pengajuan')->leftjoin('gtc_transaksi','gtc_transaksi.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')->where('gtc_transaksi.kode_pengajuan', $kode2)->first();
         $jenisjasagtc = DB::table('gtc_jenis_jasa')->where('id', $idjenisjasa->id_jenis_jasa)->get();
         $totalkeping = DB::table('gtc_emas')->where('kode_pengajuan', $kode2)->sum('keping');
         $tkeping = 0;

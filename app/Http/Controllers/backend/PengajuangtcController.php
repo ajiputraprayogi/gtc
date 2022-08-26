@@ -89,9 +89,31 @@ class PengajuangtcController extends Controller
         $angkabulan = $bulan;
         $namabulan = $bulan_indonesia[$angkabulan];
         $tanggalaprovalbm = $tgl.' '.$namabulan.' '.$tahun.' '.$jam;
+
+        if(!$request->signed == ''){
+            $folderPath = public_path('tandatangan_bm/');
+            
+            $image_parts = explode(";base64,", $request->signed);
+                  
+            $image_type_aux = explode("image/", $image_parts[0]);
+               
+            $image_type = $image_type_aux[1];
+               
+            $image_base64 = base64_decode($image_parts[1]);
+            
+            $nama = uniqid().'.'.$image_type;
+    
+            $file = $folderPath . $nama;
+            file_put_contents($file, $image_base64);
+        }else{
+            $nama = $request->old_tanda_tangan;
+        }
+
+
         DB::table('gtc_pengajuan')->where('id', $id)->update([
             'aproval_bm' => $request->status,
             'catatan_bm' => $request->catatan,
+            'tanda_tangan_bm' => $nama,
             "tgl_aproval_bm" => \Carbon\Carbon::now(),
         ]);
     }
@@ -1234,5 +1256,19 @@ class PengajuangtcController extends Controller
             ]);
             $index++;
         }
+    }
+
+    public function printpengajuangtc($id)
+    {
+        $data = DB::table('gtc_pengajuan')
+        ->leftjoin('anggota','anggota.id','=','gtc_pengajuan.id_anggota')
+        ->leftjoin('gtc_transaksi','gtc_transaksi.kode_transaksi','=','gtc_pengajuan.kode_transaksi')
+        ->select('gtc_pengajuan.*','gtc_pengajuan.id as idp','anggota.*','anggota.id as ida','gtc_transaksi.*','gtc_transaksi.id as idt')
+        ->where('gtc_pengajuan.id', $id)
+        ->get();
+        $emas_syirkah = DB::table('item_emas_syirkah')->get();
+        $hargaharian = DB::table('gtc_harga_harian')->where('status', 'Active')->get();
+        $emas_gtc = DB::table('gtc_emas')->get();
+        return view('backend.pengajuan_gtc.print-pengajuan-gtc', compact('data','emas_syirkah','hargaharian','emas_gtc'));
     }
 }

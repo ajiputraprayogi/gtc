@@ -517,9 +517,12 @@ function gethistorianggota(){
 $(document).ready(function(){
     $.ajax({
         type: "GET",
-        url: "https://dev.farizdotid.com/api/daerahindonesia/provinsi",
+        crossDomain: true,
+        dataType: 'jsonp',
+        url: "https://api.iluzi.id/region",
         success: function(hasil){
-            hasil = hasil.provinsi
+            hasil = hasil.data
+            
             hasilAkhir = []
             hasilAkhir.push("<option value=''>Provinsi</option>");
             hasil.forEach(element => {

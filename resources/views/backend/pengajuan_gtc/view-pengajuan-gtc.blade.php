@@ -30,7 +30,7 @@
                     
                     <div class="row mb-2">
                         <div class="col-4">
-                            <a class="btn btn-success mb-2"><i class="mdi mdi-printer"></i>Print</a>
+                            <a onclick="window.open('{{url('backend/print-pengajuan-gtc/'.$row->idp)}}')" class="btn btn-success mb-2"><i class="mdi mdi-printer"></i>Print</a>
                         </div>
                         <div class="col-4">
                             <a href="{{url('backend/pengajuan-gtc')}}" class="btn btn-info mb-2"><i class="mdi mdi-arrow-left-bold-circle-outline"></i> Kembali</a>
@@ -388,10 +388,10 @@
                                             </thead>
                                             <tbody>
                                             <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
+                                                <td style="width: 25%;"><img src="{{asset('/'.$row->tanda_tangan_bm)}}" alt="image" class="img-fluid rounded" width="350"/></td>
+                                                <td style="width: 25%;"><img src="{{asset('tandatangan_bm/'.$row->tanda_tangan_bm)}}" alt="image" class="img-fluid rounded" width="350"/></td>
+                                                <td style="width: 25%;"><img src="{{asset('/'.$row->tanda_tangan_bm)}}" alt="image" class="img-fluid rounded" width="350"/></td>
+                                                <td style="width: 25%;"><img src="{{asset('/'.$row->tanda_tangan_bm)}}" alt="image" class="img-fluid rounded" width="350"/></td>
                                             </tbody>
                                         </table>
                                     </div>

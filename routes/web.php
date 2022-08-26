@@ -42,6 +42,7 @@ Route::prefix('backend')->group(function () {
     Route::get('/view-pengajuan-gtc/{id}', 'backend\PengajuangtcController@viewpengajuangtc');
     Route::get('/edit-pengajuan-gtc/{id}', 'backend\PengajuangtcController@editpengajuangtc');
     Route::get('/del-pengajuan-gtc', 'backend\PengajuangtcController@delpengajuangtc');
+    Route::get('/print-pengajuan-gtc/{id}', 'backend\PengajuangtcController@printpengajuangtc');
     Route::get('/view-histori-pengajuan/{id}', 'backend\PengajuangtcController@viewhistoripengajuan');
     Route::delete('/restore-histori-pengajuan/{id}', 'backend\PengajuangtcController@restorehistoripengajuan');
     Route::get('/cari-nomor-ba/{id}', 'backend\PengajuangtcController@carinomorba');
