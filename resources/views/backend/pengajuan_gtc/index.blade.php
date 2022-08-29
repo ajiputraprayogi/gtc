@@ -67,9 +67,9 @@
                                     <th>Nominal Permohonan</th>
                                     <th>Status Akhir</th>
                                     <th>Status Aproval</th>
+                                    <th>Apvl BM</th>
                                     @if($user_id != '1')
                                     @else
-                                        <th>Apvl BM</th>
                                         <th>Apvl Opr</th>
                                         <th>Apvl Keu</th>
                                     @endif
@@ -208,15 +208,9 @@
                                             @endif
                                         @endif
                                     </td>
-                                    @if($user_id != '1')
-                                    @else
                                     <td>
-                                        @if($user_id != '1')
-                                        @else
                                         <a href="{{url('backend/aproval-bm-pengajuan-gtc/'.$row->id)}}" class="action-icon"> <i class="mdi mdi-book-arrow-right-outline"></i></a>
-                                        @endif
                                     </td>
-                                    @endif
 
                                     @if($user_id != '1')
                                     @else

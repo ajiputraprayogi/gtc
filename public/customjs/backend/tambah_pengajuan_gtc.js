@@ -519,10 +519,9 @@ $(document).ready(function(){
         type: "GET",
         crossDomain: true,
         dataType: 'jsonp',
-        url: "https://api.iluzi.id/region",
+        url: "https://dev.farizdotid.com/api/daerahindonesia/provinsi",
         success: function(hasil){
-            hasil = hasil.data
-            
+            hasil = hasil.provinsi
             hasilAkhir = []
             hasilAkhir.push("<option value=''>Provinsi</option>");
             hasil.forEach(element => {
