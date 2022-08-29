@@ -491,25 +491,47 @@ class PengajuangtcController extends Controller
                 'updated_at' => \Carbon\Carbon::now(),  # new \Datetime()
             ]);
         }
-        DB::table('anggota')->where('id', $id)->update([
-            'no_ktp' => $request->tambah_nomor_ktp,
-            'jenis_kelamin' => $request->tambah_jenis_kelamin,
-            'tempat_lahir' => $request->tambah_tempat_lahir,
-            'tanggal_lahir' => $request->tambah_tanggal_lahir,
-            'status_nikah' => $request->tambah_status_pernikahan,
-            'no_npwp' => $request->tambah_nomor_npwp,
-            'alamat_ktp' => $request->tambah_alamat_sesuai_ktp,
-            'provinsi_ktp' => $request->tambah_provinsi,
-            'kota_ktp' => $request->tambah_kota,
-            'kecamatan_ktp' => $request->tambah_kecamatan,
-            'kelurahan_ktp' => $request->tambah_kelurahan,
-            'alamat_tinggal' => $request->tambah_alamat_tinggal,
-            'provinsi_domisili' => $request->tambah_provinsi_domisili,
-            'kota_domisili' => $request->tambah_kota_kabupaten_domisili,
-            'kecamatan_domisili' => $request->tambah_kecamatan_domisili,
-            'kelurahan_domisili' => $request->tambah_kelurahan_domisili,
-            'updated_at' => \Carbon\Carbon::now(),  # new \Datetime()
-        ]);
+        if($request->tambah_alamat_tinggal == 'sesuai'){
+            DB::table('anggota')->where('id', $id)->update([
+                'no_ktp' => $request->tambah_nomor_ktp,
+                'jenis_kelamin' => $request->tambah_jenis_kelamin,
+                'tempat_lahir' => $request->tambah_tempat_lahir,
+                'tanggal_lahir' => $request->tambah_tanggal_lahir,
+                'status_nikah' => $request->tambah_status_pernikahan,
+                'no_npwp' => $request->tambah_nomor_npwp,
+                'alamat_ktp' => $request->tambah_alamat_sesuai_ktp,
+                'provinsi_ktp' => $request->tambah_provinsi,
+                'kota_ktp' => $request->tambah_kota,
+                'kecamatan_ktp' => $request->tambah_kecamatan,
+                'kelurahan_ktp' => $request->tambah_kelurahan,
+                'alamat_tinggal' => $request->tambah_alamat_tinggal,
+                'provinsi_domisili' => $request->tambah_provinsi,
+                'kota_domisili' => $request->tambah_kota,
+                'kecamatan_domisili' => $request->tambah_kecamatan,
+                'kelurahan_domisili' => $request->tambah_kelurahan,
+                'updated_at' => \Carbon\Carbon::now(),  # new \Datetime()
+            ]);
+        }else{
+            DB::table('anggota')->where('id', $id)->update([
+                'no_ktp' => $request->tambah_nomor_ktp,
+                'jenis_kelamin' => $request->tambah_jenis_kelamin,
+                'tempat_lahir' => $request->tambah_tempat_lahir,
+                'tanggal_lahir' => $request->tambah_tanggal_lahir,
+                'status_nikah' => $request->tambah_status_pernikahan,
+                'no_npwp' => $request->tambah_nomor_npwp,
+                'alamat_ktp' => $request->tambah_alamat_sesuai_ktp,
+                'provinsi_ktp' => $request->tambah_provinsi,
+                'kota_ktp' => $request->tambah_kota,
+                'kecamatan_ktp' => $request->tambah_kecamatan,
+                'kelurahan_ktp' => $request->tambah_kelurahan,
+                'alamat_tinggal' => $request->tambah_alamat_tinggal,
+                'provinsi_domisili' => $request->tambah_provinsi_domisili,
+                'kota_domisili' => $request->tambah_kota_kabupaten_domisili,
+                'kecamatan_domisili' => $request->tambah_kecamatan_domisili,
+                'kelurahan_domisili' => $request->tambah_kelurahan_domisili,
+                'updated_at' => \Carbon\Carbon::now(),  # new \Datetime()
+            ]);
+        }
     }
 
     public function historianggota($kode)

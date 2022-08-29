@@ -200,9 +200,37 @@ $('#cari').click(function(e){
 
                     }
 
-                    if(item.kecamatan_ktp !== null){
-                        var kelurahan_ktp = item.kelurahan_ktp.split(',');
-                        $('#kelurahan').prepend("<option selected value='"+item.kelurahan_ktp+"'>"+kelurahan_ktp[1]+"</option>").val(item.kelurahan_ktp);
+                    if(item.kelurahan_ktp !== null){
+                        var kelurahan_ktp = item.kelurahan_ktp;
+                        $('#kelurahan').prepend("<option selected value='"+item.kelurahan_ktp+"'>"+kelurahan_ktp+"</option>").val(item.kelurahan_ktp);
+                    }else{
+
+                    }
+                    // ==========================================
+                    if(item.provinsi_domisili !== null){
+                        var provinsi_domisili = item.provinsi_domisili.split(',');
+                        $('#tambah_provinsi_domisili').prepend("<option selected value='"+item.provinsi_domisili+"'>"+provinsi_domisili[1]+"</option>").val(item.provinsi_domisili);
+                    }else{
+
+                    }
+                    
+                    if(item.kota_domisili !== null){
+                        var kota_domisili = item.kota_domisili.split(',');
+                        $('#tambah_kota_kabupaten_domisili').prepend("<option selected value='"+item.kota_domisili+"'>"+kota_domisili[1]+"</option>").val(item.kota_domisili);
+                    }else{
+
+                    }
+
+                    if(item.kecamatan_domisili !== null){
+                        var kecamatan_domisili = item.kecamatan_domisili.split(',');
+                        $('#tambah_kecamatan_domisili').prepend("<option selected value='"+item.kecamatan_domisili+"'>"+kecamatan_domisili[1]+"</option>").val(item.kecamatan_domisili);
+                    }else{
+
+                    }
+
+                    if(item.kelurahan_domisili !== null){
+                        var kelurahan_domisili = item.kelurahan_domisili;
+                        $('#tambah_kelurahan_domisili').prepend("<option selected value='"+item.kelurahan_domisili+"'>"+kelurahan_domisili+"</option>").val(item.kelurahan_domisili);
                     }else{
 
                     }
@@ -517,8 +545,6 @@ function gethistorianggota(){
 $(document).ready(function(){
     $.ajax({
         type: "GET",
-        crossDomain: true,
-        dataType: 'jsonp',
         url: "https://dev.farizdotid.com/api/daerahindonesia/provinsi",
         success: function(hasil){
             hasil = hasil.provinsi
@@ -605,7 +631,7 @@ $(document).ready(function(){
                     value = `${element.id},${name}`
                     hasilAkhir.push("<option value='"+value+"'>"+element.nama+"</option>");
                 });
-                $("#kelurahan").html(hasilAkhir);
+                // $("#kelurahan").html(hasilAkhir);
             }
         })
         

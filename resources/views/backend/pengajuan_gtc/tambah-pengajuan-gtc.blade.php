@@ -735,10 +735,11 @@
                         </div>
                         <div class="col-md">
                             <label for="fullname" class="form-label">Kelurahan</label>
-                            <select class="form-control" id="kelurahan" name="tambah_kelurahan" placeholder="Enter your name">
+                            <input class="form-control" id="kelurahan" name="tambah_kelurahan" placeholder="Kelurahan">
+                            <!-- <select class="form-control" id="kelurahan" name="tambah_kelurahan" placeholder="Enter your name">
                                 <option>Kelurahan</option>
                                 <option>Pilih Kelurahan Terlebih Dahulu</option>
-                            </select>
+                            </select> -->
                         </div>
                     </div><br>
 
@@ -783,10 +784,11 @@
                             </div>
                             <div class="col-md">
                                 <label for="fullname" class="form-label">Kelurahan</label>
-                                <select class="form-control" id="tambah_kelurahan_domisili" name="tambah_kelurahan_domisili" placeholder="Enter your name">
+                                <input class="form-control" id="tambah_kelurahan_domisili" name="tambah_kelurahan_domisili" placeholder="Kelurahan">
+                                <!-- <select class="form-control" id="tambah_kelurahan_domisili" name="tambah_kelurahan_domisili" placeholder="Enter your name">
                                     <option>Kelurahan</option>
                                     <option>Pilih Kelurahan Terlebih Dahulu</option>
-                                </select>
+                                </select> -->
                             </div>
                             <input type="hidden" class="form-control" id="tambah_old_provinsi">
                             <input type="hidden" class="form-control" id="tambah_old_kota">
