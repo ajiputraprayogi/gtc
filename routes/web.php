@@ -29,6 +29,10 @@ Route::prefix('backend')->group(function () {
     Route::get('/cari-data-jenis-jasa-gtc', 'backend\JenisjasagtcController@listdata');
     Route::get('/cari-data-jenis-jasa-gtc/{id}/edit', 'backend\JenisjasagtcController@caridetailjenisjasa');
 
+    Route::get('/whatsapp-gtc','backend\WhatsappGtcController@index');
+    Route::post('/whatsapp-gtc/edit','backend\WhatsappGtcController@edit')->name('edit-konten-wa');
+
+
     Route::resource('/pengajuan-gtc', 'backend\PengajuangtcController');
     Route::put('/tambah-data-cif-anggota/{id}', 'backend\PengajuangtcController@tambahdatacifanggota');
     Route::get('/cari-data-histori-anggota/{kode}', 'backend\PengajuangtcController@historianggota');
