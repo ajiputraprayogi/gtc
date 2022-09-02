@@ -209,7 +209,7 @@ $(function(){
                         // ======================================================================
                         $('#tambah_jangka_waktu_permohonan').change(function(){
                             if($(this).val() === '0.5'){
-                                if(parseFloat(data.fgramasi.toFixed(0))>=0.1 && parseFloat(data.fgramasi.toFixed(0))<=49.9){
+                                if(parseFloat(data.fgramasi)>=0.1 && parseFloat(data.fgramasi)<=49.9){
                                     jangka_waktu = $('#tambah_jangka_waktu_1').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#tambah_pengali_kurangdari_satudelapan_1').val()
@@ -220,7 +220,7 @@ $(function(){
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
                                     $('#tambah_jasa_gtc').val(hasiljasa).trigger("change")
                                     $('#tambah_pembayaran_jasa').val('Transfer').trigger("change")
-                                }else if(data.fgramasi.toFixed(0)>=50){
+                                }else if(data.fgramasi>=50){
                                     jangka_waktu = $('#tambah_jangka_waktu_1').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#tambah_pengali_diatas_dua_1').val()
@@ -233,7 +233,7 @@ $(function(){
                                     $('#tambah_pembayaran_jasa').val('Transfer').trigger("change")
                                 }
                             }else if($(this).val() === '1'){
-                                if(parseFloat(data.fgramasi.toFixed(0))>=0.1 && parseFloat(data.fgramasi.toFixed(0))<=49.9){
+                                if(parseFloat(data.fgramasi)>=0.1 && parseFloat(data.fgramasi)<=49.9){
                                     jangka_waktu = $('#tambah_jangka_waktu_2').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#tambah_pengali_kurangdari_satudelapan_2').val()
@@ -244,7 +244,7 @@ $(function(){
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
                                     $('#tambah_jasa_gtc').val(hasiljasa).trigger("change")
                                     $('#tambah_pembayaran_jasa').val('Transfer').trigger("change")
-                                }else if(data.fgramasi.toFixed(0)>=50){
+                                }else if(data.fgramasi>=50){
                                     jangka_waktu = $('#tambah_jangka_waktu_2').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#tambah_pengali_diatas_dua_2').val()
@@ -257,7 +257,7 @@ $(function(){
                                     $('#tambah_pembayaran_jasa').val('Transfer').trigger("change")
                                 }
                             }else if($(this).val() === '2'){
-                                if(parseFloat(data.fgramasi.toFixed(0))>=0.1 && parseFloat(data.fgramasi.toFixed(0))<=49.9){
+                                if(parseFloat(data.fgramasi)>=0.1 && parseFloat(data.fgramasi)<=49.9){
                                     jangka_waktu = $('#tambah_jangka_waktu_3').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#tambah_pengali_kurangdari_satudelapan_3').val()
@@ -268,7 +268,7 @@ $(function(){
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
                                     $('#tambah_jasa_gtc').val(hasiljasa).trigger("change")
                                     $('#tambah_pembayaran_jasa').val('Transfer').trigger("change")
-                                }else if(data.fgramasi.toFixed(0)>=50){
+                                }else if(data.fgramasi>=50){
                                     jangka_waktu = $('#tambah_jangka_waktu_3').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#tambah_pengali_diatas_dua_3').val()
@@ -382,7 +382,7 @@ $(function(){
                         $('#tambah_jangka_waktu_permohonan').change(function(){
                             var totalbuyback = $('#total_buyback2_hidden').val();
                             if($(this).val() === '0.5'){
-                                if(parseFloat(data.fgramasi.toFixed(0))>=0.1 && parseFloat(data.fgramasi.toFixed(0))<=49.9){
+                                if(parseFloat(data.fgramasi)>=0.1 && parseFloat(data.fgramasi)<=49.9){
                                     jangka_waktu = $('#tambah_jangka_waktu_1').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#tambah_pengali_kurangdari_satudelapan_1').val()
@@ -393,7 +393,7 @@ $(function(){
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
                                     $('#tambah_jasa_gtc').val(hasiljasa).trigger("change")
                                     $('#tambah_pembayaran_jasa').val('Transfer').trigger("change")
-                                }else if(data.fgramasi.toFixed(0)>=50){
+                                }else if(data.fgramasi>=50){
                                     jangka_waktu = $('#tambah_jangka_waktu_1').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#tambah_pengali_diatas_dua_1').val()
@@ -406,7 +406,7 @@ $(function(){
                                     $('#tambah_pembayaran_jasa').val('Transfer').trigger("change")
                                 }
                             }else if($(this).val() === '1'){
-                                if(parseFloat(data.fgramasi.toFixed(0))>=0.1 && parseFloat(data.fgramasi.toFixed(0))<=49.9){
+                                if(parseFloat(data.fgramasi)>=0.1 && parseFloat(data.fgramasi)<=49.9){
                                     jangka_waktu = $('#tambah_jangka_waktu_2').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#tambah_pengali_kurangdari_satudelapan_2').val()
@@ -417,7 +417,7 @@ $(function(){
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
                                     $('#tambah_jasa_gtc').val(hasiljasa).trigger("change")
                                     $('#tambah_pembayaran_jasa').val('Transfer').trigger("change")
-                                }else if(data.fgramasi.toFixed(0)>=50){
+                                }else if(data.fgramasi>=50){
                                     jangka_waktu = $('#tambah_jangka_waktu_2').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#tambah_pengali_diatas_dua_2').val()
@@ -430,7 +430,7 @@ $(function(){
                                     $('#tambah_pembayaran_jasa').val('Transfer').trigger("change")
                                 }
                             }else if($(this).val() === '2'){
-                                if(parseFloat(data.fgramasi.toFixed(0))>=0.1 && parseFloat(data.fgramasi.toFixed(0))<=49.9){
+                                if(parseFloat(data.fgramasi)>=0.1 && parseFloat(data.fgramasi)<=49.9){
                                     jangka_waktu = $('#tambah_jangka_waktu_3').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#tambah_pengali_kurangdari_satudelapan_3').val()
@@ -441,7 +441,7 @@ $(function(){
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
                                     $('#tambah_jasa_gtc').val(hasiljasa).trigger("change")
                                     $('#tambah_pembayaran_jasa').val('Transfer').trigger("change")
-                                }else if(data.fgramasi.toFixed(0)>=50){
+                                }else if(data.fgramasi>=50){
                                     jangka_waktu = $('#tambah_jangka_waktu_3').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#tambah_pengali_diatas_dua_3').val()
@@ -1162,7 +1162,7 @@ $(function(){
                         // ======================================================================
                         $('#edit_jangka_waktu_permohonan').change(function(){
                             if($(this).val() === '0.5'){
-                                if(parseFloat(data.fgramasi.toFixed(0))>=0.1 && parseFloat(data.fgramasi.toFixed(0))<=49.9){
+                                if(parseFloat(data.fgramasi)>=0.1 && parseFloat(data.fgramasi)<=49.9){
                                     jangka_waktu = $('#edit_jangka_waktu_1').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#edit_pengali_kurangdari_satudelapan_1').val()
@@ -1173,7 +1173,7 @@ $(function(){
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
                                     $('#edit_jasa_gtc').val(hasiljasa).trigger("change")
                                     $('#edit_pembayaran_jasa').val('Transfer').trigger("change")
-                                }else if(data.fgramasi.toFixed(0)>=50){
+                                }else if(data.fgramasi>=50){
                                     jangka_waktu = $('#edit_jangka_waktu_1').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#edit_pengali_diatas_dua_1').val()
@@ -1186,7 +1186,7 @@ $(function(){
                                     $('#edit_pembayaran_jasa').val('Transfer').trigger("change")
                                 }
                             }else if($(this).val() === '1'){
-                                if(parseFloat(data.fgramasi.toFixed(0))>=0.1 && parseFloat(data.fgramasi.toFixed(0))<=49.9){
+                                if(parseFloat(data.fgramasi)>=0.1 && parseFloat(data.fgramasi)<=49.9){
                                     jangka_waktu = $('#edit_jangka_waktu_2').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#edit_pengali_kurangdari_satudelapan_2').val()
@@ -1197,7 +1197,7 @@ $(function(){
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
                                     $('#edit_jasa_gtc').val(hasiljasa).trigger("change")
                                     $('#edit_pembayaran_jasa').val('Transfer').trigger("change")
-                                }else if(data.fgramasi.toFixed(0)>=50){
+                                }else if(data.fgramasi>=50){
                                     jangka_waktu = $('#edit_jangka_waktu_2').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#edit_pengali_diatas_dua_2').val()
@@ -1210,7 +1210,7 @@ $(function(){
                                     $('#edit_pembayaran_jasa').val('Transfer').trigger("change")
                                 }
                             }else if($(this).val() === '2'){
-                                if(parseFloat(data.fgramasi.toFixed(0))>=0.1 && parseFloat(data.fgramasi.toFixed(0))<=49.9){
+                                if(parseFloat(data.fgramasi)>=0.1 && parseFloat(data.fgramasi)<=49.9){
                                     jangka_waktu = $('#edit_jangka_waktu_3').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#edit_pengali_kurangdari_satudelapan_3').val()
@@ -1221,7 +1221,7 @@ $(function(){
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
                                     $('#edit_jasa_gtc').val(hasiljasa).trigger("change")
                                     $('#edit_pembayaran_jasa').val('Transfer').trigger("change")
-                                }else if(data.fgramasi.toFixed(0)>=50){
+                                }else if(data.fgramasi>=50){
                                     jangka_waktu = $('#edit_jangka_waktu_3').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#edit_pengali_diatas_dua_3').val()
@@ -1372,7 +1372,7 @@ $(function(){
                         $('#edit_jangka_waktu_permohonan').change(function(){
                             var totalbuyback = $('#edittotal_buyback2_hidden').val();
                             if($(this).val() === '0.5'){
-                                if(parseFloat(data.fgramasi.toFixed(0))>=0.1 && parseFloat(data.fgramasi.toFixed(0))<=49.9){
+                                if(parseFloat(data.fgramasi)>=0.1 && parseFloat(data.fgramasi)<=49.9){
                                     jangka_waktu = $('#edit_jangka_waktu_1').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#edit_pengali_kurangdari_satudelapan_1').val()
@@ -1383,7 +1383,7 @@ $(function(){
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
                                     $('#edit_jasa_gtc').val(hasiljasa).trigger("change")
                                     $('#edit_pembayaran_jasa').val('Transfer').trigger("change")
-                                }else if(data.fgramasi.toFixed(0)>=50){
+                                }else if(data.fgramasi>=50){
                                     jangka_waktu = $('#edit_jangka_waktu_1').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#edit_pengali_diatas_dua_1').val()
@@ -1396,7 +1396,7 @@ $(function(){
                                     $('#edit_pembayaran_jasa').val('Transfer').trigger("change")
                                 }
                             }else if($(this).val() === '1'){
-                                if(parseFloat(data.fgramasi.toFixed(0))>=0.1 && parseFloat(data.fgramasi.toFixed(0))<=49.9){
+                                if(parseFloat(data.fgramasi)>=0.1 && parseFloat(data.fgramasi)<=49.9){
                                     jangka_waktu = $('#edit_jangka_waktu_2').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#edit_pengali_kurangdari_satudelapan_2').val()
@@ -1407,7 +1407,7 @@ $(function(){
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
                                     $('#edit_jasa_gtc').val(hasiljasa).trigger("change")
                                     $('#edit_pembayaran_jasa').val('Transfer').trigger("change")
-                                }else if(data.fgramasi.toFixed(0)>=50){
+                                }else if(data.fgramasi>=50){
                                     jangka_waktu = $('#edit_jangka_waktu_2').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#edit_pengali_diatas_dua_2').val()
@@ -1420,7 +1420,7 @@ $(function(){
                                     $('#edit_pembayaran_jasa').val('Transfer').trigger("change")
                                 }
                             }else if($(this).val() === '2'){
-                                if(parseFloat(data.fgramasi.toFixed(0))>=0.1 && parseFloat(data.fgramasi.toFixed(0))<=49.9){
+                                if(parseFloat(data.fgramasi)>=0.1 && parseFloat(data.fgramasi)<=49.9){
                                     jangka_waktu = $('#edit_jangka_waktu_3').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#edit_pengali_kurangdari_satudelapan_3').val()
@@ -1431,7 +1431,7 @@ $(function(){
                                     hasiljasa = bulathitungjasa.toLocaleString("id-ID")
                                     $('#edit_jasa_gtc').val(hasiljasa).trigger("change")
                                     $('#edit_pembayaran_jasa').val('Transfer').trigger("change")
-                                }else if(data.fgramasi.toFixed(0)>=50){
+                                }else if(data.fgramasi>=50){
                                     jangka_waktu = $('#edit_jangka_waktu_3').val()
                                     numjangka_waktu = parseFloat(jangka_waktu)
                                     pengali = $('#edit_pengali_diatas_dua_3').val()
@@ -1769,7 +1769,7 @@ function edittransaksi(kode){
                                     // ======================================================================
                                     $('#edit_jangka_waktu_permohonan').change(function(){
                                         if($(this).val() === '0.5'){
-                                            if(parseFloat(data.fgramasi.toFixed(0))>=0.1 && parseFloat(data.fgramasi.toFixed(0))<=49.9){
+                                            if(parseFloat(data.fgramasi)>=0.1 && parseFloat(data.fgramasi)<=49.9){
                                                 jangka_waktu = $('#edit_jangka_waktu_1').val()
                                                 numjangka_waktu = parseFloat(jangka_waktu)
                                                 pengali = $('#edit_pengali_kurangdari_satudelapan_1').val()
@@ -1780,7 +1780,7 @@ function edittransaksi(kode){
                                                 hasiljasa = bulathitungjasa.toLocaleString("id-ID")
                                                 $('#edit_jasa_gtc').val(hasiljasa).trigger("change")
                                                 $('#edit_pembayaran_jasa').val('Transfer').trigger("change")
-                                            }else if(data.fgramasi.toFixed(0)>=50){
+                                            }else if(data.fgramasi>=50){
                                                 jangka_waktu = $('#edit_jangka_waktu_1').val()
                                                 numjangka_waktu = parseFloat(jangka_waktu)
                                                 pengali = $('#edit_pengali_diatas_dua_1').val()
@@ -1793,7 +1793,7 @@ function edittransaksi(kode){
                                                 $('#edit_pembayaran_jasa').val('Transfer').trigger("change")
                                             }
                                         }else if($(this).val() === '1'){
-                                            if(parseFloat(data.fgramasi.toFixed(0))>=0.1 && parseFloat(data.fgramasi.toFixed(0))<=49.9){
+                                            if(parseFloat(data.fgramasi)>=0.1 && parseFloat(data.fgramasi)<=49.9){
                                                 jangka_waktu = $('#edit_jangka_waktu_2').val()
                                                 numjangka_waktu = parseFloat(jangka_waktu)
                                                 pengali = $('#edit_pengali_kurangdari_satudelapan_2').val()
@@ -1804,7 +1804,7 @@ function edittransaksi(kode){
                                                 hasiljasa = bulathitungjasa.toLocaleString("id-ID")
                                                 $('#edit_jasa_gtc').val(hasiljasa).trigger("change")
                                                 $('#edit_pembayaran_jasa').val('Transfer').trigger("change")
-                                            }else if(data.fgramasi.toFixed(0)>=50){
+                                            }else if(data.fgramasi>=50){
                                                 jangka_waktu = $('#edit_jangka_waktu_2').val()
                                                 numjangka_waktu = parseFloat(jangka_waktu)
                                                 pengali = $('#edit_pengali_diatas_dua_2').val()
@@ -1817,7 +1817,7 @@ function edittransaksi(kode){
                                                 $('#edit_pembayaran_jasa').val('Transfer').trigger("change")
                                             }
                                         }else if($(this).val() === '2'){
-                                            if(parseFloat(data.fgramasi.toFixed(0))>=0.1 && parseFloat(data.fgramasi.toFixed(0))<=49.9){
+                                            if(parseFloat(data.fgramasi)>=0.1 && parseFloat(data.fgramasi)<=49.9){
                                                 jangka_waktu = $('#edit_jangka_waktu_3').val()
                                                 numjangka_waktu = parseFloat(jangka_waktu)
                                                 pengali = $('#edit_pengali_kurangdari_satudelapan_3').val()
@@ -1828,7 +1828,7 @@ function edittransaksi(kode){
                                                 hasiljasa = bulathitungjasa.toLocaleString("id-ID")
                                                 $('#edit_jasa_gtc').val(hasiljasa).trigger("change")
                                                 $('#edit_pembayaran_jasa').val('Transfer').trigger("change")
-                                            }else if(data.fgramasi.toFixed(0)>=50){
+                                            }else if(data.fgramasi>=50){
                                                 jangka_waktu = $('#edit_jangka_waktu_3').val()
                                                 numjangka_waktu = parseFloat(jangka_waktu)
                                                 pengali = $('#edit_pengali_diatas_dua_3').val()
@@ -1942,7 +1942,7 @@ function edittransaksi(kode){
                                     // ======================================================================
                                     $('#edit_jangka_waktu_permohonan').change(function(){
                                         if($(this).val() === '0.5'){
-                                            if(parseFloat(data.fgramasi.toFixed(0))>=0.1 && parseFloat(data.fgramasi.toFixed(0))<=49.9){
+                                            if(parseFloat(data.fgramasi)>=0.1 && parseFloat(data.fgramasi)<=49.9){
                                                 jangka_waktu = $('#edit_jangka_waktu_1').val()
                                                 numjangka_waktu = parseFloat(jangka_waktu)
                                                 pengali = $('#edit_pengali_kurangdari_satudelapan_1').val()
@@ -1953,7 +1953,7 @@ function edittransaksi(kode){
                                                 hasiljasa = bulathitungjasa.toLocaleString("id-ID")
                                                 $('#edit_jasa_gtc').val(hasiljasa).trigger("change")
                                                 $('#edit_pembayaran_jasa').val('Transfer').trigger("change")
-                                            }else if(data.fgramasi.toFixed(0)>=50){
+                                            }else if(data.fgramasi>=50){
                                                 jangka_waktu = $('#edit_jangka_waktu_1').val()
                                                 numjangka_waktu = parseFloat(jangka_waktu)
                                                 pengali = $('#edit_pengali_diatas_dua_1').val()
@@ -1966,7 +1966,7 @@ function edittransaksi(kode){
                                                 $('#edit_pembayaran_jasa').val('Transfer').trigger("change")
                                             }
                                         }else if($(this).val() === '1'){
-                                            if(parseFloat(data.fgramasi.toFixed(0))>=0.1 && parseFloat(data.fgramasi.toFixed(0))<=49.9){
+                                            if(parseFloat(data.fgramasi)>=0.1 && parseFloat(data.fgramasi)<=49.9){
                                                 jangka_waktu = $('#edit_jangka_waktu_2').val()
                                                 numjangka_waktu = parseFloat(jangka_waktu)
                                                 pengali = $('#edit_pengali_kurangdari_satudelapan_2').val()
@@ -1977,7 +1977,7 @@ function edittransaksi(kode){
                                                 hasiljasa = bulathitungjasa.toLocaleString("id-ID")
                                                 $('#edit_jasa_gtc').val(hasiljasa).trigger("change")
                                                 $('#edit_pembayaran_jasa').val('Transfer').trigger("change")
-                                            }else if(data.fgramasi.toFixed(0)>=50){
+                                            }else if(data.fgramasi>=50){
                                                 jangka_waktu = $('#edit_jangka_waktu_2').val()
                                                 numjangka_waktu = parseFloat(jangka_waktu)
                                                 pengali = $('#edit_pengali_diatas_dua_2').val()
@@ -1990,7 +1990,7 @@ function edittransaksi(kode){
                                                 $('#edit_pembayaran_jasa').val('Transfer').trigger("change")
                                             }
                                         }else if($(this).val() === '2'){
-                                            if(parseFloat(data.fgramasi.toFixed(0))>=0.1 && parseFloat(data.fgramasi.toFixed(0))<=49.9){
+                                            if(parseFloat(data.fgramasi)>=0.1 && parseFloat(data.fgramasi)<=49.9){
                                                 jangka_waktu = $('#edit_jangka_waktu_3').val()
                                                 numjangka_waktu = parseFloat(jangka_waktu)
                                                 pengali = $('#edit_pengali_kurangdari_satudelapan_3').val()
@@ -2001,7 +2001,7 @@ function edittransaksi(kode){
                                                 hasiljasa = bulathitungjasa.toLocaleString("id-ID")
                                                 $('#edit_jasa_gtc').val(hasiljasa).trigger("change")
                                                 $('#edit_pembayaran_jasa').val('Transfer').trigger("change")
-                                            }else if(data.fgramasi.toFixed(0)>=50){
+                                            }else if(data.fgramasi>=50){
                                                 jangka_waktu = $('#edit_jangka_waktu_3').val()
                                                 numjangka_waktu = parseFloat(jangka_waktu)
                                                 pengali = $('#edit_pengali_diatas_dua_3').val()
