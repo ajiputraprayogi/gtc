@@ -67,6 +67,12 @@
                     <span> Jenis Jasa GTC </span>
                 </a>
             </li>
+            <li class="side-nav-item">
+                <a href="{{url('backend/whatsapp-gtc')}}" class="side-nav-link">
+                    <i class="mdi mdi-checkbox-multiple-marked-circle-outline"></i>
+                    <span> WhatsApp GTC </span>
+                </a>
+            </li>
             @endif
             
             <li class="side-nav-title side-nav-item">Get The Cash</li>
