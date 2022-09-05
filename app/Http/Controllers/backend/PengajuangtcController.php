@@ -602,6 +602,96 @@ class PengajuangtcController extends Controller
      */
     public function store(Request $request)
     {
+        date_default_timezone_set('Asia/Jakarta');
+        $tgl = date('d');
+        $bulan = date('n');
+        $tahun = date('Y');
+        $jam = date('H:i');
+        $bulan_indonesia = array (1 =>   'Januari',
+                                'Februari',
+                                'Maret',
+                                'April',
+                                'Mei',
+                                'Juni',
+                                'Juli',
+                                'Agustus',
+                                'September',
+                                'Oktober',
+                                'November',
+                                'Desember'
+                            );
+        $angkabulan = $bulan;
+        $namabulan = $bulan_indonesia[$angkabulan];
+        $tanggalpengajuan = $tgl.' '.$namabulan.' '.$tahun.' '.$jam;
+        //
+        $date = \Carbon\Carbon::now();
+        if($request->jangka_waktu_permohonan == 'Pilih'){
+            $jatuhtempo = \Carbon\Carbon::now();
+            $msg_jatuh_tempo = date_format($jatuhtempo,"d/m/Y");
+        }else{
+            $months = $request->jangka_waktu_permohonan;
+            foreach(explode(",", $months) as $month) {
+                $hours = $month * 24 * 30;
+                date_default_timezone_set('Asia/Jakarta');
+                $jatuhtempo = date("Y-m-d H:i:s", strtotime("{$date} +{$hours} hours"));
+                $msg_jatuh_tempo = date("d-m-Y", strtotime("{$date} +{$hours} hours"));
+            }
+        }
+        //
+        if($request->jangka_waktu_permohonan == '0.5'){ 
+        $jw = '15 hari';
+        }else{
+         $jw = $request->jangka_waktu_permohonan . ' bulan';  
+        }
+        
+         //send wa
+         $Anggota = DB::table('anggota')->where('id', $request->id_anggota)->first();
+         $msgs = DB::table('konten_wa_gtc')->where('id', 1)->value('pengajuan_gtc');
+         $msg_nama = $Anggota->nama_lengkap;
+         $msg_tgl_pengajuan = $tgl.' '.$namabulan.' '.$tahun;
+         $msg_jangka_waktu = $jw;
+         $msg_jmlh_tf= 'Rp. ' . $request->jumlah_transfer;
+         $msg_gramasi = $request->total_gramasi_hidden . ' gram';
+         $msg_jenis = $request->jenis_transaksi;
+         $a= ["{{nama_anggota}}", "{{tgl_pengajuan}}", "{{jangka_waktu}}","{{tgl_jatuh_tempo}}","{{jumlah_transfer}}","{{jumlah_gramasi}}","{{jenis_transaksi}}"];
+         $b= [$msg_nama, $msg_tgl_pengajuan, $msg_jangka_waktu,$msg_jatuh_tempo,$msg_jmlh_tf,$msg_gramasi,$msg_jenis];
+         $pesan = str_replace($a, $b, $msgs);
+        //  $pesan = $msgs;
+         $nomer = $Anggota->no_hp;
+         
+         if(strpos(substr($nomer,0,3), '08') !== false){
+             $awal = str_replace("08", "628", substr($nomer,0,3));
+             $nomer = $awal. substr($nomer,3);
+         }
+         $curl = curl_init();
+         
+         $prefix = 'v3';
+         $access_token = 'effda1aee08bf8277a23092c479c71ea';
+         $sender = '6281219974534';
+         $type = 'text';
+         // $message = $pesan .  'Nama : ' . $nama  . 'Email : ' . $email . 'Password : ' . $pass ;
+         
+         $message = $pesan;
+         $number = $nomer;
+         
+         curl_setopt_array($curl, array(
+           CURLOPT_URL => 'https://' . $prefix . '.woonotif.com/api/sendbyphone.php?access_token=' . $access_token . '&sender=' . $sender . '&message=' . urlencode($message) .'&number=' . $number . '&type=' . $type,
+           CURLOPT_RETURNTRANSFER => true,
+           CURLOPT_ENCODING => '',
+           CURLOPT_MAXREDIRS => 10,
+           CURLOPT_TIMEOUT => 0,
+           CURLOPT_SSL_VERIFYHOST => 0,
+           CURLOPT_SSL_VERIFYPEER => 0,
+           CURLOPT_FOLLOWLOCATION => true,
+           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+           CURLOPT_CUSTOMREQUEST => 'POST',
+         ));
+         
+         $response = curl_exec($curl);
+         
+         curl_close($curl);
+ 
+        //  dd($response);
         // $request->validate([
         //     'id_anggota' => 'required',
         //     'id_perwada' => 'required',
@@ -625,27 +715,7 @@ class PengajuangtcController extends Controller
         //     'jumlah_yang_di_transfer' => 'required',
         //     'tipe_transaksi' => 'required',
         // ]);
-        date_default_timezone_set('Asia/Jakarta');
-        $tgl = date('d');
-        $bulan = date('n');
-        $tahun = date('Y');
-        $jam = date('H:i');
-        $bulan_indonesia = array (1 =>   'Januari',
-                                'Februari',
-                                'Maret',
-                                'April',
-                                'Mei',
-                                'Juni',
-                                'Juli',
-                                'Agustus',
-                                'September',
-                                'Oktober',
-                                'November',
-                                'Desember'
-                            );
-        $angkabulan = $bulan;
-        $namabulan = $bulan_indonesia[$angkabulan];
-        $tanggalpengajuan = $tgl.' '.$namabulan.' '.$tahun.' '.$jam;
+       
         // dd($tanggalpengajuan);
         if(!$request->signed == ''){
             $folderPath = public_path('tandatangan/');
@@ -726,17 +796,7 @@ class PengajuangtcController extends Controller
             $finalname5 = $request->old_surat_kuasa_penjualan_jaminan_marhum;
         }
 
-        $date = \Carbon\Carbon::now();
-        if($request->jangka_waktu_permohonan == 'Pilih'){
-            $jatuhtempo = \Carbon\Carbon::now();
-        }else{
-            $months = $request->jangka_waktu_permohonan;
-            foreach(explode(",", $months) as $month) {
-                $hours = $month * 24 * 30;
-                date_default_timezone_set('Asia/Jakarta');
-                $jatuhtempo = date("Y-m-d H:i:s", strtotime("{$date} +{$hours} hours"));
-            }
-        }
+      
 
         DB::table('gtc_pengajuan')->insert([
             'tanggal_pengajuan' => \Carbon\Carbon::now(), # new \Datetime(),
@@ -782,6 +842,9 @@ class PengajuangtcController extends Controller
             "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
             "updated_at" => \Carbon\Carbon::now(),  # new \Datetime()
         ]);
+
+       
+        //end send wa
         $index = 0;
         foreach($request->id_emas as $id){
             $data = DB::table('gtc_emas')->where('id', $id)->update([
@@ -798,6 +861,8 @@ class PengajuangtcController extends Controller
             ]);
             $index++;
         }
+
+        
     }
 
     /**

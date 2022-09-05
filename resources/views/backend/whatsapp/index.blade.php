@@ -54,13 +54,13 @@
                                                  echo '{{jagka_waktu}}'
                                                  ?> : Jangka Waktu
                                                 </p>
-                                            </div>
-                                            <div class="col-6">
                                                 <p>
                                                 <?php 
                                                  echo '{{tgl_jatuh_tempo}}'
                                                  ?> : Tanggal Jatuh Tempo
                                                 </p>
+                                            </div>
+                                            <div class="col-6">
                                                 <p>
                                                 <?php 
                                                  echo '{{tgl_pelunasan}}'
