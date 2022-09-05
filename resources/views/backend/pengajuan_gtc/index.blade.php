@@ -48,7 +48,28 @@
                             @endif
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="col-sm-3"> 
+                            <div class="row mb-3"> 
+                                <label for="colFormLabelSm" class="col-4 col-form-label">Min. Date:</label> 
+                                <div class="col-8"> 
+                                    <input class="form-control form-control-sm" type="text" id="from_date" name="from_date"> 
+                                </div> 
+                            </div> 
+                        </div> 
+                        <div class="col-sm-3"> 
+                            <div class="row mb-3"> 
+                                <label for="colFormLabelSm" class="col-4 col-form-label">Max. Date:</label> 
+                                <div class="col-8"> 
+                                    <input class="form-control form-control-sm" type="text" id="to_date" name="to_date"> 
+                                </div> 
+                            </div> 
+                        </div> 
+                        <div class="col-sm-3 text-right"> 
+                            <button type="button" name="filter" id="filter" class="btn btn-primary">Filter</button> 
+                            <button type="button" name="refresh" id="refresh" class="btn btn-default">Refresh</button> 
+                        </div>
+                    </div>
                     <div class="tab-content">
                         <div class="tab-pane show active" id="scroll-horizontal-preview">
                         <table id="list-data" class="table table-striped w-100 nowrap">
@@ -394,6 +415,89 @@
         order: [[1, "desc"]],
         pageLength: 10,
         lengthMenu: [[5, 10, 20], [5, 10, 20]]
+    });
+</script>
+<script>
+    load_data(); 
+    function load_data(from_date = '', to_date = ''){ 
+        $('#list-data').DataTable({
+        processing: true,
+        serverSide: true,
+        scrollX:!0,
+        language:{
+        paginate:{
+            previous:"<i class='mdi mdi-chevron-left'>",
+            next:"<i class='mdi mdi-chevron-right'>",
+        }
+        },
+        // drawCallback:function(){
+        //     $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+        // }
+        order: [[0, "desc"]],
+        ajax: '/backend/list-transaksi/' + kode,
+        columns: [
+            {
+                data: 'id', render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
+            { data: 'kode_transaksi', name: 'kode_transaksi' },
+            { data: 'jenis_transaksi', name: 'jenis_transaksi' },
+            { data: 'pilihan_jasa', name: 'pilihan_jasa' },
+            { data: 'perhitungan_jasa', name: 'perhitungan_jasa' },
+            { data: 'tgl_sebelumnya', name: 'tgl_sebelumnya' },
+            {
+                data: 'jangka_waktu_permohonan', name: 'jangka_waktu_permohonan',
+                "render": function(data, type, row, meta){
+                    if(type === 'display'){
+                       data = data + ((data == 1) ? " Bulan" : " Bulan");
+                    }
+                    return data;
+                 }
+            },
+            { data: 'jatuh_tempo', name: 'jatuh_tempo' },
+            { data: 'jasa_gtc', render: $.fn.dataTable.render.number( '.', ',', 0, 'Rp ' ), name: 'jasa_gtc' },
+            { data: 'pembayaran_jasa_manual', render: $.fn.dataTable.render.number( '.', ',', 0, 'Rp ' ), name: 'pembayaran_jasa_manual' },
+            { data: 'sbte', name: 'sbte' },
+            { data: 'pilihan_jasa', name: 'pilihan_jasa' },
+            {
+                render: function (data, type, row) {
+                    if(perwada !== 1){
+                        return '<a onclick="viewtransaksi('+ row['id'] +')" class="action-icon" title="View Transaksi"> <i class="mdi mdi-card-search"></i></a> <a onclick="jasadiakhir('+ row['id'] +')" class="action-icon" title="Transaksi Jasa Di akhir"> <i class="mdi mdi-receipt"></i></a> <a href="javascript:void(0);" class="action-icon" data-bs-container="#tooltip-container2" data-bs-toggle="tooltip" title="Cetak SBTE"> <i class="mdi mdi-printer-outline"></i></a>'
+                    }else{
+                        return '<a onclick="viewtransaksi('+ row['id'] +')" class="action-icon" title="View Transaksi"> <i class="mdi mdi-card-search"></i></a> <a onclick="uploadbuktitrf('+ row['id'] +')" class="action-icon" title="Upload trf"> <i class="mdi mdi-file-upload"></i></a><a onclick="edittransaksi('+ row['id'] +')" class="action-icon" title="Edit Transaksi"> <i class="mdi mdi-file-edit"></i></a> <a onclick="jasadiakhir('+ row['id'] +')" class="action-icon" title="Transaksi Jasa Di akhir"> <i class="mdi mdi-receipt"></i></a><a onclick="aprovalopr('+ row['id'] +')" class="action-icon" title="Aproval OPR"> <i class="mdi mdi-check-circle"></i></a><a onclick="aprovalkeu('+ row['id'] +')" class="action-icon" title="Aproval Kasir"> <i class="mdi mdi-check-circle"></i></a> <a href="/backend/cetak-sbte/'+ row['id'] +'/'+ row['kode_pengajuan'] +'" class="action-icon" title="Cetak SBTE"> <i class="mdi mdi-printer-outline"></i></a>'
+                    }
+                },
+                "className": 'text-center',
+                "orderable": false,
+                "data": null,
+            },
+        ],
+        pageLength: 10,
+        lengthMenu: [[5, 10, 20], [5, 10, 20]]
+    });
+    } 
+  
+        // Refilter the table 
+    $('#filter').click(function(){ 
+        var from_date = $('#from_date').val(); 
+        var to_date = $('#to_date').val(); 
+        console.log(from_date,to_date); 
+        if(from_date != '' &&  to_date != '') 
+        { 
+            $('.data-table').DataTable().destroy(); 
+            load_data(from_date, to_date); 
+        } 
+        else 
+        { 
+            alert('Both Date is required'); 
+        } 
+    }); 
+    $('#refresh').click(function(){ 
+        $('#from_date').val(''); 
+        $('#to_date').val(''); 
+        $('.data-table').DataTable().destroy(); 
+        load_data(); 
     });
 </script>
 @endpush

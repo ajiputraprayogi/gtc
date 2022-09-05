@@ -791,7 +791,7 @@ function getdataemasgtc() {
             }
             );
             $('#bodyemasgtc').html(rows);
-            $("#footemasgtc").html('<tr><th>Total</th><th></th><th></th><th></th><th id="total_keping">0</th><th id="total_gramasi">0</th><th id="total_buyback">0</th><th style="width: 50px;"></th></tr>');
+            $("#footemasgtc").html('<tr><th>Total</th><th></th><th></th><th></th><th id="total_keping">0</th><th id="total_gramasi">0</th><th hidden><input type="hidden" class="form-control" name="total_gramasi_hidden" id="total_gramasi_hidden"></th><th id="total_buyback">0</th><th style="width: 50px;"></th></tr>');
             getTotal();
             keping();
         }, complete: function () {
@@ -818,6 +818,7 @@ function getTotal(){
         total_gramasi += parseFloat(this.innerHTML)
     });
     $('#total_gramasi').text(total_gramasi.toFixed(1) + " Gram");
+    $('#total_gramasi_hidden').val(total_gramasi.toFixed(1));
 
     total_buyback = 0;
     $('.jumlah_buyback_hidden').each(function(){

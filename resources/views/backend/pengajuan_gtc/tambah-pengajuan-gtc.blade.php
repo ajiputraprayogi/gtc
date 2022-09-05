@@ -1,3 +1,11 @@
+@php
+    date_default_timezone_set('Asia/Jakarta');
+    $jam = date('H:i');
+    $buka = date('10:30');
+    $tutup = date('22:30');
+@endphp
+@if($jam>=$buka && $jam<=$tutup)
+
 @extends('layouts.base')
 @section('css')
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -1427,3 +1435,21 @@ function keping(){
     }
 </script> -->
 @endpush
+
+@else
+<?php
+    ob_start(); // ensures anything dumped out will be caught
+
+    // do stuff here
+    $url = '/backend/pengajuan-gtc'; // this can be set based on whatever
+
+    // clear out the output buffer
+    while (ob_get_status()) 
+    {
+        ob_end_clean();
+    }
+
+    // no redirect
+    header( "Location: $url" );
+?>
+@endif
