@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use DB;
 use File;
 use Auth;
+use DataTables;
 
 class PengajuangtcController extends Controller
 {
@@ -21,29 +22,86 @@ class PengajuangtcController extends Controller
         $this->middleware('auth');
     }
     
-    public function index()
+    public function index(Request $request)
     {
-        $perwada = Auth::user()->kantor;
-        if($perwada !='1'){
-            $data = DB::table('gtc_pengajuan')
-            ->leftjoin('anggota','anggota.id','=','gtc_pengajuan.id_anggota')
-            ->leftjoin('gtc_emas','gtc_emas.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')
-            ->select('gtc_pengajuan.*','anggota.nomor_ba','anggota.nama_lengkap',DB::raw('SUM(gtc_emas.gramasi*keping)as total_gramasi'),DB::raw('SUM(gtc_emas.harga_buyback*keping)as total_buyback'))
-            ->where('gtc_pengajuan.id_perwada',$perwada)
-            ->groupby('gtc_pengajuan.id')
-            ->orderby('gtc_pengajuan.created_at', 'asc')
-            ->get();
-            return view('backend.pengajuan_gtc.index', compact('data'));
-        }else{
-            $data = DB::table('gtc_pengajuan')
-            ->leftjoin('anggota','anggota.id','=','gtc_pengajuan.id_anggota')
-            ->leftjoin('gtc_emas','gtc_emas.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')
-            ->select('gtc_pengajuan.*','anggota.nomor_ba','anggota.nama_lengkap',DB::raw('SUM(gtc_emas.gramasi*keping)as total_gramasi'),DB::raw('SUM(gtc_emas.harga_buyback*keping)as total_buyback'))
-            ->groupby('gtc_pengajuan.id')
-            ->orderby('gtc_pengajuan.created_at', 'asc')
-            ->get();
-            return view('backend.pengajuan_gtc.index', compact('data'));
+        if($request->ajax()){
+            $perwada = Auth::user()->kantor;
+            $from = '2022-08-02';
+            $to = '2022-09-09';
+            if($perwada !='1'){
+                if(!empty($request->from_date)){
+                    $data = DB::table('gtc_pengajuan')
+                    ->leftjoin('anggota','anggota.id','=','gtc_pengajuan.id_anggota')
+                    ->leftjoin('gtc_emas','gtc_emas.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')
+                    ->select('gtc_pengajuan.*','anggota.nomor_ba','anggota.nama_lengkap',DB::raw('SUM(gtc_emas.gramasi*keping)as total_gramasi'),DB::raw('SUM(gtc_emas.harga_buyback*keping)as total_buyback'))
+                    ->where('gtc_pengajuan.id_perwada', $perwada)
+                    ->whereDate('gtc_pengajuan.created_at', '>=', $request->from_date)
+                    ->whereDate('gtc_pengajuan.created_at', '<=', $request->to_date)
+                    ->groupby('gtc_pengajuan.id')
+                    ->orderby('gtc_pengajuan.created_at', 'desc')
+                    ->get();
+                }else{
+                    $data = DB::table('gtc_pengajuan')
+                    ->leftjoin('anggota','anggota.id','=','gtc_pengajuan.id_anggota')
+                    ->leftjoin('gtc_emas','gtc_emas.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')
+                    ->select('gtc_pengajuan.*','anggota.nomor_ba','anggota.nama_lengkap',DB::raw('SUM(gtc_emas.gramasi*keping)as total_gramasi'),DB::raw('SUM(gtc_emas.harga_buyback*keping)as total_buyback'))
+                    ->where('gtc_pengajuan.id_perwada', $perwada)
+                    ->groupby('gtc_pengajuan.id')
+                    ->orderby('gtc_pengajuan.created_at', 'desc')
+                    ->get();
+                    // return view('backend.pengajuan_gtc.index', compact('data'));
+                }
+            }else{
+                if(!empty($request->from_date)){
+                    $data = DB::table('gtc_pengajuan')
+                    ->leftjoin('anggota','anggota.id','=','gtc_pengajuan.id_anggota')
+                    ->leftjoin('gtc_emas','gtc_emas.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')
+                    ->select('gtc_pengajuan.*','anggota.nomor_ba','anggota.nama_lengkap',DB::raw('SUM(gtc_emas.gramasi*keping)as total_gramasi'),DB::raw('SUM(gtc_emas.harga_buyback*keping)as total_buyback'))
+                    ->whereDate('gtc_pengajuan.created_at', '>=', $request->from_date)
+                    ->whereDate('gtc_pengajuan.created_at', '<=', $request->to_date)
+                    ->groupby('gtc_pengajuan.id')
+                    ->orderby('gtc_pengajuan.created_at', 'desc')
+                    ->get();
+                }else{
+                    $data = DB::table('gtc_pengajuan')
+                    ->leftjoin('anggota','anggota.id','=','gtc_pengajuan.id_anggota')
+                    ->leftjoin('gtc_emas','gtc_emas.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')
+                    ->select('gtc_pengajuan.*','anggota.nomor_ba','anggota.nama_lengkap',DB::raw('SUM(gtc_emas.gramasi*keping)as total_gramasi'),DB::raw('SUM(gtc_emas.harga_buyback*keping)as total_buyback'))
+                    ->groupby('gtc_pengajuan.id')
+                    ->orderby('gtc_pengajuan.created_at', 'desc')
+                    ->get();
+                    // return view('backend.pengajuan_gtc.index', compact('data'));
+                }
+            }
+            return Datatables::of($data)->editColumn('tanggal_pengajuan', function($data)
+            {
+                $tanggal = $data->tanggal_pengajuan;
+                $bulan = array (
+                    1 =>   'Januari',
+                    'Februari',
+                    'Maret',
+                    'April',
+                    'Mei',
+                    'Juni',
+                    'Juli',
+                    'Agustus',
+                    'September',
+                    'Oktober',
+                    'November',
+                    'Desember'
+                );
+                $pecahkandata = explode(' ', $tanggal);
+                $pecahkantgl = explode('-', $pecahkandata[0]);
+                $tglpengajuan = $pecahkantgl[2] . ' ' . $bulan[(int)$pecahkantgl[1]] . ' ' . $pecahkantgl[0];
+                return $tglpengajuan;
+            })->editColumn('id_perwada', function($data)
+            {
+                $cariperwada = DB::table('perwada')->where('id', $data->id_perwada)->first();
+                $namaperwada = $cariperwada->nama;
+                return $namaperwada;
+            })->make(true);
         }
+        return view('backend.pengajuan_gtc.index');
     }
 
     /**

@@ -33,10 +33,10 @@ class AktifgtcController extends Controller
             ->select('gtc_pengajuan.*','gtc_pengajuan.id as idp','gtc_pengajuan.created_at as created_atp',
             'anggota.*','anggota.id as ida',
             'gtc_transaksi.*','gtc_transaksi.id as idt','gtc_transaksi.tanggal_jatuh_tempo as tanggal_jatuh_tempot')
-            ->groupby('gtc_transaksi.kode_pengajuan')
             ->where('gtc_pengajuan.status_akhir','Aktif')
             ->where('gtc_transaksi.status','Aktif')
             ->where('gtc_pengajuan.id_perwada', $perwada)
+            ->groupby('gtc_transaksi.kode_pengajuan')
             ->orderby('gtc_pengajuan.created_at', 'asc')
             ->get();
             return view('backend.aktif_gtc.index', compact('data'));
@@ -1177,7 +1177,7 @@ class AktifgtcController extends Controller
         ->orderby('gtc_transaksi.kode_pengajuan', 'desc')
         ->get();
         // dd($data);
-        $idjenisjasa = DB::table('gtc_pengajuan')->leftjoin('gtc_transaksi','gtc_transaksi.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')->where('gtc_transaksi.kode_pengajuan', $kode)->first();
+        $idjenisjasa = DB::table('gtc_pengajuan')->leftjoin('gtc_transaksi','gtc_transaksi.kode_pengajuan','=','gtc_pengajuan.kode_pengajuan')->where('gtc_transaksi.kode_pengajuan', $kode2)->first();
         $jenisjasagtc = DB::table('gtc_jenis_jasa')->where('id', $idjenisjasa->id_jenis_jasa)->get();
         $emas = DB::table('gtc_emas')->where('kode_pengajuan', $kode2)->get();
         $hargaharian = DB::table('gtc_harga_harian')->where('status', 'Active')->first();

@@ -34,6 +34,7 @@ Route::prefix('backend')->group(function () {
 
 
     Route::resource('/pengajuan-gtc', 'backend\PengajuangtcController');
+    Route::get('/list-pengajuan-gtc', 'backend\PengajuangtcController@listpengajuangtc');
     Route::put('/tambah-data-cif-anggota/{id}', 'backend\PengajuangtcController@tambahdatacifanggota');
     Route::get('/cari-data-histori-anggota/{kode}', 'backend\PengajuangtcController@historianggota');
     Route::get('/aproval-bm-pengajuan-gtc/{id}', 'backend\PengajuangtcController@aprovalbmpengajuangtc');

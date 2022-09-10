@@ -876,6 +876,7 @@
                                     </tbody>
                                 </table>
                                 <input type="hidden" class="form-control" id="total_buyback2_hidden" name="total_buyback2_hidden">
+                                <input type="hidden" class="form-control" id="total_gramasi2_hidden" name="total_gramasi2_hidden">
                             </div><hr>
                         </div>
                         <div id="divpelunasan" style="display: none;">

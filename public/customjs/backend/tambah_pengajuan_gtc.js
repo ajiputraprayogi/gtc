@@ -114,6 +114,13 @@ $('#cari').click(function(e){
                     $('#detail_nomor_npwp').text(': '+item.no_npwp)
                     $('#detail_alamat_sesuai_ktp').text(': '+item.alamat_ktp)
 
+                    if(item.kelurahan_ktp !== null){
+                        var kelurahan_ktp = item.kelurahan_ktp.split(',');
+                        $('#detail_kelurahan').text(': '+kelurahan_ktp[1])
+                    }else{
+                        $('#detail_kelurahan').text(': '+'null')
+                    }
+
                     if(item.kecamatan_ktp !== null){
                         var kecamatan_ktp = item.kecamatan_ktp.split(',');
                         $('#detail_kecamatan').text(': '+kecamatan_ktp[1])
@@ -138,6 +145,13 @@ $('#cari').click(function(e){
                     $('#detail_alamat_tinggal').text(': '+item.alamat_tinggal)
                     $('#detail_alamat_tinggal_domisili').text(': '+item.alamat_domisili)
 
+                    if(item.kelurahan_domisili !== null){
+                        var kelurahan_domisili = item.kelurahan_domisili.split(',');
+                        $('#detail_kelurahan_domisili').text(': '+kelurahan_domisili[1])
+                    }else{
+                        $('#detail_kecamatan_domisili').text(': '+'null')
+                    }
+                    
                     if(item.kecamatan_domisili !== null){
                         var kecamatan_domisili = item.kecamatan_domisili.split(',');
                         $('#detail_kecamatan_domisili').text(': '+kecamatan_domisili[1])
@@ -450,15 +464,67 @@ function gettambahdatacifanggota() {
                     $('#detail_status_pernikahan').text(': '+item.status_nikah)
                     $('#detail_nomor_npwp').text(': '+item.no_npwp)
                     $('#detail_alamat_sesuai_ktp').text(': '+item.alamat_ktp)
-                    $('#detail_kecamatan').text(': '+item.kecamatan_ktp)
-                    $('#detail_kota_kabupaten').text(': '+item.kota_ktp)
-                    $('#detail_provinsi').text(': '+item.provinsi_ktp)
+
+                    if(item.kelurahan_ktp !== null){
+                        var kelurahan_ktp = item.kelurahan_ktp.split(',');
+                        $('#detail_kelurahan').text(': '+kelurahan_ktp[1])
+                    }else{
+                        $('#detail_kelurahan').text(': '+'null')
+                    }
+
+                    if(item.kecamatan_ktp !== null){
+                        var kecamatan_ktp = item.kecamatan_ktp.split(',');
+                        $('#detail_kecamatan').text(': '+kecamatan_ktp[1])
+                    }else{
+                        $('#detail_kecamatan').text(': '+'null')
+                    }
+
+                    if(item.kota_ktp !== null){
+                        var kota_ktp = item.kota_ktp.split(',');
+                        $('#detail_kota_kabupaten').text(': '+kota_ktp[1])
+                    }else{
+                        $('#detail_kota_kabupaten').text(': '+'null')
+                    }
+
+                    if(item.provinsi_ktp !== null){
+                        var provinsi_ktp = item.provinsi_ktp.split(',');
+                        $('#detail_provinsi').text(': '+provinsi_ktp[1])
+                    }else{
+                        $('#detail_provinsi').text(': '+'null')
+                    }
+
                     $('#detail_alamat_tinggal').text(': '+item.alamat_tinggal)
                     $('#detail_alamat_tinggal_domisili').text(': '+item.alamat_domisili)
-                    $('#detail_kecamatan_domisili').text(': '+item.kecamatan_domisili)
-                    $('#detail_kota_kabupaten_domisili').text(': '+item.kota_domisili)
-                    $('#detail_provinsi_domisili').text(': '+item.provinsi_domisili)
-                    $('#detail_photo_ktp').text(': '+item.lokasi_foto_ktp)
+
+                    if(item.kelurahan_domisili !== null){
+                        var kelurahan_domisili = item.kelurahan_domisili.split(',');
+                        $('#detail_kelurahan_domisili').text(': '+kelurahan_domisili[1])
+                    }else{
+                        $('#detail_kecamatan_domisili').text(': '+'null')
+                    }
+                    
+                    if(item.kecamatan_domisili !== null){
+                        var kecamatan_domisili = item.kecamatan_domisili.split(',');
+                        $('#detail_kecamatan_domisili').text(': '+kecamatan_domisili[1])
+                    }else{
+                        $('#detail_kecamatan_domisili').text(': '+'null')
+                    }
+
+                    if(item.kota_domisili !== null){
+                        var kota_domisili = item.kota_domisili.split(',');
+                        $('#detail_kota_kabupaten_domisili').text(': '+kota_domisili[1])
+                    }else{
+                        $('#detail_kota_kabupaten_domisili').text(': '+'null')
+                    }
+
+                    if(item.provinsi_domisili !== null){
+                        var provinsi_domisili = item.provinsi_domisili.split(',');
+                        $('#detail_provinsi_domisili').text(': '+provinsi_domisili[1])
+                    }else{
+                        $('#detail_provinsi_domisili').text(': '+'null')
+                    }
+                    $('#detail_photo_ktp').attr('src', 'http://syirkah.eoaclubsystem.com/images/data_penting/ktp/'+item.foto_ktp);
+
                     // ===============================================================
                     $('#tambah_id_anggota').val(item.id)
                     $('#tambah_nomor_ba').val(item.nomor_ba)

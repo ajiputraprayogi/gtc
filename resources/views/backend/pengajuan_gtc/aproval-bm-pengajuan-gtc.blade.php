@@ -320,10 +320,10 @@
                                                 </thead>
                                                 <tbody>
                                                 <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
+                                                    <td style="width: 25%;"></td>
+                                                    <td style="width: 25%;"><img src="{{asset('tandatangan_bm/'.$row->tanda_tangan_bm)}}" alt="image" class="img-fluid rounded" width="350"/></td>
+                                                    <td style="width: 25%;"></td>
+                                                    <td style="width: 25%;"></td>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -547,7 +547,8 @@
                                 <!-- Preview image -->
                                 <img src='' id='sign_prev' style='display: none;' />
                             </div>
-                            <button type="submit" id="btneditaprovalbm" class="btn btn-warning my-2">Simpan</button>
+                            <button type="submit" onclick="simpanPNG()" id="btneditaprovalbm" class="btn btn-warning my-2">Simpan</button>
+                            <!-- <button type="button" id="btndownload" onclick="simpanPNG()" class="btn btn-primary my-2">download</button> -->
                         </form>
                         @endforeach
                     </div>
@@ -620,25 +621,6 @@
 <script src="{{asset('customjs/backend/loading.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
 <script>
-$(document).ready(function() {
-    var canvas = document.querySelector("canvas");
-    // var parentWidth = $(canvas).parent().outerWidth();
-    // var parentHeight = $(canvas).parent().outerHeight();
-    // canvas.setAttribute("width", parentWidth);
-    // canvas.setAttribute("height", parentHeight);
-
-    this.signaturePad = new SignaturePad(canvas);
-
-    var signaturePad = new SignaturePad(document.getElementById('signature-pad'));
-    $('#signature-pad').click(function(){
-        var data = signaturePad.toDataURL('image/png');
-        $('#output').val(data);
-
-        $("#sign_prev").hide();
-        $("#sign_prev").attr("src",data);
-        // Open image in the browser
-        //window.open(data);
-    });
     $('#aproval-bm-modal').on('shown.bs.modal',function(e){
         let canvas = $("#signature-pad");
         let parentWidth = $(canvas).parent().outerWidth();
@@ -648,12 +630,23 @@ $(document).ready(function() {
         signaturePad = new SignaturePad(canvas[0], {
             backgroundColor: 'rgb(255, 255, 255)'
         });
+        $('#signature-pad').click(function(){
+            const data = signaturePad.toDataURL();
+            $('#output').val(data);
+
+            $("#sign_prev").hide();
+            $("#sign_prev").attr("src",data);
+            // Open image in the browser
+            //window.open(data);
+        });
     })
-    $('#aproval-bm-modal').on('hidden.bs.modal', function (e) {
+
+    $(document).on('click','#aproval-bm-modal .clear',function(){
         signaturePad.clear();
         $("#output").val('');
     });
-    $(document).on('click','#aproval-bm-modal .clear',function(){
+
+    $('#aproval-bm-modal').on('hidden.bs.modal', function (e) {
         signaturePad.clear();
         $("#output").val('');
     });
@@ -663,7 +656,148 @@ $(document).ready(function() {
         signaturePad.clear();
         $("#output").val('');
     });
-})
+
+    function dataURLToBlob(dataURL) {
+        // Code taken from https://github.com/ebidel/filer.js
+        const parts = dataURL.split(';base64,');
+        const contentType = parts[0].split(":")[1];
+        const raw = window.atob(parts[1]);
+        const rawLength = raw.length;
+        const uInt8Array = new Uint8Array(rawLength);
+
+        for (let i = 0; i < rawLength; ++i) {
+            uInt8Array[i] = raw.charCodeAt(i);
+    }
+
+    return new Blob([uInt8Array], { type: contentType });
+    }
+    function download(dataURL, filename) {
+        const blob = dataURLToBlob(dataURL);
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.style = "display: none";
+        a.href = url;
+        a.download = filename;
+
+        document.body.appendChild(a);
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+    }
+    function simpanPNG(){
+        if (signaturePad.isEmpty()) {
+            alert("Please provide a signature first.");
+        } else {
+            const dataURL = signaturePad.toDataURL();
+            $('#output').val(dataURL);
+
+            // download(dataURL, "signature.png");
+        }
+    }
+    // const savePNGButton = wrapper.querySelector("[data-action=save-png]");
+    // savePNGButton.addEventListener("click", () => {
+    
+    // });
+    function resizeCanvas() {
+        // When zoomed out to less than 100%, for some very strange reason,
+        // some browsers report devicePixelRatio as less than 1
+        // and only part of the canvas is cleared then.
+        const ratio =  Math.max(window.devicePixelRatio || 1, 1);
+
+        // This part causes the canvas to be cleared
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        canvas.getContext("2d").scale(ratio, ratio);
+
+        // This library does not listen for canvas changes, so after the canvas is automatically
+        // cleared by the browser, SignaturePad#isEmpty might still return false, even though the
+        // canvas looks empty, because the internal data of this library wasn't cleared. To make sure
+        // that the state of this library is consistent with visual state of the canvas, you
+        // have to clear it manually.
+        signaturePad.clear();
+        
+        // If you want to keep the drawing on resize instead of clearing it you can reset the data.
+        // signaturePad.fromData(signaturePad.toData());
+        }
+
+        // On mobile devices it might make more sense to listen to orientation change,
+        // rather than window resize events.
+        window.onresize = resizeCanvas;
+        resizeCanvas();
+
+    // $(document).ready(function() {
+    //     resizeCanvas();
+    //     const savePNGButton = wrapper.querySelector("[data-action=save-png]");
+    //     savePNGButton.addEventListener("click", () => {
+    //     if (signaturePad.isEmpty()) {
+    //         alert("Please provide a signature first.");
+    //     } else {
+    //         const dataURL = signaturePad.toDataURL();
+    //         download(dataURL, "signature.png");
+    //     }
+    //     });
+    //     // var canvas = document.querySelector("canvas");
+    //     // // var parentWidth = $(canvas).parent().outerWidth();
+    //     // // var parentHeight = $(canvas).parent().outerHeight();
+    //     // // canvas.setAttribute("width", parentWidth);
+    //     // // canvas.setAttribute("height", parentHeight);
+
+    //     // this.signaturePad = new SignaturePad(canvas);
+
+    //     // var signaturePad = new SignaturePad(document.getElementById('signature-pad'));
+    //     // $('#signature-pad').click(function(){
+    //     //     var data = signaturePad.toDataURL('image/png');
+    //     //     $('#output').val(data);
+
+    //     //     $("#sign_prev").hide();
+    //     //     $("#sign_prev").attr("src",data);
+    //     //     // Open image in the browser
+    //     //     //window.open(data);
+    //     // });
+        
+    //     // $('#aproval-bm-modal').on('hidden.bs.modal', function (e) {
+    //     //     signaturePad.clear();
+    //     //     $("#output").val('');
+    //     // });
+    //     // $(document).on('click','#aproval-bm-modal .clear',function(){
+    //     //     signaturePad.clear();
+    //     //     $("#output").val('');
+    //     // });
+
+    //     // var cancelButton = document.getElementById('clear');
+    //     // cancelButton.addEventListener('click', function (event) {
+    //     //     signaturePad.clear();
+    //     //     $("#output").val('');
+    //     // });
+
+    //     function resizeCanvas() {
+    //         // When zoomed out to less than 100%, for some very strange reason,
+    //         // some browsers report devicePixelRatio as less than 1
+    //         // and only part of the canvas is cleared then.
+    //         const ratio =  Math.max(window.devicePixelRatio || 1, 1);
+
+    //         // This part causes the canvas to be cleared
+    //         canvas.width = canvas.offsetWidth * ratio;
+    //         canvas.height = canvas.offsetHeight * ratio;
+    //         canvas.getContext("2d").scale(ratio, ratio);
+
+    //         // This library does not listen for canvas changes, so after the canvas is automatically
+    //         // cleared by the browser, SignaturePad#isEmpty might still return false, even though the
+    //         // canvas looks empty, because the internal data of this library wasn't cleared. To make sure
+    //         // that the state of this library is consistent with visual state of the canvas, you
+    //         // have to clear it manually.
+    //         signaturePad.clear();
+            
+    //         // If you want to keep the drawing on resize instead of clearing it you can reset the data.
+    //         // signaturePad.fromData(signaturePad.toData());
+    //         }
+
+    //         // On mobile devices it might make more sense to listen to orientation change,
+    //         // rather than window resize events.
+    //         window.onresize = resizeCanvas;
+    //         resizeCanvas();
+    // })
     
  </script>
 @endpush

@@ -1,7 +1,7 @@
 @php
     date_default_timezone_set('Asia/Jakarta');
     $jam = date('H:i');
-    $buka = date('10:30');
+    $buka = date('10:00');
     $tutup = date('22:30');
 @endphp
 @if($jam>=$buka && $jam<=$tutup)
@@ -454,7 +454,7 @@
                             </div>
                         </div>
                         <br><div class="mb-3 text-center" >
-                            <button class="btn btn-primary" id="btnaddpengajuan" type="submit"> Simpan </button>
+                            <button class="btn btn-primary" onclick="simpanPNG()" id="btnaddpengajuan" type="submit"> Simpan </button>
                         </div>
                     </form>
                 </div>
@@ -564,6 +564,14 @@
                 </div>
                 <div class="row">
                     <div class="col-4">
+                        <p class="font-14"><strong>Kelurahan</strong></p>
+                    </div>
+                    <div class="col-8">
+                        <p class="font-14" id="detail_kelurahan"><strong>: </strong>Nama Kelurahan</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
                         <p class="font-14"><strong>Kecamatan</strong></p>
                     </div>
                     <div class="col-8">
@@ -600,6 +608,14 @@
                     </div>
                     <div class="col-8">
                         <p class="font-14" id="detail_alamat_tinggal_domisili"><strong>: </strong>Jl. Rya Raya Terusan raya nomor 3 Rt.05/01</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <p class="font-14"><strong>Kelurahan</strong></p>
+                    </div>
+                    <div class="col-8">
+                        <p class="font-14" id="detail_kelurahan_domisili"><strong>: </strong>Nama Kelurahan</p>
                     </div>
                 </div>
                 <div class="row">
@@ -973,7 +989,6 @@
         });
     </script> -->
 <script>
-$(document).ready(function() {
     var canvas = document.querySelector("canvas");
     var parentWidth = $(canvas).parent().outerWidth();
     var parentHeight = $(canvas).parent().outerHeight();
@@ -998,7 +1013,45 @@ $(document).ready(function() {
         signaturePad.clear();
         $("#output").val('');
     });
-})
+
+    function dataURLToBlob(dataURL) {
+        // Code taken from https://github.com/ebidel/filer.js
+        const parts = dataURL.split(';base64,');
+        const contentType = parts[0].split(":")[1];
+        const raw = window.atob(parts[1]);
+        const rawLength = raw.length;
+        const uInt8Array = new Uint8Array(rawLength);
+
+        for (let i = 0; i < rawLength; ++i) {
+            uInt8Array[i] = raw.charCodeAt(i);
+    }
+
+    return new Blob([uInt8Array], { type: contentType });
+    }
+    function download(dataURL, filename) {
+        const blob = dataURLToBlob(dataURL);
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.style = "display: none";
+        a.href = url;
+        a.download = filename;
+
+        document.body.appendChild(a);
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+    }
+    function simpanPNG(){
+        if (signaturePad.isEmpty()) {
+            alert("Please provide a signature first.");
+        } else {
+            const dataURL = signaturePad.toDataURL();
+            $('#output').val(dataURL);
+
+            // download(dataURL, "signature.png");
+        }
+    }
     
  </script>
 <!-- <script>

@@ -508,6 +508,14 @@
                     </div>
                     <div class="row">
                         <div class="col-4">
+                            <p class="font-14"><strong>Kelurahan</strong></p>
+                        </div>
+                        <div class="col-8">
+                            <p class="font-14" id="detail_kelurahan"><strong>: </strong>@php $kelurahan_ktp = explode(",", $row->kelurahan_ktp); @endphp {{$kelurahan_ktp[1]}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
                             <p class="font-14"><strong>Kecamatan</strong></p>
                         </div>
                         <div class="col-8">
@@ -544,6 +552,14 @@
                         </div>
                         <div class="col-8">
                             <p class="font-14" id="detail_alamat_tinggal_domisili"><strong>: </strong>{{$row->alamat_domisili}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <p class="font-14"><strong>Kelurahan</strong></p>
+                        </div>
+                        <div class="col-8">
+                            <p class="font-14" id="detail_kelurahan_domisili"><strong>: </strong>@php $kelurahan_domisili = explode(",", $row->kelurahan_domisili); @endphp {{$kelurahan_domisili[1]}}</p>
                         </div>
                     </div>
                     <div class="row">
